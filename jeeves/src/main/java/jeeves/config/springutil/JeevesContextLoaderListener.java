@@ -68,9 +68,7 @@ public class JeevesContextLoaderListener implements ServletContextListener {
             // FIXME: where is this scheduler and workers configured ? It
             // could be relevant to only have a small number of thread started.a
             StdScheduler scheduler = (StdScheduler)jeevesAppContext.getBean("scheduler");
-            if (scheduler != null) {
-                scheduler.shutdown();
-            }
+            scheduler.shutdown();
 
             // initialize all JPA Repositories.  This should be done outside of the init
             // because spring-data-jpa first looks up named queries (based on method names) and
