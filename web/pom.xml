@@ -780,6 +780,30 @@
       </properties>
     </profile>
     <profile>
+      <id>env-brgm</id>
+      <activation>
+        <property>
+          <name>env</name>
+          <value>brgm</value>
+        </property>
+      </activation>
+      <properties>
+        <env>brgm</env>
+      </properties>
+    </profile>
+    <profile>
+      <id>env-cap</id>
+      <activation>
+        <property>
+          <name>env</name>
+          <value>cap</value>
+        </property>
+      </activation>
+      <properties>
+        <env>cap</env>
+      </properties>
+    </profile>
+    <profile>
       <id>env-dev</id>
       <activation>
         <property>
@@ -836,6 +860,7 @@
     <web.xml.main.config.overrides>/WEB-INF/config-overrides-${env}.xml</web.xml.main.config.overrides>
     <web.xml.widget.config.overrides></web.xml.widget.config.overrides>
     <system.specific.overrides></system.specific.overrides>
+    <server.home>${server.home}</server.home>
     <rootProjectDir>${basedir}/..</rootProjectDir>
     <wro4jOutput>${project.build.directory}/wro4j-output/</wro4jOutput>
   </properties>
