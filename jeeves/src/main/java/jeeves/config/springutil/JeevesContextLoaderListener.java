@@ -4,7 +4,6 @@ import com.google.common.io.Files;
 import jeeves.server.overrides.ConfigurationOverrides;
 import org.fao.geonet.NodeInfo;
 import org.fao.geonet.domain.User;
-import org.quartz.impl.StdScheduler;
 import org.springframework.data.jpa.repository.JpaRepository;
 import jeeves.server.JeevesEngine;
 import org.fao.geonet.utils.Log;
@@ -62,13 +61,6 @@ public class JeevesContextLoaderListener implements ServletContextListener {
 
             jeevesAppContext.setServletContext(servletContext);
             jeevesAppContext.refresh();
-
-            // Hack to shutdown QuartzScheduler thread pool (10 threads)
-            // started by Spring (and probably not used by the application ?).
-            // FIXME: where is this scheduler and workers configured ? It
-            // could be relevant to only have a small number of thread started.a
-            StdScheduler scheduler = (StdScheduler)jeevesAppContext.getBean("scheduler");
-            scheduler.shutdown();
 
             // initialize all JPA Repositories.  This should be done outside of the init
             // because spring-data-jpa first looks up named queries (based on method names) and
