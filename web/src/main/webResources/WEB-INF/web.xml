@@ -290,12 +290,24 @@
             <param-value>${system.specific.overrides},${web.xml.main.config.overrides}${web.xml.widget.config.overrides}</param-value>
         </init-param>
 
-        <!--
-            Specified what geonetwork data directory to use.
-            <init-param>
-            <param-name>geonetwork.dir</param-name>
-            <param-value>/app/geonetwork_data_dir</param-value>
-        </init-param>-->
+        <!-- Specified what geonetwork data directory to use. -->
+        <init-param>
+		    <param-name>geonetwork.dir</param-name>
+		    <param-value>${server.home}data/data</param-value>
+		    <!-- Pour chaque noeud, un répertoire /applications/nodes-data/data_<nodeId> sera créé. -->
+		</init-param>
+		<init-param>
+		    <param-name>geosource.schema.dir</param-name>
+		    <param-value>${server.home}webapps/geosource/WEB-INF/data/config/schema_plugins</param-value>
+		</init-param>
+		<init-param>
+		    <param-name>geosource.codeList.dir</param-name>
+		    <param-value>${server.home}data/codelist</param-value>
+		</init-param>
+		<init-param>
+		    <param-name>geosource.resources.dir</param-name>
+		    <param-value>${server.home}data/resources</param-value>
+		</init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
