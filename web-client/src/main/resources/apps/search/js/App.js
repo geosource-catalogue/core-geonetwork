@@ -580,8 +580,9 @@ GeoNetwork.app = function () {
             metadataUuid: uuid,
             showFeedBackButton: showFeedBackButton,
             record: record,
-            resultsView: this.resultsView
-            });
+            resultsView: this.resultsView,
+            constrain: true
+        });
         win.show(this.resultsView);
         win.alignTo(Ext.getBody(), 'tr-tr');
         

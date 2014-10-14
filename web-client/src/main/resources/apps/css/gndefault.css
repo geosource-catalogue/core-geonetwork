@@ -849,3 +849,8 @@ background-image: none;
 	height: 16px;
 	width: 14px;
 }
+
+/* Align window tools (ie. button in top bar) to the right. */
+.x-tool {
+    float: right !important;
+}

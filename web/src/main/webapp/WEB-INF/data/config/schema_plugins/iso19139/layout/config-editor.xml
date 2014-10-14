@@ -303,7 +303,7 @@
             </template>
           </action>
 
-          <action type="batch" process="add-resource-id" params=""
+          <action type="batch" process="add-resource-id"
                   if="count(gmd:MD_Metadata/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/
             gmd:identifier[ends-with(gmd:MD_Identifier/gmd:code/gco:CharacterString, //gmd:MD_Metadata/gmd:fileIdentifier/gco:CharacterString)]) = 0"/>
 
@@ -1302,6 +1302,11 @@
       <!-- Elements that should not use the "flat" mode -->
       <flatModeExceptions>
         <for name="gmd:descriptiveKeywords" />
+        <for name="gmd:pointOfContact"/>
+        <for name="gmd:distributor"/>
+        <for name="gmd:contact"/>
+        <for name="gmd:processor"/>
+        <for name="gmd:citedResponsibleParty"/>
       </flatModeExceptions>
     </view>
     <view name="advanced">
