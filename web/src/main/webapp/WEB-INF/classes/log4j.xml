@@ -177,8 +177,8 @@
     <logger name="org.jzkit.search.impl.LRUCache" additivity="false">
         <level value="WARN" />
     </logger>
-    <logger name="ro.isdc.wro.http" additivity="false">
-        <level value="DEBUG" />
+    <logger name="ro.isdc.wro" additivity="false">
+        <level value="WARN" />
         <appender-ref ref="allConsoleAppender" />
         <appender-ref ref="fileAppender" />
     </logger>
