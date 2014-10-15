@@ -52,7 +52,7 @@
         </init-param>
         <init-param>
             <param-name>trustedHost</param-name>
-            <param-value>localhost</param-value>
+            <param-value>localhost,metadatacarmen.brgm-rec.fr,geosourcemulti.brgm-rec.fr,metadata.carmencarto.fr,metadata.carmen.developpement-durable.gouv.fr,www.mongeosource.fr</param-value>
         </init-param>
     </filter>
     <filter-mapping>
