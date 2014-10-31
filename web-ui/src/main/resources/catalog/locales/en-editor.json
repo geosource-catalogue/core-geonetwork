@@ -44,7 +44,8 @@
     "to-iso19139-keyword-as-xlink-help": "Useful for creating a link between the record and the thesaurus. An xlink:href attribute is added to the gmd:descriptiveKeywords element.",
     "to-iso19139-keyword": "text (recommended)",
     "to-iso19139-keyword-help": "Default mode. Insert keyword as simple text using gco:CharacterString element.",
-    "searchAContact": "Search for a contact ...",
+    "searchAcontact": "Search contact ...",
+    "searchAonLine": "Search online source ...",
     "addContact": "Add contact",
     "addContactUsingXLink": "Add contact (using XLink)",
     "addContactAsText-help": "Default mode. Add the contact into the record.",
@@ -168,6 +169,7 @@
     "importFromDirReport": "{{success}}/{{records}} record(s) imported successfully in {{time}} seconds.",
     "setMetadataGroup": "Change metadata group",
     "current": "current",
-    "searchKeyword": "Search keyword ...",
-    "searchOrTypeKeyword": "Type or search keyword ..."
+    "searchKeyword": "Search ...",
+    "searchOrTypeKeyword": "Type or search ...",
+    "tagsAllowed": " tag(s) allowed"
 }
