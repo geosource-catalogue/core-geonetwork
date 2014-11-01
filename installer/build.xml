@@ -26,9 +26,9 @@
 	
 	<property name="appName" value="geosource" />
 	<property name="version" value="2.11.1" />
-    <property name="subVersion" value="beta" />
-	<property name="javaVersion" value="1.6.0" /> <!-- Minimum version required -->
-	<property name="jre_url" value="http://java.sun.com/javase/downloads" />
+    <property name="subVersion" value="b0" />
+	<property name="javaVersion" value="1.7.0" /> <!-- Minimum version required -->
+	<property name="jre_url" value="http://www.oracle.com/technetwork/java/" />
 	<property name="OS" value="Compiled on ${os.name} (${osys})" />
 	<property name="propsdir" value="../.props" />
 	<property name="ant.build.javac.target" value="1.5"/>
