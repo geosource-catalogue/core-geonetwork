@@ -357,6 +357,8 @@
     "system/platform/subVersion-help": "Sub-version:",
     "system/csw/transactionUpdateCreateXPath": "Create element if it does not exist when using XPath in CSW trasaction.",
     "system/csw/transactionUpdateCreateXPath-help": "If not checked, only existing element could be updated.",
+    "metadata/resourceIdentifierPrefix": "Resource identifier prefix",
+    "metadata/resourceIdentifierPrefix-help": "In the editor, a suggestion provides the capability to compute the resource identifier automatically. This identifier is computed by concatenating this prefix with the metadata identifier (eg. http://localhost:8080/geonetwork/a1fd6bb7-6425-48b6-bca3-13c9e1bc4ab1).",
     "metadataAndTemplates": "Metadata & templates",
     "loadSchemaSamplesOrTemplates": "Load samples and templates for metadata standards",
     "listOfSchemas": "Standards available",

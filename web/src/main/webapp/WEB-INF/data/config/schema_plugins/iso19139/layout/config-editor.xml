@@ -1324,6 +1324,12 @@
           <field xpath="/gmd:MD_Metadata/gmd:dateStamp"/>
         </section>
       </tab>
+
+      <thesaurusList>
+        <thesaurus key="external.theme.inspire-theme"
+                   maxtags="1"
+                   transformations="to-iso19139-keyword"/>
+      </thesaurusList>
     </view>
     <view name="default">
       <tab id="default" default="true" mode="flat">

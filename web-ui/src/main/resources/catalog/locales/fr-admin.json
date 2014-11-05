@@ -326,6 +326,8 @@
     "system/platform/subVersion-help": "Sous-version:",
     "system/csw/transactionUpdateCreateXPath": "Autoriser la création de nouveaux éléments lors de l'utilisation des XPath dans dans les transactions CSW.",
     "system/csw/transactionUpdateCreateXPath-help": "Si non sélectionné, seuls les éléments existant peuvent être mis à jour.",
+    "metadata/resourceIdentifierPrefix": "Préfixe pour l'identifiant de le ressource",
+    "metadata/resourceIdentifierPrefix-help": "Dans l'éditeur, il est possible de calculer un identifiant pour la ressource automatiquement à l'aide des suggestions. Cet identifiant est calculé par la concaténation de ce préfixe avec l'identifiant de la fiche (eg. http://localhost:8080/geonetwork/a1fd6bb7-6425-48b6-bca3-13c9e1bc4ab1).",
     "metadataAndTemplates": "Metadonnées et modèles",
     "loadSchemaSamplesOrTemplates": "Charger les exemples et les modèles",
     "listOfSchemas": "Standards disponibles",
