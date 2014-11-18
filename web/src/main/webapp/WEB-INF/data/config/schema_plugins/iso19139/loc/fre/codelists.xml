@@ -1934,16 +1934,16 @@
 	
 	<codelist name="indeterminatePosition">
 		<entry>
+			<code>now</code>
+			<label>Maintenant</label>
+		</entry>		
+		<entry>
 			<code>after</code>
 			<label>Après</label>
 		</entry>
 		<entry>
 			<code>before</code>
 			<label>Avant</label>
-		</entry>
-		<entry>
-			<code>now</code>
-			<label>Maintenant</label>
 		</entry>
 		<entry>
 			<code>unknown</code>
