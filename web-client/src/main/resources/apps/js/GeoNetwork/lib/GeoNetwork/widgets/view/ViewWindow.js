@@ -102,6 +102,7 @@ GeoNetwork.view.ViewWindow = Ext.extend(Ext.Window, {
     },
     initComponent: function(){
         Ext.applyIf(this, this.defaultConfig);
+        Ext.apply(this, {constrainHeader: true});
         
         this.tools = [{
             id: 'newwindow',
