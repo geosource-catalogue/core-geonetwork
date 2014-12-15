@@ -664,6 +664,7 @@
     "saveOrder": "Enregistrer l'ordre",
     "thumbnails-host-url-relocator": "Mise à jour des URL",
     "url-host-relocator": "Mise à jour des URLs",
+    "add-resource-id": "Calcul des identifiants de la ressource",
     "contact-updater": "Mise à jour de contact (utilisant une recherche par email)",
     "keywords-mapper": "Rechercher/Remplacer des mots clés",
     "urlPrefix": "Préfix de l'URL à rechercher",
