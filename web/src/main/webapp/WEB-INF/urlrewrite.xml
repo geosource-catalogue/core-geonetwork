@@ -176,6 +176,14 @@
       <to type="permanent-redirect">%{context-path}/?uuid=$2&amp;node=$1</to>
     </rule>
 
+    <!-- This is specific to GéoSource based on the resource identifier -->
+    <rule>
+        <note>
+            Retrieves XML format for a metadata (multinode mode).
+        </note>
+        <from>^/([a-zA-Z0-9_\-]+)/([A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[34][A-Za-z0-9]{3}-[89ab][A-Za-z0-9]{3}-[A-Za-z0-9]{12})$</from>
+        <to type="forward">/$1/fre/xml.metadata.get?uuid=$2</to>
+    </rule>
     <rule>
         <note>
             map the old xml.user.login to the new login url
