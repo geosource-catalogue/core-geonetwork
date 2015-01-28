@@ -19,8 +19,9 @@
             data-ng-model="signinPassword" placeholder="{{'password' | translate}}" required=""/>
         </div>
       </div>
-      
-      <input type="hidden" name="redirectUrl" data-ng-model="redirectUrl" value="{{redirectUrl}}"/>
+      <input type="hidden" name="node" value="{{nodeId}}"/>
+      <input type="hidden" name="redirectUrl" value="/{{nodeId}}/fre/find"/>
+      <!--<input type="hidden" name="redirectUrl" data-ng-model="redirectUrl" value="{{redirectUrl}}"/>-->
       <!--<div class="checkbox">
                 <label class="checkbox">
                     <input type="checkbox"/><span translate>rememberMe</span>
