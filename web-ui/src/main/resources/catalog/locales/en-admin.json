@@ -749,6 +749,7 @@
     "saveOrder": "Save order",
     
     "url-host-relocator": "URL replacer",
+    "add-resource-id": "Compute resource identifiers",
     "contact-updater": "Contact updater (searching using contact email)",
     "keywords-mapper": "Keyword mapper",
     "urlPrefix": "URL prefix to search",

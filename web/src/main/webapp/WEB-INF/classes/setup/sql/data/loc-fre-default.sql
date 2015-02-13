@@ -22,7 +22,7 @@ INSERT INTO CategoriesDes (iddes, langid, label) VALUES (13,'fre','Echantillons 
 
 INSERT INTO GroupsDes (iddes, langid, label) VALUES (-1,'fre','Invité');
 INSERT INTO GroupsDes (iddes, langid, label) VALUES (1,'fre','Public');
-INSERT INTO GroupsDes (iddes, langid, label) VALUES (2,'fre','Privé');
+INSERT INTO GroupsDes (iddes, langid, label) VALUES (2,'fre','Groupe par défaut');
 
 INSERT INTO IsoLanguagesDes  (iddes, langid, label) VALUES (1,'fre','Afar');
 INSERT INTO IsoLanguagesDes  (iddes, langid, label) VALUES (2,'fre','Abkhaze');
