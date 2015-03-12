@@ -122,6 +122,7 @@
                          element.offset().left -
                          element.outerWidth()) * .95;
                      element.popover({
+                       container:'body',	 
 //                       title: info.description,
                        content: html,
                        html: true,
@@ -147,6 +148,19 @@
                        element.focus();
                      }
 
+                     element.on('shown.bs.popover', function (event) {
+                       //Set timeout to wait for popup div to redraw(animation)
+                       setTimeout(function(){
+                         if($('div.popover').css('top').charAt(0) === '-'){
+                           // move popover under navbar.
+                           var oldTopPopover = $('div.popover').position().top;
+                           var newTopPopover = $(".navbar:not('.ng-hide')").outerHeight() + 5;
+                           var oldTopArrow = $('.popover>.arrow').position().top;
+                           $('div.popover').css('top', newTopPopover);
+                           $('.popover>.arrow').css('top', oldTopArrow - newTopPopover + oldTopPopover);
+                         }
+                       },10);
+                     });
                      isInitialized = true;
                    }
                  });
