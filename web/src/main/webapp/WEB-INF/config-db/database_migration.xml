@@ -96,5 +96,10 @@
             <value>WEB-INF/classes/setup/sql-geosource/migrate/v2111/migrate-</value>
           </list>
         </entry>
+        <entry key="2112">
+          <list>
+            <value>WEB-INF/classes/setup/sql-geosource/migrate/v2112/migrate-</value>
+          </list>
+        </entry>
     </util:map>
 </beans>
