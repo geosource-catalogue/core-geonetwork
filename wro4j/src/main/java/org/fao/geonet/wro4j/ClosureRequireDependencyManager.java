@@ -2,13 +2,19 @@ package org.fao.geonet.wro4j;
 
 import com.google.common.io.Files;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Nonnull;
 
 /**
  * Reads Javascript files to determine the dependency graph between javascript files and allow searching the dependency graph for all
@@ -135,8 +141,8 @@ public class ClosureRequireDependencyManager {
      * A node in the Dependency Graph.
      */
     static class Node {
-        static final String PROVIDES_PATTERN_STRING = "goog\\s*\\.\\s*provide\\s*\\(\\s*(.+?)\\s*\\)";
-        static final String REQUIRE_PATTERN_STRING = "goog\\s*\\.\\s*require\\s*\\(\\s*(.+?)\\s*\\)";
+        static final String PROVIDES_PATTERN_STRING = "goog\\s*\\.\\s*provide\\s*\\(\\s*(.*?)\\s*\\)";
+        static final String REQUIRE_PATTERN_STRING = "goog\\s*\\.\\s*require\\s*\\(\\s*(.*?)\\s*\\)";
 
         private static final Pattern SCAN_PATTERN = Pattern.compile("(" + PROVIDES_PATTERN_STRING + ")|(" + REQUIRE_PATTERN_STRING + ")");
         final String id;
@@ -172,7 +178,13 @@ public class ClosureRequireDependencyManager {
                 }
             }
             if (id == null) {
-                throw new IllegalArgumentException("No 'goog.provide' command was declared in javascript file: " + path);
+                final int index1 = path.lastIndexOf('/');
+                final int index2 = path.lastIndexOf('\\');
+                if (Math.max(index1, index2) < 0) {
+                    return Files.getNameWithoutExtension(path);
+                } else {
+                    return Files.getNameWithoutExtension(path.substring(Math.max(index1, index2) + 1));
+                }
             }
             return id;
         }

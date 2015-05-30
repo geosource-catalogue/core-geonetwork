@@ -25,7 +25,7 @@ package org.fao.geonet.kernel;
 
 import jeeves.server.context.ServiceContext;
 import jeeves.xlink.Processor;
-import org.fao.geonet.GeonetContext;
+import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.domain.ISODate;
 import org.fao.geonet.domain.Metadata;
@@ -40,7 +40,6 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -62,13 +61,6 @@ public abstract class XmlSerializer {
         }
 	}
 
-    @Autowired
-    protected SettingManager _settingManager;
-    @Autowired
-    protected DataManager _dataManager;
-    @Autowired
-    private MetadataRepository _metadataRepository;
-
 	private static InheritableThreadLocal<ThreadLocalConfiguration> configThreadLocal = new InheritableThreadLocal<XmlSerializer.ThreadLocalConfiguration>();
 	public static ThreadLocalConfiguration getThreadLocal(boolean setIfNotPresent) {
 	    ThreadLocalConfiguration config = configThreadLocal.get();
@@ -88,7 +80,9 @@ public abstract class XmlSerializer {
      * @return
      */
 	public boolean resolveXLinks() {
-		if (_settingManager == null) { // no initialization, no XLinks
+        SettingManager _settingManager = ApplicationContextHolder.get().getBean(SettingManager.class);
+
+        if (_settingManager == null) { // no initialization, no XLinks
 			Log.error(Geonet.DATA_MANAGER,"No settingManager in XmlSerializer, XLink Resolver disabled.");
 			return false; 
 		}
@@ -105,6 +99,20 @@ public abstract class XmlSerializer {
 		}
 	}
 
+    public boolean isLoggingEmptyWithHeld() {
+        SettingManager _settingManager = ApplicationContextHolder.get().getBean(SettingManager.class);
+
+        if (_settingManager == null) {
+            return false;
+        }
+
+        String enableLogging = _settingManager.getValue("system/hidewithheldelements/enableLogging");
+        if (enableLogging != null) {
+            return enableLogging.equals("true");
+        } else {
+            return false;
+        }
+    }
     /**
      * Retrieves the xml element which id matches the given one. The element is read from 'table' and the string read is converted into xml.
      *
@@ -115,15 +123,24 @@ public abstract class XmlSerializer {
      * @throws Exception
      */
 	protected Element internalSelect(String id, boolean isIndexingTask) throws Exception {
+        MetadataRepository _metadataRepository = ApplicationContextHolder.get().getBean(MetadataRepository.class);
+
         Metadata metadata = _metadataRepository.findOne(id);
 
 		if (metadata == null)
 			return null;
 
-		String xmlData = metadata.getData();
-		Element metadataXml = Xml.loadString(xmlData, false);
+        return removeHiddenElements(isIndexingTask, metadata);
+	}
 
-		if (!isIndexingTask) {
+    public Element removeHiddenElements(boolean isIndexingTask, Metadata metadata) throws Exception {
+        AccessManager accessManager = ApplicationContextHolder.get().getBean(AccessManager.class);
+        DataManager _dataManager = ApplicationContextHolder.get().getBean(DataManager.class);
+
+        String id = String.valueOf(metadata.getId());
+        Element metadataXml = metadata.getXmlData(false);
+
+        if (!isIndexingTask) {
             ServiceContext context = ServiceContext.get();
             MetadataSchema mds = _dataManager.getSchema(metadata.getDataInfo().getSchemaId());
 
@@ -133,26 +150,24 @@ public abstract class XmlSerializer {
             Pair<String, Element> editXpathFilter = mds.getOperationFilter(ReservedOperation.editing);
             boolean filterEditOperationElements = editXpathFilter != null;
             List<Namespace> namespaces = mds.getNamespaces();
-            if(context != null) {
-                GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
-                AccessManager am = gc.getBean(AccessManager.class);
+            if (context != null) {
                 if (editXpathFilter != null) {
-                    boolean canEdit = am.canEdit(context, id);
-                    if(canEdit) {
+                    boolean canEdit = accessManager.canEdit(context, id);
+                    if (canEdit) {
                         filterEditOperationElements = false;
                     }
                 }
                 Pair<String, Element> downloadXpathFilter = mds.getOperationFilter(ReservedOperation.download);
                 if (downloadXpathFilter != null) {
-                    boolean canDownload = am.canDownload(context, id);
-                    if(!canDownload) {
+                    boolean canDownload = accessManager.canDownload(context, id);
+                    if (!canDownload) {
                         removeFilteredElement(metadataXml, downloadXpathFilter, namespaces);
                     }
                 }
                 Pair<String, Element> dynamicXpathFilter = mds.getOperationFilter(ReservedOperation.dynamic);
                 if (dynamicXpathFilter != null) {
-                    boolean canDynamic = am.canDynamic(context, id);
-                    if(!canDynamic) {
+                    boolean canDynamic = accessManager.canDynamic(context, id);
+                    if (!canDynamic) {
                       removeFilteredElement(metadataXml, dynamicXpathFilter, namespaces);
                     }
                 }
@@ -161,25 +176,9 @@ public abstract class XmlSerializer {
                 removeFilteredElement(metadataXml, editXpathFilter, namespaces);
             }
 		}
-		return (Element) metadataXml.detach();
+        return metadataXml;
 	}
 
-    private void xpath(StringBuilder buffer, Element next) {
-		if(next.getParentElement() != null) {
-			xpath(buffer, next.getParentElement());
-			buffer.append("/");
-		}
-		
-		String name = next.getName();
-		Namespace namespace = next.getNamespace();
-		buffer.append(namespace.getPrefix()).append(":").append(name);
-		if(next.getParentElement() != null) {
-			List<?> children = next.getParentElement().getChildren(name, namespace);
-			if(children.size() > 1) {
-				buffer.append('[').append(children.indexOf(next)+1).append(']');
-			}
-		}
-	}
 
     public static void removeFilteredElement(Element metadata,
                                              final Pair<String, Element> xPathAndMarkedElement,
@@ -238,8 +237,7 @@ public abstract class XmlSerializer {
 		if (resolveXLinks()) Processor.removeXLink(dataXml);
 
         newMetadata.setData(Xml.getString(dataXml));
-        Metadata savedMetadata = _metadataRepository.save(newMetadata);
-		return savedMetadata;
+        return context.getBean(MetadataRepository.class).save(newMetadata);
 	}
 
     /**
@@ -255,8 +253,9 @@ public abstract class XmlSerializer {
 	protected void updateDb(final String id, final Element xml, final String changeDate, final String root,
                             final boolean updateDateStamp,
                             final String uuid) throws SQLException {
+        if (resolveXLinks()) Processor.removeXLink(xml);
 
-		if (resolveXLinks()) Processor.removeXLink(xml);
+        MetadataRepository _metadataRepository = ApplicationContextHolder.get().getBean(MetadataRepository.class);
 
         int metadataId = Integer.valueOf(id);
         Metadata md = _metadataRepository.findOne(metadataId);
@@ -286,6 +285,8 @@ public abstract class XmlSerializer {
      * @throws SQLException
      */
 	protected void deleteDb(String id) throws Exception {
+        MetadataRepository _metadataRepository = ApplicationContextHolder.get().getBean(MetadataRepository.class);
+
 		// TODO: Ultimately we want to remove any xlinks in this document
 		// that aren't already in use from the xlink cache. For now we
 		// rely on the admin clearing cache and reindexing regularly

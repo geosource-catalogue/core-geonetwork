@@ -1,5 +1,6 @@
 package org.fao.geonet.services.region;
 
+import com.google.common.base.Optional;
 import jeeves.server.context.ServiceContext;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.kernel.KeywordBean;
@@ -128,7 +129,7 @@ public class ThesaurusRequest extends Request {
             Map<String, String> categoryLabels = categoryTranslations.get(categoryLabelKey);
             if(categoryLabels == null) {
                 try {
-                    categoryLabels = LangUtils.translate(serviceContext, "categories", categoryLabelKey);
+                    categoryLabels = LangUtils.translate(serviceContext.getApplicationContext(), "categories", categoryLabelKey);
                     categoryTranslations.put(categoryLabelKey, categoryLabels);
                 } catch (JDOMException e) {
                     Log.debug(Geonet.THESAURUS_MAN,
@@ -164,4 +165,8 @@ public class ThesaurusRequest extends Request {
         return this;
     }
 
+    @Override
+    public Optional<Long> getLastModified() {
+        return Optional.of(thesaurus.getLastModifiedTime().toMillis());
+    }
 }

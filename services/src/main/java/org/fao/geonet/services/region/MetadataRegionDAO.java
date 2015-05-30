@@ -3,22 +3,42 @@ package org.fao.geonet.services.region;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import jeeves.server.context.ServiceContext;
-
+import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.region.RegionsDAO;
 import org.fao.geonet.kernel.region.Request;
+import org.fao.geonet.kernel.search.SearchManager;
+import org.fao.geonet.repository.MetadataRepository;
+import org.fao.geonet.services.region.metadata.MetadataRegionSearchRequest;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.Parser;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * A Regions DAO that fetches geometries from a metadata.  The geometry ids are structured as follows:
+ *
+ * <ul>
+ *     <li>metadata:@id1234 - get all the geometries in the metadata with the id 1234</li>
+ *     <li>metadata:@uuid1234 - get all the geometries in the metadata with the uuid 1234</li>
+ *     <li>metadata:@uuid1234:1111 - get all the geometry with the geonet:element/@ref = 1111 in the metadata with the uuid 1234</li>
+ *     <li>metadata:@uuid1234:@gml1111 - get all the geometry with the @gml:id = 1111 in the metadata with the uuid 1234</li>
+ * </ul>
+ */
 public class MetadataRegionDAO extends RegionsDAO {
 
     public static final String CATEGORY_NAME = "metadata";
     private final Parser parser = new Parser(new GMLConfiguration());
     private final GeometryFactory factory = new GeometryFactory();
-    
+    @Autowired
+    private DataManager dataManager;
+    @Autowired
+    private SearchManager searchManager;
+    @Autowired
+    private MetadataRepository metadataRepository;
+
     @Override
     public Collection<String> getRegionCategoryIds(ServiceContext context) throws Exception {
         return Collections.singleton(CATEGORY_NAME);
@@ -44,4 +64,5 @@ public class MetadataRegionDAO extends RegionsDAO {
     public boolean includeInListing() {
         return false;
     }
+
 }

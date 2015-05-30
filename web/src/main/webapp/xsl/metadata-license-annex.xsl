@@ -13,7 +13,8 @@
 
 	<xsl:output method='html' omit-xml-declaration="yes" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/loose.dtd" indent="yes"/>
 
-	<xsl:include href="edit.xsl"/>
+  <!-- TODO: Move to schema plugin -->
+	<!--<xsl:include href="edit.xsl"/>-->
 
 	<xsl:variable name="baseurl" select="//geonet:info/baseurl"/>
 	<xsl:variable name="locserv" select="//geonet:info/locserv"/>
@@ -29,11 +30,6 @@
 			</head>
 			<body>
 				<table width="100%">
-						<!-- banner -->
-						<tr><td>
-							<xsl:call-template name="mybanner"/>
-						</td></tr>
-
 						<!-- content -->
 						<tr><td>
 								<xsl:call-template name="content"/>
@@ -44,26 +40,14 @@
 	</xsl:template>
 
 	<xsl:template name="myheader">
-	  <link href="{$baseurl}/images/logos/favicon.gif" rel="shortcut icon" type="image/x-icon" />
-	  <link href="{$baseurl}/images/logos/favicon.gif" rel="icon" type="image/x-icon" />
+	  <link href="{$baseurl}/images/logos/favicon.png" rel="shortcut icon" type="image/x-icon" />
+	  <link href="{$baseurl}/images/logos/favicon.png" rel="icon" type="image/x-icon" />
 	  
 		<!-- stylesheet -->
 		<link rel="stylesheet" type="text/css" href="{$baseurl}/geonetwork.css"/>
 		<link rel="stylesheet" type="text/css" href="{$baseurl}/modalbox.css"/>
 	</xsl:template>
 
-	<xsl:template name="mybanner">
-		<table width="100%">
-			<tr class="banner">
-				<td class="banner">
-					<img src="{$baseurl}/images/header-left.jpg" alt="World picture" align="top" />
-				</td>
-				<td align="right" class="banner">
-					<img src="{$baseurl}/images/header-right.gif" alt="GeoNetwork opensource logo" align="top" />
-				</td>
-			</tr>
-		</table>
-	</xsl:template>
 
 	<!-- page content -->
   <xsl:template name="content">

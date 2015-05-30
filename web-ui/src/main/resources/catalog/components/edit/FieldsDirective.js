@@ -94,7 +94,7 @@
                        var exampleText = '';
                        angular.forEach(info.help, function(helpText) {
                          if (helpText['@for'] == 'france' ||
-                           helpText['@for'] == 'inspire') {
+                         helpText['@for'] == 'inspire') {
                            inspireText += helpText['#text'];
                          } else if (helpText['@for'] == 'example') {
                            exampleText += helpText['#text'];
@@ -121,8 +121,14 @@
                      var width = ($(window).width() -
                          element.offset().left -
                          element.outerWidth()) * .95;
+
+                     var closeBtn = '<button onclick="$(this).' +
+                     'closest(\'div.popover\').remove();" type="button" ' +
+                     'class="fa fa-times btn btn-link pull-right"></button>';
+
                      element.popover({
-//                       title: info.description,
+                       title: info.description,
+                       container: 'body',
                        content: html,
                        html: true,
                        placement: placement,
@@ -131,7 +137,7 @@
                        'width:' + width + 'px"' +
                        '>' +
                        '<div class="arrow">' +
-                       '</div><div class="popover-inner">' +
+                       '</div><div class="popover-inner">' + closeBtn +
                        '<h3 class="popover-title"></h3>' +
                        '<div class="popover-content"><p></p></div></div></div>',
                        //                       trigger: 'click',
@@ -146,6 +152,19 @@
                      } else {
                        element.focus();
                      }
+
+                     element.on('shown.bs.popover', function(event) {
+                       if ($('div.popover').css('top').charAt(0) === '-') {
+                         // move popover under navbar.
+                         var oldTopPopover = $('div.popover').position().top;
+                         var newTopPopover =
+                         $(".navbar:not('.ng-hide')").outerHeight() + 5;
+                         var oldTopArrow = $('.popover>.arrow').position().top;
+                         $('div.popover').css('top', newTopPopover);
+                         $('.popover>.arrow').css('top',
+                         oldTopArrow - newTopPopover + oldTopPopover);
+                       }
+                     });
 
                      isInitialized = true;
                    }
@@ -193,4 +212,56 @@
         }
       };
     }]);
+
+  /**
+   * Add a danger class to the element about
+   * to be removed by this action
+   */
+  module.directive('gnFieldHighlightRemove', [
+    function() {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+          var ref = attrs['gnFieldHighlightRemove'],
+              target = $('#gn-el-' + ref);
+
+          element.on('mouseover', function(e) {
+            target.addClass('text-danger');
+          });
+          element.on('mouseout', function() {
+            target.removeClass('text-danger');
+          });
+        }
+      };
+    }]);
+
+  /**
+   * Highlight an element by adding field-bg class
+   * and looking for all remove button to make them
+   * visible.
+   */
+  module.directive('gnFieldHighlight', [
+    function() {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+
+          element.on('mouseover', function(e) {
+            e.stopPropagation();
+            // TODO: This may need improvements
+            // on touchscreen delete action will not be visible
+
+            element.addClass('field-bg');
+            element.find('a').has('.fa-times.text-danger')
+              .css('visibility', 'visible');
+          });
+          element.on('mouseout', function() {
+            element.removeClass('field-bg');
+            element.find('a').has('.fa-times.text-danger')
+              .css('visibility', 'hidden');
+          });
+        }
+      };
+    }]);
+
 })();

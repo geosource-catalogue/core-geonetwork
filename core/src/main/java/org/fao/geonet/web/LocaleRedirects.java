@@ -1,9 +1,8 @@
 package org.fao.geonet.web;
 
-import jeeves.config.springutil.JeevesDelegatingFilterProxy;
 import jeeves.constants.Jeeves;
 import jeeves.server.overrides.ConfigurationOverrides;
-
+import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.NodeInfo;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.utils.Xml;
@@ -16,20 +15,22 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
-import static org.fao.geonet.constants.Geonet.DEFAULT_LANGUAGE;
+import static jeeves.config.springutil.JeevesDelegatingFilterProxy.getApplicationContextFromServletContext;
 
 /**
  * Handles requests where there is no locale and a redirect to a correct (and localized) service is needed.  For example
@@ -38,7 +39,7 @@ import static org.fao.geonet.constants.Geonet.DEFAULT_LANGUAGE;
  * Created by Jesse on 12/4/13.
  */
 @Controller
-@Lazy(value = false)
+@Lazy(value = true)
 public class LocaleRedirects {
 
 
@@ -55,9 +56,6 @@ public class LocaleRedirects {
         headers.add(REFERER_PARAMETER);
         SPECIAL_HEADERS = Collections.unmodifiableSet(headers);
     }
-
-    @Autowired
-    private ApplicationContext _appContext;
 
     private String _homeRedirectUrl;
 
@@ -87,7 +85,7 @@ public class LocaleRedirects {
     public ModelAndView accessDenied(final HttpServletRequest request,
                                      @RequestParam(value = LANG_PARAMETER, required = false) String langParam,
                                      @RequestParam(value = NODE_PARAMETER, required = false) String node,
-                                         @CookieValue(value = Jeeves.LANG_COOKIE, required = false) String langCookie,
+                                     @CookieValue(value = Jeeves.LANG_COOKIE, required = false) String langCookie,
                                      @RequestParam(value = REFERER_PARAMETER, required = false) String referer,
                                      @RequestHeader(value = ACCEPT_LANGUAGE_HEADER, required = false) final String langHeader) {
         String lang = lang(langParam, langCookie, langHeader);
@@ -106,9 +104,10 @@ public class LocaleRedirects {
     }
 
     private String createServiceUrl(HttpServletRequest request, String service, String lang, String node) {
-        ConfigurableApplicationContext context = JeevesDelegatingFilterProxy.getApplicationContextFromServletContext(_appContext.getBean(ServletContext.class));
+        ApplicationContext appContext = ApplicationContextHolder.get();
+        ConfigurableApplicationContext context = getApplicationContextFromServletContext(appContext.getBean(ServletContext.class));
         String currentNode = context.getBean(NodeInfo.class).getId();
-        
+
         node = node == null ? currentNode : node;
 
         final Enumeration parameterNames = request.getParameterNames();
@@ -131,7 +130,11 @@ public class LocaleRedirects {
         if (headers.length() == 0) {
             queryString = "";
         } else {
-            queryString = "?" + headers;
+            if (service.contains("?")) {
+                queryString = "&" + headers;
+            } else {
+                queryString = "?" + headers;
+            }
         }
         return request.getContextPath() + "/" + node + "/" + lang + "/" + service + queryString;
     }
@@ -186,6 +189,10 @@ public class LocaleRedirects {
 
         return userLang;
     }
+
+
+    @Autowired
+    private ApplicationContext _appContext;
 
     @PostConstruct
     public void init() throws BeansException {

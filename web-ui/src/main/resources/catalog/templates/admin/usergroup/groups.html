@@ -21,8 +21,11 @@
               data-cache="groups"/>
         </div>
 
-        <button type="button" class="btn btn-primary btn-block" data-ng-click="addGroup()"
-          id="gn-btn-group-add">
+        <button type="button"
+                class="btn btn-primary btn-block"
+                data-ng-click="addGroup()"
+                data-ng-show="user.isAdministratorOrMore()"
+                id="gn-btn-group-add">
           <i class="fa fa-plus"/>
           <span data-translate="">newGroup</span>
         </button>
@@ -35,27 +38,30 @@
   <div class="col-lg-8" data-ng-hide="groupSelected.id == null">
     <div class="panel panel-default" data-ng-search-form="">
       <div class="panel-heading"
-        title="{{groupHasRecords() ? ('cantDeleteGroupHavingRecords' | translate) : ''}}">
+        title="{{searchResults.count > 0 ? ('cantDeleteGroupHavingRecords' | translate) : ''}}">
         <span data-ng-hide="groupSelected.id == ''" data-translate="">updateGroup</span>
         <span data-ng-hide="groupSelected.id != ''" data-translate="">newGroup</span>
         <strong>{{groupSelected.name}}</strong>
-        <div class="btn-toolbar">
-          <button type="button" class="btn btn-primary pull-right fa fa-save"
+        <div class="btn-toolbar"
+                data-ng-show="user.isAdministratorOrMore()">
+          <button type="button" class="btn btn-primary pull-right"
             data-ng-disabled="!gnGroupEdit.$valid && !gnGroupEdit.dirty"
-            data-ng-click="saveGroup('#gn-group-edit')" id="gn-btn-group-save">
-            <span data-translate="">saveGroup</span>
+            data-ng-click="saveGroup('#gn-group-edit', '#group-logo-upload')" id="gn-btn-group-save">
+            <i class="fa fa-save"></i> <span data-translate="">saveGroup</span>
           </button>
-          <button type="button" class="btn pull-right btn-danger fa fa-trash-o"
-            data-ng-disabled="searchResults.count > 0" data-ng-hide="groupSelected.id == ''"
+          <button type="button" class="btn pull-right btn-danger"
+            data-ng-disabled="searchResults.count > 0"
+            data-ng-hide="groupSelected.id == ''"
             data-ng-click="deleteGroup(groupSelected.id)" id="gn-btn-group-delete">
-            <span data-translate="">deleteGroup</span>
+            <i class="fa fa-trash-o"></i> <span data-translate="">deleteGroup</span>
           </button>
         </div>
       </div>
 
 
       <div class="panel-body">
-        <form id="gn-group-edit" name="gnGroupEdit" data-ng-keypress="updatingGroup()">
+        <form id="gn-group-edit" name="gnGroupEdit" data-ng-keypress="updatingGroup()" method="POST"
+             action="admin.group.update?_content_type=json" data-file-upload="mdImportUploadOptions"  role="form">
           <fieldset>
             <input type="hidden" name="id" data-ng-model="groupSelected.id"
               value="{{groupSelected.id}}"/>
@@ -77,6 +83,51 @@
                 data-ng-model="groupSelected.email"/>
               <p class="help-block" data-translate="">groupEmailHelp</p>
             </div>
+            <div>
+              <label class="control-label" data-translate="">groupWebsite</label>
+              <input type="website" name="website" class="form-control"
+                data-ng-model="groupSelected.website"/>
+              <p class="help-block" data-translate="">groupWebsiteHelp</p>
+            </div>
+
+              <!-- Upload panel -->
+              <div class="form-group">
+                  <label for="group-logo-upload" class="control-label" data-translate="">groupLogo</label>
+
+                  <div id="group-logo-upload">
+
+                      <div class="panel panel-default">
+                          <div class="panel-body">
+                              <div class="col-md-4">
+                                  <img data-ng-show="groupSelected.logo" src="{{groupSelected.logo}}"
+                                       style="max-width:128px; max-height:128px"></img>
+                                <a href="" data-ng-click="deleteGroupLogo()"
+                                   class="text-danger">
+                                  <i data-ng-show="groupSelected.logo"
+                                     class="fa fa-times delete"></i>
+                                </a>
+                              </div>
+                              <div class="col-md-8">
+                                  <span class="btn btn-success btn-block fileinput-button">
+                                      <i class="fa fa-plus fa-white"></i>
+                                      <span data-translate="">chooseOrDropResource</span>
+                                      <input type="file" id="group-logo" name="logofile" multiple="false"></input>
+                                  </span>
+                              </div>
+                              <ul style="list-style: none">
+                                  <li data-ng-repeat="file in queue">
+                                      <div class="preview" data-file-upload-preview="file"></div>
+                                      {{file.name}} ({{file.type}} / {{file.size | formatFileSize}})
+                                      <i class="fa fa-trash-o" data-ng-click="clear(file)"></i>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+
+
           </fieldset>
         </form>
 

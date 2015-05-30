@@ -28,6 +28,7 @@ import jeeves.interfaces.Service;
 import jeeves.server.ServiceConfig;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
+import org.fao.geonet.kernel.search.keyword.XmlParams;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.Util;
 import org.fao.geonet.GeonetContext;
@@ -38,12 +39,14 @@ import org.fao.geonet.kernel.search.keyword.KeywordSort;
 import org.fao.geonet.kernel.search.keyword.SortDirection;
 import org.jdom.Element;
 
+import java.nio.file.Path;
+
 /**
  * Returns a list of keywords given a list of thesaurus
  */
 
 public class GetKeywords implements Service {
-	public void init(String appPath, ServiceConfig params) throws Exception {
+	public void init(Path appPath, ServiceConfig params) throws Exception {
 	}
 
 	// --------------------------------------------------------------------------
@@ -69,7 +72,13 @@ public class GetKeywords implements Service {
             if(Log.isDebugEnabled("KeywordsManager")) Log.debug("KeywordsManager","Creating new keywords searcher");
 			searcher = new KeywordsSearcher(context, thesaurusMan);
 			searcher.search(context.getLanguage(), params);
-			searcher.sortResults(KeywordSort.defaultLabelSorter(SortDirection.DESC));
+
+			String searchTerm = params.getChildText(XmlParams.pKeyword);
+			if (searchTerm == null || searchTerm.trim().isEmpty()) {
+				searcher.sortResults(KeywordSort.defaultLabelSorter(SortDirection.DESC));
+			} else {
+				searcher.sortResults(KeywordSort.searchResultsSorter(searchTerm, SortDirection.DESC));
+			}
 			session
 					.setProperty(Geonet.Session.SEARCH_KEYWORDS_RESULT,
 							searcher);

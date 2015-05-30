@@ -1,16 +1,9 @@
 --Inserts new data and modifies data
 
 ALTER TABLE operations DROP COLUMN reserved;
-ALTER TABLE services DROP COLUMN id;
-
-INSERT INTO HarvesterSettings VALUES  (1,NULL,'harvesting',NULL);
--- Copy all harvester's root nodes config
-INSERT INTO HarvesterSettings SELECT id, 1, name, value FROM Settings WHERE parentId = 2;
--- Copy all harvester's properties (Greater than last 2.10.1 settings ie. keepMarkedElement)
-INSERT INTO HarvesterSettings SELECT * FROM Settings WHERE id > 958 AND parentId > 2;
--- Drop harvester config from Settings table
-DELETE FROM Settings WHERE id > 958;
-DELETE FROM Settings WHERE id=2;
+ALTER TABLE ServiceParameters DROP CONSTRAINT IF EXISTS serviceparameters_service_fkey;
+ALTER TABLE ServiceParameters DROP COLUMN IF EXISTS id;
+ALTER TABLE services DROP COLUMN IF EXISTS id;
 
 
 ALTER TABLE Settings ALTER name TYPE varchar(512);
@@ -178,6 +171,7 @@ INSERT INTO Settings (name, value, datatype, position, internal) VALUES
 
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('metadata/resourceIdentifierPrefix', 'http://localhost:8080/geonetwork/', 0, 10001, 'n');
 
+INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/xlinkResolver/localXlinkEnable', 'true', 2, 2311, 'n');
 
 ALTER TABLE StatusValues ADD displayorder int;
 
@@ -199,8 +193,7 @@ INSERT INTO UserAddress (SELECT id, id FROM Users);
 INSERT INTO Email (SELECT id, email FROM Users);
 
 
-CREATE SEQUENCE IF NOT EXISTS HIBERNATE_SEQUENCE START WITH 4000 INCREMENT BY 1;
-ALTER TABLE ServiceParameters DROP COLUMN id;
+CREATE SEQUENCE HIBERNATE_SEQUENCE START WITH 1 INCREMENT BY 1;
 
 
 
@@ -220,3 +213,5 @@ ALTER TABLE Requests DROP COLUMN simple;
 ALTER TABLE Requests ADD COLUMN simple boolean;
 UPDATE Requests SET simpletemp = simple;
 ALTER TABLE Requests DROP COLUMN simpletemp;
+
+UPDATE HarvestHistory SET elapsedTime = 0 WHERE elapsedTime IS NULL;

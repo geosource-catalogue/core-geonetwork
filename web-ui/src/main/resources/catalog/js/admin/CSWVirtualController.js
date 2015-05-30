@@ -25,6 +25,16 @@
       $scope.groupsFilter = {};
       $scope.sourcesFilter = {};
       $scope.categoriesFilter = {};
+      $scope.newFilter = {
+        name: null,
+        value: null,
+        occur: '+'
+      };
+      $scope.occurs = ['+', ' ', '-'];
+      $scope.showExplicitQuery = false;
+      $scope.filterHelper = ['any', 'title', 'abstract', 'keyword',
+        'denominator', '_source', '_cat', '_groupPublished'];
+
       var operation = '';
 
       /**
@@ -32,11 +42,12 @@
        */
       function loadCSWVirtual() {
         $scope.virtualCSWSelected = {};
-        $http.get('admin.config.virtualcsw.list@json').success(function(data) {
-          $scope.cswVirtual = data != 'null' ? data : [];
-        }).error(function(data) {
-          // TODO
-        });
+        $http.get('admin.config.virtualcsw.list?_content_type=json').
+            success(function(data) {
+              $scope.cswVirtual = data != 'null' ? data.record : [];
+            }).error(function(data) {
+              // TODO
+            });
 
         // TODO : load categories and sources
         // to display combo in edit form
@@ -44,34 +55,40 @@
 
 
       function loadFilterList() {
-        $http.get('admin.group.list@json').success(function(data) {
-          $scope.groupsFilter = data;
-        }).error(function(data) {
-        });
+        $http.get('admin.group.list?_content_type=json').
+            success(function(data) {
+              $scope.groupsFilter = data;
+            }).error(function(data) {
+            });
       }
       function loadCategories() {
-        $http.get('info@json?type=categories').success(function(data) {
-          $scope.categories = data.metadatacategory;
-        }).error(function(data) {
-          // TODO
-        });
+        $http.get('info?_content_type=json&type=categories').
+            success(function(data) {
+              $scope.categories = data.metadatacategory;
+            }).error(function(data) {
+              // TODO
+            });
       }
-      $scope.updatingVirtualCSW = function() {
-        $scope.virtualCSWUpdated = true;
-      };
 
       $scope.selectVirtualCSW = function(v) {
         operation = 'updateservice';
-        $http.get('admin.config.virtualcsw.get@json?id=' + v.id)
+        $http.get('admin.config.virtualcsw.get?' +
+            '_content_type=json&id=' + v.id)
           .success(function(data) {
-              var params = [];
-              angular.copy(data.serviceParameters, params);
+              var params = [], formParams = ['abstract', 'title',
+                '_source', '_cat', 'any', '_groupPublished', 'keyword',
+                'denominator', 'type'];
+              angular.copy(data.parameter, params);
               $scope.virtualCSWSelected = data;
               $scope.virtualCSWSelected.serviceParameters = {};
+              $scope.showExplicitQuery =
+                  $scope.virtualCSWSelected.explicitQuery ? true : false;
               angular.forEach(params,
                   function(param) {
                     $scope.virtualCSWSelected.
-                        serviceParameters[param['@name']] = param['#text'];
+                        serviceParameters[param.name] = {
+                          value: param.value,
+                          occur: param.occur};
                   });
               $scope.virtualCSWUpdated = false;
 
@@ -83,32 +100,46 @@
             });
       };
 
+      $scope.addFilter = function() {
+        $scope.virtualCSWSelected.serviceParameters[$scope.newFilter.name] =
+            angular.copy($scope.newFilter);
+        $scope.newFilter.value = $scope.newFilter.name = null;
+        $scope.newFilter.occur = '+';
+      };
+      $scope.removeFilter = function(f) {
+        delete $scope.virtualCSWSelected.serviceParameters[f];
+      };
+      $scope.setFilter = function(f) {
+        $scope.newFilter.name = f;
+      };
+      $scope.setFilterValue = function(field, value) {
+        $scope.virtualCSWSelected.serviceParameters[field] = {
+          value: value,
+          occur: '='
+        };
+      };
+
+      $scope.$watchCollection('virtualCSWSelected', function() {
+        $scope.virtualCSWUpdated = true;
+      });
+
       $scope.addVirtualCSW = function() {
         operation = 'newservice';
         $scope.virtualCSWSelected = {
           'id': '',
           'name': 'csw-servicename',
           'description': '',
-          'serviceParameters': {
-            'any': '',
-            'abstract': '',
-            'title': '',
-            '_source': '',
-            '_groupPublished': '',
-            'keyword': '',
-            '_cat': '',
-            'denominator': '',
-            'type': ''
-          }
+          'explicitQuery': '',
+          'serviceParameters': {}
         };
-
         $timeout(function() {
           $('#servicename').focus();
         }, 100);
       };
       $scope.saveVirtualCSW = function(formId) {
 
-        $http.get('admin.config.virtualcsw.update@json?operation=' + operation +
+        $http.get('admin.config.virtualcsw.update?' +
+            '_content_type=json&operation=' + operation +
             '&' + $(formId).serialize())
           .success(function(data) {
               loadCSWVirtual();

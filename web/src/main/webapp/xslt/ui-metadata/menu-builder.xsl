@@ -17,12 +17,11 @@
     <xsl:variable name="currentView" select="$config/editor/views/view[tab/@id = $tab]"/>
 
     <div class="gn-scroll-spy"
-      data-gn-scroll-spy="gn-editor-{$metadataId}" 
-      data-all-depth="{if ($isFlatMode) then 'true' else 'false'}"
+      data-gn-scroll-spy="gn-editor-{$metadataId}"
       data-watch=""
-      data-collapse="true"/>
-    
-    <ul class="nav nav-pills">
+      data-all-depth="{if ($isFlatMode) then 'true' else 'false'}"/>
+
+    <ul class="nav nav-tabs">
       <!-- Make a drop down choice to swith to one view to another -->
       <li class="dropdown" id="gn-view-menu-{$metadataId}">
         <a class="dropdown-toggle" data-toggle="dropdown" href="" 
@@ -30,7 +29,7 @@
           <i class="fa fa-eye"></i>
           <b class="caret"/>
         </a>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu dropdown-menu-right">
           <!-- links -->
           <xsl:choose>
             <xsl:when test="$isTemplate = 's'">

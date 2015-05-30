@@ -28,6 +28,7 @@ import jeeves.interfaces.Service;
 import jeeves.server.ServiceConfig;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
+import org.fao.geonet.kernel.search.SearcherType;
 import org.fao.geonet.utils.BinaryFile;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.Util;
@@ -43,6 +44,7 @@ import org.fao.geonet.kernel.search.MetaSearcher;
 import org.fao.geonet.kernel.search.SearchManager;
 import org.jdom.Element;
 
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -50,17 +52,17 @@ import java.util.*;
  * format. See http ://trac.osgeo.org/geonetwork/wiki/MEF for more details.
  */
 public class Export implements Service {
-	private String stylePath;
+	private Path stylePath;
 	private ServiceConfig _config;
 
-	public void init(String appPath, ServiceConfig params) throws Exception {
-		this.stylePath = appPath + Geonet.Path.SCHEMAS;
+	public void init(Path appPath, ServiceConfig params) throws Exception {
+		this.stylePath = appPath.resolve(Geonet.Path.SCHEMAS);
 		this._config = params;
 	}
 
 	/**
 	 * Service to do a MEF export.
-	 * 
+	 *
 	 * @param params
 	 *            Service input parameters:
 	 *            <ul>
@@ -81,7 +83,7 @@ public class Export implements Service {
 			throws Exception {
 
 		// Get parameters
-		String file = null;
+		Path file = null;
 		String uuid = Util.getParam(params, "uuid", null);
 		String format = Util.getParam(params, "format", "full");
 		String version = Util.getParam(params, "version", null);
@@ -169,19 +171,16 @@ public class Export implements Service {
 					}
 				}
 
-				if (selectionManger.addAllSelection(
-						SelectionManager.SELECTION_METADATA, tmpUuid))
-					Log.info(Geonet.MEF,
-							"Child and services added into the selection");
+				if (selectionManger.addAllSelection(SelectionManager.SELECTION_METADATA, tmpUuid)) {
+                    Log.info(Geonet.MEF, "Child and services added into the selection");
+                }
 			}
 
-			uuids = selectionManger
-					.getSelection(SelectionManager.SELECTION_METADATA);
+			uuids = selectionManger.getSelection(SelectionManager.SELECTION_METADATA);
 			Log.info(Geonet.MEF, "Building MEF2 file with " + uuids.size()
-					+ " records.");
+                                 + " records.");
 
-			file = MEFLib
-					.doMEF2Export(context, uuids, format, false, stylePath, resolveXlink, removeXlinkAttribute);
+			file = MEFLib.doMEF2Export(context, uuids, format, false, stylePath, resolveXlink, removeXlinkAttribute);
 		}
 
 		// -- Reset selection manager
@@ -191,8 +190,7 @@ public class Export implements Service {
 
 		String fname = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
-		return BinaryFile.encode(200, file, "export-" + format + "-" + fname
-				+ ".zip", true);
+		return BinaryFile.encode(200, file, "export-" + format + "-" + fname + ".zip", true).getElement();
 	}
 
 	/**
@@ -216,36 +214,35 @@ public class Export implements Service {
 		GeonetContext gc = (GeonetContext) context
 				.getHandlerContext(Geonet.CONTEXT_NAME);
 		SearchManager searchMan = gc.getBean(SearchManager.class);
-		MetaSearcher searcher = searchMan.newSearcher(SearchManager.LUCENE,
-				Geonet.File.SEARCH_LUCENE);
+		try (MetaSearcher searcher = searchMan.newSearcher(SearcherType.LUCENE, Geonet.File.SEARCH_LUCENE)) {
 
-		Set<String> uuids = new HashSet<String>();
+            Set<String> uuids = new HashSet<>();
 
-		// perform the search
-		searcher.search(context, request, _config);
+            // perform the search
+            searcher.search(context, request, _config);
 
-		// If element type found, then get their uuid
-		if (searcher.getSize() != 0) {
-            if(Log.isDebugEnabled(Geonet.MEF))
-                Log.debug(Geonet.MEF, "  Exporting record(s) found for metadata: " + uuid);
-			Element elt = searcher.present(context, request, _config);
+            // If element type found, then get their uuid
+            if (searcher.getSize() != 0) {
+                if (Log.isDebugEnabled(Geonet.MEF))
+                    Log.debug(Geonet.MEF, "  Exporting record(s) found for metadata: " + uuid);
+                Element elt = searcher.present(context, request, _config);
 
-			// Get ISO records only
-			@SuppressWarnings("unchecked")
-            List<Element> isoElt = elt.getChildren();
-			for (Element md : isoElt) {
-				// -- Only metadata record should be processed
-				if (!md.getName().equals("summary")) {
-					String mdUuid = md.getChild(Edit.RootChild.INFO,
-							Edit.NAMESPACE).getChildText(Edit.Info.Elem.UUID);
-                    if(Log.isDebugEnabled(Geonet.MEF)) Log.debug(Geonet.MEF, "    Adding: " + mdUuid);
-					uuids.add(mdUuid);
-				}
-			}
-		}
-		searcher.close();
-		Log.info(Geonet.MEF, "  Found " + uuids.size() + " record(s).");
+                // Get ISO records only
+                @SuppressWarnings("unchecked")
+                List<Element> isoElt = elt.getChildren();
+                for (Element md : isoElt) {
+                    // -- Only metadata record should be processed
+                    if (!md.getName().equals("summary")) {
+                        String mdUuid = md.getChild(Edit.RootChild.INFO,
+                                Edit.NAMESPACE).getChildText(Edit.Info.Elem.UUID);
+                        if (Log.isDebugEnabled(Geonet.MEF)) Log.debug(Geonet.MEF, "    Adding: " + mdUuid);
+                        uuids.add(mdUuid);
+                    }
+                }
+            }
+            Log.info(Geonet.MEF, "  Found " + uuids.size() + " record(s).");
 
-		return uuids;
+            return uuids;
+        }
 	}
 }

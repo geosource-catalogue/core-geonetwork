@@ -36,6 +36,7 @@
              elementRef: '@',
              domId: '@',
              selectorOnly: '@',
+             transformation: '@',
              // Comma separated values of thesaurus keys
              include: '@'
            },
@@ -50,6 +51,10 @@
                  scope.include ? (
                      scope.include.indexOf(',') !== -1 ?
                       scope.include.split(',') : [scope.include]) : [];
+
+             scope.allowFreeTextKeywords =
+             (attrs.allowFreeTextKeywords === undefined) ||
+             (attrs.allowFreeTextKeywords == 'true');
 
              // TODO: Remove from list existing thesaurus
              // in the record ?
@@ -70,7 +75,7 @@
              });
 
              scope.add = function() {
-               gnEditor.add(gnCurrentEdit.id,
+               return gnEditor.add(gnCurrentEdit.id,
                scope.elementRef, scope.elementName, scope.domId, 'before');
              };
 
@@ -79,12 +84,13 @@
                  scope.$parent.thesaurusKey = scope.thesaurusKey =
                          thesaurusIdentifier;
                } else {
-                 gnThesaurusService
-                         .getXML(thesaurusIdentifier).then(
+                 gnCurrentEdit.working = true;
+                 return gnThesaurusService
+                         .getXML(thesaurusIdentifier,  null,
+                                 attrs.transformation).then(
                          function(data) {
                    // Add the fragment to the form
-                   scope.snippet = gnEditorXMLService.
-                                 buildXML(scope.elementName, data);
+                   scope.snippet = data;
                    scope.snippetRef = gnEditor.
                                  buildXMLFieldName(
                                    scope.elementRef,
@@ -95,8 +101,7 @@
                      // Save the metadata and refresh the form
                      gnEditor.save(gnCurrentEdit.id, true);
                    });
-
-                     });
+                 });
                }
                return false;
              };
@@ -137,6 +142,9 @@
              keywords: '@',
              transformations: '@',
              currentTransformation: '@',
+             lang: '@',
+             textgroupOnly: '@',
+
              // Max number of tags allowed. Use 1 to restrict to only
              // on keyword.
              maxTags: '@'
@@ -159,6 +167,13 @@
              scope.transformations.indexOf(',') !== -1 ?
              scope.transformations.split(',') : [scope.transformations];
              scope.maxTagsLabel = scope.maxTags || '∞';
+
+             //Get langs of metadata
+             var langs = [];
+             for (var p in JSON.parse(scope.lang)) {
+               langs.push(p);
+             }
+             scope.langs = langs.join(',');
 
              // Check initial keywords are available in the thesaurus
              scope.sortKeyword = function(a, b) {
@@ -360,7 +375,8 @@
              var getSnippet = function() {
                gnThesaurusService
                 .getXML(scope.thesaurusKey,
-               getKeywordIds(), scope.currentTransformation).then(
+               getKeywordIds(), scope.currentTransformation, scope.langs,
+                   scope.textgroupOnly).then(
                function(data) {
                  scope.snippet = data;
                });

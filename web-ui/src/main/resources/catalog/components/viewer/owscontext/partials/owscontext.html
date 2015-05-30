@@ -1,0 +1,30 @@
+<div class="context">
+  <a class="btn btn-default btn-block"
+     data-ng-click="save($event)"
+     title="{{'downloadContext'|translate}}"
+     download="{{mapFileName}}.xml">
+    <i class="fa fa-save"></i>&nbsp;
+    <span data-translate="">downloadContext</span>
+  </a>
+  <!--
+  TODO: KML Export ?
+  <a class="btn btn-default">
+    <i class="fa fa-save"></i>&nbsp;
+    <span data-translate="">kmlContext</span>
+  </a>-->
+  <button type="button"
+          class="btn btn-default btn-block import"
+          title="{{'uploadContext'|translate}}">
+    <i class="fa fa-upload"></i>&nbsp;
+    <span data-translate="">uploadContext</span>
+  </button>
+  <a class="btn btn-default btn-block"
+     data-ng-click="reset($event)"
+     title="{{'resetContext'|translate}}">
+    <i class="fa fa-eraser"></i>&nbsp;
+    <span data-translate="">resetContext</span>
+  </a>
+</div>
+
+<input class="hidden" type="file"
+       accept="text/xml" id="owc-file-input"/>

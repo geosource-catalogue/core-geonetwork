@@ -56,7 +56,7 @@
           },
           editor_geopublisher: {
             eng: 'editor/metadata_link/linking.html' +
-              '#publier-les-donnees-telechargees-en-wms-wfs-wcs',
+                '#publier-les-donnees-telechargees-en-wms-wfs-wcs',
             fre: 'editor/metadata_link/linking.html' +
                 '#publier-les-donnees-telechargees-en-wms-wfs-wcs'
           },

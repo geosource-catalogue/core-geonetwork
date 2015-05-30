@@ -24,12 +24,17 @@
 package org.fao.geonet.kernel.search;
 
 import com.google.common.base.Splitter;
+
+import org.fao.geonet.kernel.search.LuceneConfig.LuceneConfigNumericField;
 import org.fao.geonet.kernel.setting.SettingInfo;
 import org.fao.geonet.utils.Log;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
+import org.apache.lucene.facet.DrillDownQuery;
+import org.apache.lucene.facet.FacetsConfig;
+import org.apache.lucene.facet.taxonomy.CategoryPath;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
@@ -44,10 +49,16 @@ import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.util.automaton.LevenshteinAutomata;
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.domain.Pair;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -73,10 +84,13 @@ public class LuceneQueryBuilder {
 
     private static final String OR_SEPARATOR = " or ";
     private static final String FIELD_OR_SEPARATOR = "_OR_";
+    private static final String FACET_QUERY_AND_SEPARATOR = "&";
     private static final String STRING_TOKENIZER_DELIMITER = " \n\r\t";
+    private final LuceneConfig luceneConfig;
     private Set<String> _tokenizedFieldSet;
     private PerFieldAnalyzerWrapper _analyzer;
     private Map<String, LuceneConfig.LuceneConfigNumericField> _numericFieldSet;
+    private FacetsConfig _taxonomyConfiguration;
     private String _language;
 
     // Lat long bounding box constants
@@ -102,20 +116,37 @@ public class LuceneQueryBuilder {
     /**
      * TODO javadoc.
      *
-     * @param tokenizedFieldSet names of tokenized fields
-     * @param numericFieldSet names of numeric fields
+     * @param _tokenizedFieldSet
      * @param analyzer Lucene analyzer
      * @param langCode language of search terms
      */
-    public LuceneQueryBuilder(Set<String> tokenizedFieldSet,
-                              Map<String, LuceneConfig.LuceneConfigNumericField> numericFieldSet,
-                              PerFieldAnalyzerWrapper analyzer, String langCode) {
+    public LuceneQueryBuilder(LuceneConfig luceneConfig, Set<String> _tokenizedFieldSet, PerFieldAnalyzerWrapper analyzer, String langCode) {
         BooleanQuery.setMaxClauseCount(Integer.MAX_VALUE);
         
-        _tokenizedFieldSet = tokenizedFieldSet;
-        _numericFieldSet = numericFieldSet;
+        this._tokenizedFieldSet = _tokenizedFieldSet;
+        _numericFieldSet = luceneConfig.getNumericFields();
+        _taxonomyConfiguration = luceneConfig.getTaxonomyConfiguration();
+        this.luceneConfig = luceneConfig;
         _analyzer = analyzer;
         _language = langCode;
+    }
+
+    /**
+     * Build a Lucene query for the {@link LuceneQueryInput}.
+     * 
+     * @param luceneQueryInput the requested search parameters
+     * @return Lucene query
+     */
+    public Query build(LuceneQueryInput luceneQueryInput) {
+        if(Log.isDebugEnabled(Geonet.SEARCH_ENGINE))
+            Log.debug(Geonet.SEARCH_ENGINE, "LuceneQueryBuilder: luceneQueryInput is: \n" + luceneQueryInput.toString());
+        Query result = buildBaseQuery(luceneQueryInput);
+
+        if (luceneQueryInput.getFacetQueries().size() > 0) {
+            result = addFacetQueries(result, luceneQueryInput.getFacetQueries());
+        }
+
+        return result;
     }
 
     /**
@@ -131,15 +162,13 @@ public class LuceneQueryBuilder {
      * @param luceneQueryInput user and system input
      * @return Lucene query
      */
-    public Query build(LuceneQueryInput luceneQueryInput) {
-        if(Log.isDebugEnabled(Geonet.SEARCH_ENGINE))
-            Log.debug(Geonet.SEARCH_ENGINE, "LuceneQueryBuilder: luceneQueryInput is: \n" + luceneQueryInput.toString());
 
+    private Query buildBaseQuery(LuceneQueryInput luceneQueryInput) {
         // Remember which range fields have been processed
         Set<String> processedRangeFields = new HashSet<String>();
 
         // top query to hold all sub-queries for each search parameter
-        BooleanQuery query = new BooleanQuery();
+         BooleanQuery query = new BooleanQuery();
 
         // Filter according to user session
         addPrivilegeQuery(luceneQueryInput, query);
@@ -220,6 +249,36 @@ public class LuceneQueryBuilder {
             if(Log.isDebugEnabled(Geonet.LUCENE))
                 Log.debug(Geonet.LUCENE, "no language set, not adding locale query");
             return query;
+        }
+    }
+
+    /**
+     * Add drilldown queries to a base query
+     *
+     * There may be many drilldown queries specified in the search parameters
+     * Add each one to the base query
+     * 
+     * @param baseQuery base query for requested search criteria
+     * @param facetQueries drilldown queries requested
+     * 
+     * @return Lucene query
+     */
+
+    private Query addFacetQueries(Query baseQuery,
+            Set<String> facetQueries) {
+        DrillDownQuery result = new DrillDownQuery(_taxonomyConfiguration, baseQuery);
+
+        for (String facetQuery: facetQueries) {
+            addFacetQuery(facetQuery, result);
+        }
+
+        return result;
+    }
+
+    private void addFacetQuery(String facetQuery, DrillDownQuery result) {
+        for (String drillDownParam: facetQuery.split(FACET_QUERY_AND_SEPARATOR)) {
+            DrillDownPath drillDownPath = new DrillDownPath(drillDownParam);
+            result.add(drillDownPath.getDimension(), drillDownPath.getPath());
         }
     }
 
@@ -651,11 +710,11 @@ public class LuceneQueryBuilder {
             analyzedString = LuceneSearcher.analyzeQueryText(luceneIndexField, string, _analyzer, _tokenizedFieldSet);
         }
 
-        query = constructQueryFromAnalyzedString(string, luceneIndexField, similarity, query, analyzedString, _tokenizedFieldSet);
+        query = constructQueryFromAnalyzedString(this.luceneConfig, string, luceneIndexField, similarity, query, analyzedString, _tokenizedFieldSet);
         return query;
     }
 
-    static Query constructQueryFromAnalyzedString(String string, String luceneIndexField, String similarity, Query query,
+    static Query constructQueryFromAnalyzedString(LuceneConfig luceneConfig, String string, String luceneIndexField, String similarity, Query query,
             String analyzedString, Set<String> tokenizedFieldSet) {
         if (StringUtils.isNotBlank(analyzedString)) {
             // no wildcards
@@ -667,10 +726,10 @@ public class LuceneQueryBuilder {
                     BooleanQuery booleanQuery = new BooleanQuery();
                     query = booleanQuery;
                     for (String term : terms) {
-                        booleanQuery.add(createFuzzyOrTermQuery(luceneIndexField, similarity, term), Occur.MUST);
+                        booleanQuery.add(createFuzzyOrTermQuery(luceneConfig, luceneIndexField, similarity, term), Occur.MUST);
                     }
                 } else {
-                    query = createFuzzyOrTermQuery(luceneIndexField, similarity, analyzedString);
+                    query = createFuzzyOrTermQuery(luceneConfig, luceneIndexField, similarity, analyzedString);
                 }
             }
             // wildcards
@@ -681,9 +740,9 @@ public class LuceneQueryBuilder {
         return query;
     }
 
-    private static Query createFuzzyOrTermQuery(String luceneIndexField, String similarity, String analyzedString) {
+    private static Query createFuzzyOrTermQuery(LuceneConfig luceneConfig, String luceneIndexField, String similarity, String analyzedString) {
         Query query = null;
-        if (similarity != null) {
+        if (similarity != null && luceneConfig.applySimilarity(luceneIndexField)) {
             Float minimumSimilarity = Float.parseFloat(similarity);
             
             if (minimumSimilarity < 1) {
@@ -1241,5 +1300,46 @@ public class LuceneQueryBuilder {
 
         requestedLanguageOnly.addQuery(booleanQuery, langCode);
         return booleanQuery;
+    }
+    
+    private static class DrillDownPath {
+        private final String dimension;
+        private final String[] path;
+
+        private static final String DRILLDOWN_PATH_SEPARATOR = "/";
+
+        public DrillDownPath(String drillDownPath) {
+            dimension = getDimension(drillDownPath);
+            path = getPath(drillDownPath);
+        }
+
+        private String getDimension(String drillDownPath) {
+            String[] drilldownQueryComponents = drillDownPath.split(DRILLDOWN_PATH_SEPARATOR);
+            return drilldownQueryComponents[0];
+        }
+
+        private String[] getPath(String drillDownPath) {
+            String[] components = drillDownPath.split(DRILLDOWN_PATH_SEPARATOR);
+            String[] result = new String[components.length - 1];
+
+            for (int i=1; i<components.length; i++) {
+                try {
+                    result[i-1] = URLDecoder.decode(components[i], "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            return result;
+        }
+
+        public String getDimension() {
+            return dimension;
+        }
+
+        public String[] getPath() {
+            return path;
+        }
+
     }
 }

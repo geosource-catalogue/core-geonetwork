@@ -22,17 +22,19 @@
 //==============================================================================
 package org.fao.geonet.services.publisher;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import org.fao.geonet.ZipUtil;
+
+import java.io.Closeable;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.LinkedList;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
 
 /**
  * Instances of this class represent geographic files. A geographic file can be
@@ -42,9 +44,9 @@ import java.util.zip.ZipOutputStream;
  * @author Éric Lemoine, Camptocamp France SAS
  * @author Francois Prunayre
  */
-public class GeoFile {
-	private ZipFile zipFile = null;
-	private File file = null;
+public class GeoFile implements Closeable {
+	private FileSystem zipFile = null;
+	private Path file = null;
 
 	/**
 	 * Constructs a <code>GeoFile</code> object from a <code>File</code> object.
@@ -55,14 +57,14 @@ public class GeoFile {
 	 * @throws java.io.IOException
 	 *             if an input/output exception occurs while opening a ZIP file
 	 */
-	GeoFile(File f) throws IOException {
+	GeoFile(Path f) throws IOException {
 		file = f;
 		try {
-			zipFile = new ZipFile(file);
-		} catch (ZipException e) {
+			zipFile = ZipUtil.openZipFs(file);
+		} catch (IOException | URISyntaxException e) {
 			zipFile = null;
 		}
-	}
+    }
 
 	/**
 	 * Returns the names of the vector layers (Shapefiles) in the geographic
@@ -76,35 +78,40 @@ public class GeoFile {
 	 *             If more than on shapefile is found and onlyOneFileAllowed is
 	 *             true or if Shapefile name is not equal to zip file base name
 	 */
-	public Collection<String> getVectorLayers(boolean onlyOneFileAllowed) {
-		LinkedList<String> layers = new LinkedList<String>();
+	public Collection<String> getVectorLayers(final boolean onlyOneFileAllowed) throws IOException {
+		final LinkedList<String> layers = new LinkedList<String>();
 		if (zipFile != null) {
-			for (Enumeration<? extends ZipEntry> e = zipFile.entries(); e.hasMoreElements();) {
-				ZipEntry ze = e.nextElement();
-				String fileName = ze.getName();
-				if (fileIsShp(fileName)) {
-					String base = getBase(fileName);
+            for (Path path : zipFile.getRootDirectories()) {
+                Files.walkFileTree(path, new SimpleFileVisitor<Path>(){
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        String fileName = file.getFileName().toString();
+                        if (fileIsShp(fileName)) {
+                            String base = getBase(fileName);
 
-					if (onlyOneFileAllowed) {
-						if (layers.size() > 1)
-							throw new IllegalArgumentException(
-									"Only one shapefile per zip is allowed. "
-											+ layers.size()
-											+ " shapefiles found.");
+                            if (onlyOneFileAllowed) {
+                                if (layers.size() > 1)
+                                    throw new IllegalArgumentException(
+                                            "Only one shapefile per zip is allowed. "
+                                            + layers.size()
+                                            + " shapefiles found.");
 
-						if (base.equals(getBase(file.getName()))) {
-							layers.add(base);
-						} else
-							throw new IllegalArgumentException(
-									"Shapefile name ("
-											+ base
-											+ ") is not equal to ZIP file name ("
-											+ file.getName() + ").");
-					} else {
-						layers.add(base);
-					}
-				}
-			}
+                                if (base.equals(getBase(fileName))) {
+                                    layers.add(base);
+                                } else
+                                    throw new IllegalArgumentException(
+                                            "Shapefile name ("
+                                            + base
+                                            + ") is not equal to ZIP file name ("
+                                            + file.getFileName() + ").");
+                            } else {
+                                layers.add(base);
+                            }
+                        }
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+            }
 		}
 
 		return layers;
@@ -115,24 +122,29 @@ public class GeoFile {
 	 *
 	 * @return a collection of layer names
 	 */
-	public Collection<String> getRasterLayers() {
-		LinkedList<String> layers = new LinkedList<String>();
-		if (zipFile != null) {
-			for (Enumeration<? extends ZipEntry> e = zipFile.entries(); e.hasMoreElements();) {
-				ZipEntry ze = e.nextElement();
-				String fileName = ze.getName();
-				if (fileIsGeotif(fileName)) {
-					layers.add(getBase(fileName));
-				}
-			}
-		} else {
-			String fileName = file.getName();
-			if (fileIsGeotif(fileName)) {
-				layers.add(getBase(fileName));
-			}
-		}
-		return layers;
-	}
+	public Collection<String> getRasterLayers() throws IOException {
+        final LinkedList<String> layers = new LinkedList<String>();
+        if (zipFile != null) {
+            for (Path path : zipFile.getRootDirectories()) {
+                Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        String fileName = file.getFileName().toString();
+                        if (fileIsGeotif(fileName)) {
+                            layers.add(getBase(fileName));
+                        }
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+            }
+        } else {
+            String fileName = file.getFileName().toString();
+            if (fileIsGeotif(fileName)) {
+                layers.add(getBase(fileName));
+            }
+        }
+        return layers;
+    }
 //
 //	/**
 //	 * Returns a file for a given layer, a ZIP file if the layer is a Shapefile,
@@ -208,4 +220,9 @@ public class GeoFile {
 	public static Boolean fileIsRASTER(String fileName) {
 		return fileIsGeotif(fileName) || fileIsECW(fileName);
 	}
+
+    @Override
+    public void close() throws IOException {
+        zipFile.close();
+    }
 };

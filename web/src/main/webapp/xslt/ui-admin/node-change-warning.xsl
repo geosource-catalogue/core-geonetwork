@@ -8,7 +8,7 @@
     <xsl:variable name="lang" select="/root/gui/language"/>
     <xsl:variable name="baseUrl" select="/root/gui/url"/>
     <xsl:variable name="oldNodeHomeUrl"><xsl:value-of select="$baseUrl"/>/<xsl:value-of
-            select="$oldNode"/>/<xsl:value-of select="$lang"/>/find</xsl:variable>
+            select="$oldNode"/>/home</xsl:variable>
     <xsl:variable name="redirectedFrom" select="/root/request/redirectedFrom"/>
 
 

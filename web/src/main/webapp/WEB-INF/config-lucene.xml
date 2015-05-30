@@ -96,6 +96,7 @@
       <field name="_userinfo" tagName="userinfo"/>
       <field name="_ownername" tagName="ownername"/>
       <field name="_cat" tagName="category"/>
+      <field name="topicCat" tagName="topicCat"/>
       <field name="_valid" tagName="valid"/>
       <field name="_valid_schematron-rules-geonetwork" tagName="valid_schematron-rules-geonetwork"/>
       <field name="_valid_schematron-rules-iso" tagName="valid_schematron-rules-iso"/>
@@ -103,34 +104,54 @@
       <field name="_valid_xsd" tagName="valid_xsd"/>
       <field name="_selected" tagName="selected"/>
       <field name="_source" tagName="source"/>
-      <field name="_status" tagName="status"/>
+      <field name="_status" tagName="mdStatus"/>
       <field name="_edit" tagName="edit"/>
       <field name="_root" tagName="root"/>
       <field name="_title" tagName="title" multilingualSortField="true"/>
       <field name="_docLocale" tagName="docLocale"/>
       <field name="_locale" tagName="_locale"/>
       <field name="_defaultTitle" tagName="defaultTitle"/>
-      <field name="abstract" tagName="abstract"/>
+      <field name="createDate" tagName="creationDate"/>
+      <field name="revisionDate" tagName="revisionDate"/>
+      <field name="publicationDate" tagName="publicationDate"/>
+      <field name="abstract" tagName="abstract" multilingualSortField="true"/>
       <field name="keyword" tagName="keyword"/>
       <field name="parentUuid" tagName="parentId"/>
       <field name="type" tagName="type"/>
+      <field name="identifier" tagName="identifier"/>
       <field name="image" tagName="image"/>
       <field name="link" tagName="link"/>
+      <field name="format" tagName="format"/>
+      <field name="denominator" tagName="denominator"/>
+      <field name="resolution" tagName="resolution"/>
+      <field name="crs" tagName="crs"/>
       <field name="credit" tagName="credit"/>
+      <field name="cl_status_text" tagName="status_text" multilingualSortField="true"/>
+      <field name="updateFrequency" tagName="updateFrequency"/>
+      <field name="lineage" tagName="lineage"/>
       <field name="responsibleParty" tagName="responsibleParty"/>
-      <field name="accessConstr" tagName="Constraints"/>
-      <field name="otherConstr" tagName="Constraints"/>
-      <field name="classif" tagName="SecurityConstraints"/>
-      <field name="conditionApplyingToAccessAndUse" tagName="Constraints"/>
+      <field name="MD_LegalConstraintsOtherConstraints" tagName="legalConstraints"/>
+      <field name="MD_LegalConstraintsUseLimitation" tagName="legalConstraints"/>
+      <field name="MD_SecurityConstraintsUseLimitation" tagName="securityConstraints"/>
+      <field name="MD_ConstraintsUseLimitation" tagName="resourceConstraints"/>
+      <field name="cl_classification_text" tagName="classification_text"/>
+      <field name="cl_maintenanceAndUpdateFrequency_text" tagName="maintenanceAndUpdateFrequency_text"/>
+      <field name="cl_spatialRepresentationType_text" tagName="spatialRepresentationType_text"/>
       <field name="datasetLang" tagName="datasetLang"/>
-      <field name="language" tagName="language"/>
-      <field name="spatialRepresentationType" tagName="spatialRepresentationType"/>
+      <field name="mdLanguage" tagName="mdLanguage"/>
       <field name="serviceType" tagName="serviceType"/>
+      <field name="tempExtentBegin" tagName="tempExtentBegin"/>
+      <field name="tempExtentEnd" tagName="tempExtentEnd"/>
       <field name="geoBox" tagName="geoBox"/>
+      <field name="extentDesc" tagName="geoDesc"/>
+      <field name="geoDescCode" tagName="geoDescCode"/>
       <field name="_indexingError" tagName="idxError"/>
       <field name="_indexingErrorMsg" tagName="idxMsg"/>
       <field name="_op0" tagName="publishedForGroup"/>
       <field name="_groupOwner" tagName="groupOwner"/>
+      <field name="_logo" tagName="logo"/>
+      <field name="_groupWebsite" tagName="groupWebsite"/>
+      <field name="attributeTable" tagName="attributeTable"/>
     </dumpFields>
   </search>
 
@@ -186,7 +207,9 @@
     <Field name="operatesOnIdentifier" analyzer="org.fao.geonet.kernel.search.GeoNetworkAnalyzer"/>
     <Field name="hassource" analyzer="org.fao.geonet.kernel.search.GeoNetworkAnalyzer"/>
     <Field name="hasfeaturecat" analyzer="org.fao.geonet.kernel.search.GeoNetworkAnalyzer"/>
-    
+    <Field name="any" analyzer="org.apache.lucene.analysis.fr.FrenchAnalyzer">
+      <Param name="version" type="org.apache.lucene.util.Version"/>
+    </Field>
     <!-- 
     <Field name="any" analyzer="org.fao.geonet.kernel.search.GeoNetworkAnalyzer"/>
     
@@ -277,6 +300,7 @@
    -->
   <tokenized>
     <Field name="any"/>
+    <Field name="anylight"/>
     <Field name="abstract"/>
     <Field name="title"/>
     <Field name="altTitle"/>
@@ -301,4 +325,18 @@
     <Field name="southBL" type="double"/>
     <Field name="westBL" type="double"/>
   </numeric>
+
+  <!-- List all of the lucene field names which will have similarity applied to them
+       To disable set enabled to false.
+
+       If enabled is false or not present then similarity will be applied to all fields (except some special case instances)
+  -->
+  <fuzzyMatching enabled="true">
+    <Field name="any"/>
+    <Field name="anylight"/>
+    <Field name="title"/>
+    <Field name="altTitle"/>
+    <Field name="abstract"/>
+    <Field name="specificationTitle"/>
+  </fuzzyMatching>
 </config>

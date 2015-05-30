@@ -28,7 +28,9 @@ import jeeves.server.ServiceConfig;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
 import org.fao.geonet.GeonetContext;
+import org.fao.geonet.Util;
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.Metadata;
 import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.kernel.AccessManager;
@@ -39,6 +41,11 @@ import org.fao.geonet.repository.MetadataRepository;
 import org.fao.geonet.services.NotInReadOnlyModeService;
 import org.jdom.Element;
 
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.*;
 
 
@@ -52,7 +59,7 @@ public class BatchUpdateCategories extends NotInReadOnlyModeService {
 	//---
 	//--------------------------------------------------------------------------
 
-	public void init(String appPath, ServiceConfig params) throws Exception {
+	public void init(Path appPath, ServiceConfig params) throws Exception {
         super.init(appPath, params);
     }
 
@@ -62,11 +69,20 @@ public class BatchUpdateCategories extends NotInReadOnlyModeService {
 	//---
 	//--------------------------------------------------------------------------
 
+    /**
+     *
+     * @param params
+     * @param context
+     * @return
+     * @throws Exception
+     */
 	public Element serviceSpecificExec(Element params, ServiceContext context) throws Exception
 	{
 		GeonetContext gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
 
-		DataManager dm = gc.getBean(DataManager.class);
+        String mode = Util.getParam(params, "mode", "replace");
+
+        DataManager dm = gc.getBean(DataManager.class);
 		AccessManager accessMan = gc.getBean(AccessManager.class);
 		UserSession us = context.getUserSession();
 
@@ -94,7 +110,9 @@ public class BatchUpdateCategories extends NotInReadOnlyModeService {
 			} else {
 
 				//--- remove old operations
-                info.getCategories().clear();
+                if (!"replace".equals(mode)) {
+                    info.getCategories().clear();
+                }
 
 				//--- set new ones
 				@SuppressWarnings("unchecked")
@@ -104,7 +122,7 @@ public class BatchUpdateCategories extends NotInReadOnlyModeService {
                 for (Element el : list) {
 					String name = el.getName();
 
-					if (name.startsWith("_"))  {
+					if (name.startsWith("_") && !name.equals(Params.CONTENT_TYPE))  {
                         final MetadataCategory category = categoryRepository.findOne(Integer.valueOf(name.substring(1)));
                         if (category != null) {
                             info.getCategories().add(category);

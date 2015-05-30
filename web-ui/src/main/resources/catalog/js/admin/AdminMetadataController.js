@@ -30,19 +30,22 @@
               icon: 'fa-archive',
               href: '#/metadata/metadata-and-template'
             },{
-              type: 'template-sort',
-              label: 'sortTemplate',
-              icon: 'fa-sort',
-              href: '#/metadata/template-sort'
-            },{
+              // Template sorting is not use by the Angular application
+              // Hide it for the time being.
+              // See https://github.com/geonetwork/core-geonetwork/issues/878
+              //  type: 'template-sort',
+              //  label: 'sortTemplate',
+              //  icon: 'fa-sort',
+              //  href: '#/metadata/template-sort'
+              //},{
               type: 'formatter',
               label: 'metadataFormatter',
-              icon: 'fa-print',
+              icon: 'fa-eye',
               href: '#/metadata/formatter'
             },{
               type: 'schematron',
               label: 'schematron',
-              icon: 'fa-eye',
+              icon: 'fa-check',
               href: '#/metadata/schematron'
             }]
       };
@@ -55,15 +58,16 @@
       $scope.sampleLoadRunning = false;
 
       function loadSchemas() {
-        $http.get('admin.schema.list@json').success(function(data) {
-          for (var i = 0; i < data.length; i++) {
-            $scope.schemas.push(data[i]['#text'].trim());
-          }
-          $scope.schemas.sort();
+        $http.get('admin.schema.list?_content_type=json').
+            success(function(data) {
+              for (var i = 0; i < data.length; i++) {
+                $scope.schemas.push(data[i]['#text'].trim());
+              }
+              $scope.schemas.sort();
 
-          // Trigger load action according to route params
-          launchActions();
-        });
+              // Trigger load action according to route params
+              launchActions();
+            });
       }
 
       function launchActions() {
@@ -130,7 +134,7 @@
 
       $scope.loadTemplates = function() {
         $scope.tplLoadRunning = true;
-        $http.get('admin.load.templates@json?schema=' +
+        $http.get('admin.load.templates?_content_type=json&schema=' +
             $scope.selectedSchemas.join(',')
         ).success(function(data) {
           $scope.loadTplReport = data;
@@ -142,8 +146,9 @@
 
       $scope.loadSamples = function() {
         $scope.sampleLoadRunning = true;
-        $http.get('admin.load.samples@json?file_type=mef&uuidAction=overwrite' +
-                '&schema=' +
+        $http.get('admin.load.samples?_content_type=json&' +
+                  'file_type=mef&uuidAction=overwrite' +
+                  '&schema=' +
             $scope.selectedSchemas.join(',')
         ).success(function(data) {
           $scope.loadReport = data;
@@ -157,7 +162,7 @@
       $scope.templates = null;
 
       var loadTemplates = function() {
-        $http.get('admin.templates.list@json')
+        $http.get('admin.templates.list?_content_type=json')
         .success(function(data) {
               $scope.templates = data;
             });
@@ -192,13 +197,14 @@
        */
       loadFormatter = function() {
         $scope.formatters = [];
-        $http.get('md.formatter.list@json').success(function(data) {
-          if (data !== 'null') {
-            $scope.formatters = data; // TODO: check multiple
-          }
-        }).error(function(data) {
-          // TODO
-        });
+        $http.get('md.formatter.list?_content_type=json').
+            success(function(data) {
+              if (data !== 'null') {
+                $scope.formatters = data.formatters; // TODO: check multiple
+              }
+            }).error(function(data) {
+              // TODO
+            });
       };
 
       /**
@@ -223,7 +229,12 @@
       $scope.listFormatterFiles = function(f) {
         //md.formatter.files?id=sextant
         $scope.formatterFiles = [];
-        $http.get('md.formatter.files@json?id=' + f).success(function(data) {
+
+        var url = 'md.formatter.files?_content_type=json&id=' + f.id;
+        if (f.schema) {
+          url += '&schema=' + f.schema;
+        }
+        $http.get(url).success(function(data) {
           if (data !== 'null') {
             // Format files
             angular.forEach(data.file, function(file) {
@@ -258,11 +269,19 @@
 
 
       $scope.downloadFormatter = function(f) {
-        location.replace('md.formatter.download?id=' + f, '_blank');
+        var url = 'md.formatter.download?id=' + f.id;
+        if (f.schema) {
+          url += '&schema=' + f.schema;
+        }
+        location.replace(url, '_blank');
       };
 
       $scope.formatterDelete = function(f) {
-        $http.get('md.formatter.remove?id=' + f)
+        var url = 'md.formatter.remove?id=' + f.id;
+        if (f.schema) {
+          url += '&schema=' + f.schema;
+        }
+        $http.get(url)
         .success(function(data) {
               $scope.formatterSelected = null;
               loadFormatter();
@@ -279,11 +298,14 @@
       $scope.$watch('selectedFile', function() {
         if ($scope.selectedFile) {
           var params = {
-            id: $scope.formatterSelected,
+            id: $scope.formatterSelected.id,
             fname: $scope.selectedFile['@path']
           };
+          if ($scope.formatterSelected.schema) {
+            params.schema = $scope.formatterSelected.schema;
+          }
           $http({
-            url: 'md.formatter.edit@json',
+            url: 'md.formatter.edit?_content_type=json',
             method: 'POST',
             data: $.param(params),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -295,7 +317,7 @@
 
       $scope.saveFormatterFile = function(formId) {
         $http({
-          url: 'md.formatter.update@json',
+          url: 'md.formatter.update?_content_type=json',
           method: 'POST',
           data: $(formId).serialize(),
           headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -319,9 +341,12 @@
       };
 
       $scope.testFormatter = function(mode) {
-        var service = 'md.formatter.' + (mode == 'HTML' ? 'html' : 'xml');
+        var service = 'md.format.' + (mode == 'HTML' ? 'html' : 'xml');
         var url = service + '?id=' + $scope.metadataId +
-            '&xsl=' + $scope.formatterSelected;
+            '&xsl=' + $scope.formatterSelected.id;
+        if ($scope.formatterSelected.schema) {
+          url += '&schema=' + $scope.formatterSelected.schema;
+        }
 
         if (mode == 'DEBUG') {
           url += '&debug=true';

@@ -24,26 +24,26 @@
 package org.fao.geonet.lib;
 
 import jeeves.server.context.ServiceContext;
-import jeeves.TransactionAspect;
-import jeeves.TransactionTask;
-import org.fao.geonet.utils.Log;
+import jeeves.transaction.TransactionManager;
+import jeeves.transaction.TransactionTask;
 import org.fao.geonet.Constants;
 import org.fao.geonet.constants.Geonet;
+import org.fao.geonet.utils.IO;
+import org.fao.geonet.utils.Log;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.TransactionStatus;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.servlet.ServletContext;
-import javax.sql.DataSource;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import java.util.StringTokenizer;
-import java.util.concurrent.Callable;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.servlet.ServletContext;
+import javax.sql.DataSource;
 
 //=============================================================================
 
@@ -56,14 +56,14 @@ public class DbLib {
 
 	private static final String SQL_EXTENSION = ".sql";
 
-	public void insertData(ServletContext servletContext, final ServiceContext context, String appPath, String filePath,
+	public void insertData(ServletContext servletContext, final ServiceContext context, Path appPath, Path filePath,
                            String filePrefix) throws Exception {
         if(Log.isDebugEnabled(Geonet.DB))
             Log.debug(Geonet.DB, "Filling database tables");
 
 		final List<String> data = loadSqlDataFile(servletContext, context.getApplicationContext(), appPath, filePath, filePrefix);
-        TransactionAspect.runInTransaction("insert data into database from file", context.getApplicationContext(),
-                TransactionAspect.TransactionRequirement.CREATE_ONLY_WHEN_NEEDED, TransactionAspect.CommitBehavior.ALWAYS_COMMIT, false,
+        TransactionManager.runInTransaction("insert data into database from file", context.getApplicationContext(),
+                TransactionManager.TransactionRequirement.CREATE_ONLY_WHEN_NEEDED, TransactionManager.CommitBehavior.ALWAYS_COMMIT, false,
                 new TransactionTask<Object>() {
                     @Override
                     public Object doInTransaction(TransactionStatus transaction) throws Throwable {
@@ -73,7 +73,7 @@ public class DbLib {
                 });
 	}
 
-	public void insertData(ServletContext servletContext, Statement statement, String appPath, String filePath,
+	public void insertData(ServletContext servletContext, Statement statement, Path appPath, Path filePath,
                            String filePrefix) throws Exception {
         if(Log.isDebugEnabled(Geonet.DB))
             Log.debug(Geonet.DB, "Filling database tables");
@@ -83,80 +83,93 @@ public class DbLib {
 	}
 
 	private void runSQL(EntityManager entityManager, List<String> data, boolean failOnError) throws Exception {
-		StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer();
 
-		for (String row : data) {
-			if (!row.toUpperCase().startsWith("REM") && !row.startsWith("--")
-					&& !row.trim().equals("")) {
-				sb.append(" ");
-				sb.append(row);
+        boolean inBlock = false;
+        for (String row : data) {
+            if (!row.toUpperCase().startsWith("REM") && !row.startsWith("--")
+                && !row.trim().equals("")) {
+                sb.append(" ");
+                sb.append(row);
 
-				if (row.endsWith(";")) {
-					String sql = sb.toString();
+                if (!inBlock && row.contains("BEGIN")) {
+                    inBlock = true;
+                } else if (inBlock && row.contains("END")) {
+                    inBlock = false;
+                }
 
-					sql = sql.substring(0, sql.length() - 1);
+                if (!inBlock && row.endsWith(";")) {
+                    String sql = sb.toString();
 
-                    if(Log.isDebugEnabled(Geonet.DB))
+                    sql = sql.substring(0, sql.length() - 1);
+
+                    if (Log.isDebugEnabled(Geonet.DB))
                         Log.debug(Geonet.DB, "Executing " + sql);
-					
-					try {
+
+                    try {
                         final String trimmedSQL = sql.trim();
                         final Query query = entityManager.createNativeQuery(trimmedSQL);
                         if (trimmedSQL.startsWith("SELECT")) {
-							query.setMaxResults(1);
+                            query.setMaxResults(1);
                             query.getSingleResult();
-						} else {
-							query.executeUpdate();
-						}
-					} catch (Throwable e) {
-						Log.warning(Geonet.DB, "SQL failure for: " + sql + ", error is:" + e.getMessage(), e);
+                        } else {
+                            query.executeUpdate();
+                        }
+                    } catch (Throwable e) {
+                        Log.warning(Geonet.DB, "SQL failure for: " + sql + ", error is:" + e.getMessage(), e);
 
-						if (failOnError)
-							throw new RuntimeException(e);
-					}
-					sb = new StringBuffer();
-				}
-			}
-		}
+                        if (failOnError)
+                            throw new RuntimeException(e);
+                    }
+                    sb = new StringBuffer();
+                }
+            }
+        }
         entityManager.flush();
         entityManager.clear();
 
 	}
 	private void runSQL(Statement statement, List<String> data, boolean failOnError) throws Exception {
-		StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer();
 
-		for (String row : data) {
-			if (!row.toUpperCase().startsWith("REM") && !row.startsWith("--")
-					&& !row.trim().equals("")) {
-				sb.append(" ");
-				sb.append(row);
+        boolean inBlock = false;
+        for (String row : data) {
+            if (!row.toUpperCase().startsWith("REM") && !row.startsWith("--")
+                && !row.trim().equals("")) {
+                sb.append(" ");
+                sb.append(row);
 
-				if (row.endsWith(";")) {
-					String sql = sb.toString();
+                if (!inBlock && row.contains("BEGIN")) {
+                    inBlock = true;
+                } else if (inBlock && row.contains("END")) {
+                    inBlock = false;
+                }
+                if (!inBlock && row.endsWith(";")) {
+                    String sql = sb.toString();
 
-					sql = sql.substring(0, sql.length() - 1);
+                    sql = sql.substring(0, sql.length() - 1);
 
-                    if(Log.isDebugEnabled(Geonet.DB))
+                    if (Log.isDebugEnabled(Geonet.DB))
                         Log.debug(Geonet.DB, "Executing " + sql);
 
-					try {
-						if (sql.trim().startsWith("SELECT")) {
-							statement.executeQuery(sql).close();
-						} else {
-							statement.execute(sql);
-						}
-					} catch (SQLException e) {
-						Log.warning(Geonet.DB, "SQL failure for: " + sql + ", error is:" + e.getMessage());
+                    try {
+                        if (sql.trim().startsWith("SELECT")) {
+                            statement.executeQuery(sql).close();
+                        } else {
+                            statement.execute(sql);
+                        }
+                    } catch (SQLException e) {
+                        Log.warning(Geonet.DB, "SQL failure for: " + sql + ", error is:" + e.getMessage());
 
-						if (failOnError)
-							throw e;
-					}
-					sb = new StringBuffer();
-				}
-			}
-		}
+                        if (failOnError)
+                            throw e;
+                    }
+                    sb = new StringBuffer();
+                }
+            }
+        }
         statement.getConnection().commit();
-	}
+    }
 
 	/**
 	 * Check if db specific SQL script exist, if not return default SQL script path.
@@ -168,29 +181,32 @@ public class DbLib {
      * @param prefix
      * @param type    @return
 	 */
-	private String checkFilePath(ServletContext servletContext, String appPath, String filePath, String prefix, String type) {
-        String finalPath;
-        finalPath = testPath(filePath + "/" +  prefix + type + SQL_EXTENSION);
+	private Path checkFilePath(ServletContext servletContext, Path appPath, Path filePath, String prefix, String type) {
+        Path finalPath;
+        finalPath = testPath(filePath.resolve(prefix + type + SQL_EXTENSION));
 
         if (finalPath == null) {
-            finalPath = testPath(appPath + "/" + filePath + "/" +  prefix + type + SQL_EXTENSION);
+            finalPath = testPath(appPath.resolve(filePath).resolve(prefix + type + SQL_EXTENSION));
         }
 
         if (finalPath == null && servletContext != null) {
-            String realPath = servletContext.getRealPath(filePath + "/" + prefix + type + SQL_EXTENSION);
+            String realPath = servletContext.getRealPath(filePath.resolve(prefix + type + SQL_EXTENSION).toString());
             if (realPath != null) {
-                finalPath = testPath(realPath);
+                finalPath = testPath(toPath(realPath));
             }
         }
         if (finalPath == null) {
-            finalPath = testPath(filePath + "/" +  prefix + "default" + SQL_EXTENSION);
+            finalPath = testPath(filePath.resolve(prefix + "default" + SQL_EXTENSION));
         }
         if (finalPath == null) {
-            finalPath = testPath(appPath + "/" + filePath + "/" +  prefix + "default" + SQL_EXTENSION);
+            finalPath = testPath(appPath.resolve(filePath.resolve(prefix + "default" + SQL_EXTENSION)));
         }
 
         if (finalPath == null && servletContext != null) {
-            finalPath = testPath(servletContext.getRealPath(filePath + "/" +  prefix + "default" + SQL_EXTENSION));
+            final String realPath = servletContext.getRealPath(filePath.resolve(prefix + "default" + SQL_EXTENSION).toString());
+            if (realPath != null) {
+                finalPath = testPath(toPath(realPath));
+            }
         }
 
 		if (finalPath != null)
@@ -198,25 +214,32 @@ public class DbLib {
 		else {
             Log.debug(Geonet.DB, "  No default SQL script found: " + (filePath + "/" +  prefix + type + SQL_EXTENSION));
         }
-		return "";
+		return toPath("");
 	}
 
-    private String testPath(String dbFilePath) {
-        File dbFile = new File(dbFilePath);
-        if (dbFile.exists()) {
+    private Path toPath(String pathString) {
+        try {
+            return IO.toPath(pathString);
+        } catch (java.nio.file.InvalidPathException e) {
+            return null;
+        }
+    }
+
+    private Path testPath(Path dbFilePath) {
+        if (dbFilePath != null && Files.exists(dbFilePath)) {
             return dbFilePath;
         }
         return null;
     }
 
-    private List<String> loadSqlDataFile(ServletContext servletContext, ApplicationContext appContext, String appPath, String filePath, String filePrefix)
+    private List<String> loadSqlDataFile(ServletContext servletContext, ApplicationContext appContext, Path appPath, Path filePath, String filePrefix)
             throws IOException, SQLException {
         final DataSource dataSource = appContext.getBean(DataSource.class);
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
             // --- find out which dbms data file to load
-            String file = checkFilePath(servletContext, appPath, filePath, filePrefix, DatabaseType.lookup(connection).toString());
+            Path file = checkFilePath(servletContext, appPath, filePath, filePrefix, DatabaseType.lookup(connection).toString());
 
             // --- load the sql data
             return Lib.text.load(servletContext, appPath, file, Constants.ENCODING);
@@ -226,10 +249,10 @@ public class DbLib {
             }
         }
 	}
-    private List<String> loadSqlDataFile(ServletContext servletContext, Statement statement, String appPath, String filePath, String filePrefix)
+    private List<String> loadSqlDataFile(ServletContext servletContext, Statement statement, Path appPath, Path filePath, String filePrefix)
             throws IOException, SQLException {
             // --- find out which dbms data file to load
-            String file = checkFilePath(servletContext, appPath, filePath, filePrefix, DatabaseType.lookup(statement.getConnection()).toString());
+        Path file = checkFilePath(servletContext, appPath, filePath, filePrefix, DatabaseType.lookup(statement.getConnection()).toString());
 
             // --- load the sql data
             return Lib.text.load(servletContext, appPath, file, Constants.ENCODING);

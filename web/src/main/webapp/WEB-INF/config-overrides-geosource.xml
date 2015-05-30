@@ -15,10 +15,6 @@
 
 
   <file name=".*config-gui.xml">
-    <replaceAtt xpath="client" attName="widget" value="true"/>
-    <replaceAtt xpath="client" attName="url" value="${widget.url}"/>
-    <replaceAtt xpath="client" attName="parameters" value="${widget.parameters}"/>
-    <replaceAtt xpath="client" attName="createParameter" value="&amp;create"/>
     <replaceXML xpath="map/proj">
       <crs code="EPSG:4326" default="1" edit="1"/>
       <crs code="EPSG:2154"

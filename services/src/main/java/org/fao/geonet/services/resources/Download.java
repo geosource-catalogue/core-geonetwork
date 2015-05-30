@@ -23,59 +23,68 @@
 
 package org.fao.geonet.services.resources;
 
-import org.fao.geonet.domain.Group;
-import org.fao.geonet.exceptions.BadParameterEx;
-import org.fao.geonet.exceptions.ResourceNotFoundEx;
-import jeeves.interfaces.Service;
-import jeeves.server.ServiceConfig;
 import jeeves.server.context.ServiceContext;
-import org.fao.geonet.repository.GroupRepository;
-import org.fao.geonet.services.resources.handlers.IResourceDownloadHandler;
-import org.fao.geonet.Util;
+import jeeves.server.dispatchers.ServiceManager;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
+import org.fao.geonet.domain.Group;
 import org.fao.geonet.domain.OperationAllowed;
 import org.fao.geonet.domain.ReservedOperation;
+import org.fao.geonet.exceptions.BadParameterEx;
+import org.fao.geonet.exceptions.ResourceNotFoundEx;
 import org.fao.geonet.kernel.DataManager;
 import org.fao.geonet.kernel.setting.SettingManager;
 import org.fao.geonet.lib.Lib;
+import org.fao.geonet.repository.GroupRepository;
 import org.fao.geonet.repository.OperationAllowedRepository;
-import org.fao.geonet.services.Utils;
+import org.fao.geonet.services.resources.handlers.IResourceDownloadHandler;
 import org.fao.geonet.util.MailSender;
-import org.jdom.Element;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.NativeWebRequest;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 //=============================================================================
 
-/** Sends the resource to the client
-  */
+/**
+ * Sends the resource to the client
+ */
+@Controller
+public class Download {
 
-public class Download implements Service
-{
-	//-----------------------------------------------------------------------------
-	//---
-	//--- Init
-	//---
-	//-----------------------------------------------------------------------------
+    @Autowired
+    private DataManager dataManager;
+    @Autowired
+    private ServiceManager serviceManager;
+    @RequestMapping(value="/{lang}/resources.get")
+	public HttpEntity<byte[]> exec(@PathVariable String lang,
+                                   @RequestParam(value = Params.ID, required = false) String idParam,
+                                   @RequestParam(value = Params.UUID, required = false) String uuidParam,
+                                   @RequestParam(Params.FNAME) String fname,
+                                   @RequestParam(value = Params.ACCESS, defaultValue = Params.Access.PUBLIC) String access,
+                                   NativeWebRequest request) throws Exception {
+		String id = null;
+        if (idParam != null) {
+            id = idParam;
+        } else if (uuidParam != null) {
+            id = dataManager.getMetadataId(uuidParam);
+        } else {
+            throw new Exception("Request must contain a UUID ("
+                                + Params.UUID + ") or an ID (" + Params.ID + ")");
+        }
 
-	public void init(String appPath, ServiceConfig params) throws Exception {}
-
-	//-----------------------------------------------------------------------------
-	//---
-	//--- Service
-	//---
-	//-----------------------------------------------------------------------------
-
-	public Element exec(Element params, ServiceContext context) throws Exception
-	{
-		String id = Utils.getIdentifierFromParameters(params, context);
-		String fname  = Util.getParam(params, Params.FNAME);
-		String access = Util.getParam(params, Params.ACCESS, Params.Access.PUBLIC);
-
-		boolean doNotify = false;
+        final HttpServletRequest httpServletRequest = request.getNativeRequest(HttpServletRequest.class);
+        final ServiceContext context = serviceManager.createServiceContext("resources.get", lang, httpServletRequest);
+        boolean doNotify = false;
 
 		if (fname.contains("..")) {
 			throw new BadParameterEx("Invalid character found in resource name.", fname);
@@ -88,12 +97,12 @@ public class Download implements Service
 		}
 
 		// Build the response
-		File dir = new File(Lib.resource.getDir(context, access, id));
-		File file= new File(dir, fname);
+		Path dir = Lib.resource.getDir(context, access, id);
+		Path file= dir.resolve(fname);
 
 		context.info("File is : " +file);
 
-		if (!file.exists())
+		if (!Files.exists(file))
 			throw new ResourceNotFoundEx(fname);
 
 		GeonetContext  gc = (GeonetContext) context.getHandlerContext(Geonet.CONTEXT_NAME);
@@ -114,11 +123,11 @@ public class Download implements Service
 
 			String fromDescr = "GeoNetwork administrator";
 
-			if (host.trim().length() == 0 || from.trim().length() == 0)
-                if(context.isDebugEnabled())
+			if (host.trim().length() == 0 || from.trim().length() == 0) {
+                if (context.isDebugEnabled()) {
                     context.debug("Skipping email notification");
-			else
-			{
+                }
+            } else {
                 if(context.isDebugEnabled()) {
                     context.debug("Sending email notification for file : "+ file);
                 }
@@ -163,7 +172,7 @@ public class Download implements Service
 		}
 
         IResourceDownloadHandler downloadHook = (IResourceDownloadHandler) context.getApplicationContext().getBean("resourceDownloadHandler");
-        return downloadHook.onDownload(context, params, Integer.parseInt(id), fname, file);
+        return downloadHook.onDownload(context, request, Integer.parseInt(id), fname, file);
 	}
 }
 

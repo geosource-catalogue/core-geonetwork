@@ -33,8 +33,10 @@ import org.fao.geonet.constants.Params;
 import org.fao.geonet.kernel.SchemaManager;
 import org.fao.geonet.kernel.search.MetaSearcher;
 import org.fao.geonet.kernel.search.SearchManager;
+import org.fao.geonet.kernel.search.SearcherType;
 import org.jdom.Element;
 
+import java.nio.file.Path;
 import java.util.List;
 
 //=============================================================================
@@ -46,7 +48,7 @@ public class Delete implements Service {
 	// ---
 	// --------------------------------------------------------------------------
 
-	public void init(String appPath, ServiceConfig params) throws Exception {}
+	public void init(Path appPath, ServiceConfig params) throws Exception {}
 
 	// --------------------------------------------------------------------------
 	// ---
@@ -72,11 +74,10 @@ public class Delete implements Service {
 		ServiceConfig config = new ServiceConfig();
 
     SearchManager searchMan = gc.getBean(SearchManager.class);
-		Element searchParams = new Element("parameters");	
+		Element searchParams = new Element("parameters");
     searchParams.addContent(new Element("_schema").setText(schema));
 
-   	MetaSearcher  searcher  = searchMan.newSearcher(SearchManager.LUCENE, Geonet.File.SEARCH_LUCENE);
-		try {
+		try (MetaSearcher  searcher  = searchMan.newSearcher(SearcherType.LUCENE, Geonet.File.SEARCH_LUCENE)) {
    		searcher.search(context, searchParams, config);
 			int results = searcher.getSize();
 			if (results == 0) { // check for templates
@@ -98,8 +99,6 @@ public class Delete implements Service {
       response.setAttribute("status", "error");
       response.setAttribute("message", errStr);
       return response;
-		} finally {
-   		searcher.close();
 		}
 
 		// check for any schemas that may be dependent on the schema to be deleted
