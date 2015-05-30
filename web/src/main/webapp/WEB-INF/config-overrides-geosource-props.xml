@@ -3,9 +3,6 @@
     <properties>
         <cat.name>Catalogue GéoSource</cat.name>
         <cat.org>Mon organisation</cat.org>
-        <cat.version>2.9.2</cat.version>
-
-        <widget.url>find</widget.url>
-        <widget.parameters>hl=fre&amp;extent=-550000,5000000,1200000,7000000</widget.parameters>
+        <cat.version>3.0.3</cat.version>
     </properties>
 </overrides>
