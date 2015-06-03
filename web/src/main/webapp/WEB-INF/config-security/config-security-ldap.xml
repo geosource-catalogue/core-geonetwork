@@ -70,7 +70,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <map/>
         </property>
         <property name="profileMapping">
-            <map/>
+          <map>
+            <entry key="cn=opendata_admin,ou=profiles,dc=eaufrance,dc=fr" value="Administrator"/>
+            <entry key="cn=opendata_adherent,ou=profiles,dc=eaufrance,dc=fr" value="Reviewer"/>
+            <entry key="cn=opendata_gestionnaire,ou=profiles,dc=eaufrance,dc=fr" value="Administrator"/>
+          </map>
         </property>
         <property name="ldapBaseDn" value="${ldap.base.dn}"/>
         <property name="importPrivilegesFromLdap" value="${ldap.privilege.import}"/>
