@@ -145,7 +145,7 @@ form.gn-editor {
       color: #6a6a6a;
       font-weight: 200;
       padding-top: 0px;
-      line-height: 1em;
+      line-height: 22px;
 
   }
   
@@ -179,8 +179,11 @@ form.gn-editor {
    * line instead of 100% width in input group.
    */
   .gn-date-picker {
-    > input.gn-date {
-      width: 50%;
+    > input[type=date] {
+      width: 60%;
+    }
+    > input[type=time] {
+      width: 40%;
     }
     .gn-indeterminate-position {
       display: table-cell;
@@ -249,7 +252,7 @@ form.gn-editor {
   .gn-field {
       border-radius: 3px;
       margin: 0px;
-      padding: 5px;
+      //padding: 5px;
   }
   .field-bg {
       background-color: #f7f7f7;
@@ -313,6 +316,10 @@ form.gn-tab-inspire {
   }
   .list-group.fixed {
     min-height: 100px;
+    /* Avoid the content of the div
+    to be higher than view port
+    as the modal does not have overflow. */
+    max-height: 50vh;
     li.active {
         background-color: #428bca;
     }

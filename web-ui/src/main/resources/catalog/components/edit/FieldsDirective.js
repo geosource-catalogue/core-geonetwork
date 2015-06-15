@@ -34,7 +34,7 @@
 
   /**
    * @ngdoc directive
-   * @name gn_fields_directive.directive:gnFieldTooltip
+   * @name gn_fields.directive:gnFieldTooltip
    * @function
    *
    * @description
@@ -187,6 +187,10 @@
        }]);
 
   /**
+   * @ngdoc directive
+   * @name gn_fields.directive:gnEditorControlMove
+   *
+   * @description
    * Move an element up or down. If direction
    * is not defined, direction is down.
    */
@@ -214,6 +218,10 @@
     }]);
 
   /**
+   * @ngdoc directive
+   * @name gn_fields.directive:gnFieldHighlightRemove
+   *
+   * @description
    * Add a danger class to the element about
    * to be removed by this action
    */
@@ -236,6 +244,10 @@
     }]);
 
   /**
+   * @ngdoc directive
+   * @name gn_fields.directive:gnFieldHighlight
+   *
+   * @description
    * Highlight an element by adding field-bg class
    * and looking for all remove button to make them
    * visible.
