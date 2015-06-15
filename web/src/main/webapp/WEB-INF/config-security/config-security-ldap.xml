@@ -30,29 +30,39 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="password" value="${ldap.security.credentials}"/>
     </bean>
 
+    <!-- Search user by email -->
+    <bean id="userSearch"
+          class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
+      <constructor-arg index="0" value=""/>
+      <constructor-arg index="1" value="(mail={0})"/>
+      <constructor-arg index="2" ref="contextSource" />
+    </bean>
+
     <bean id="ldapAuthProvider"
         class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
         <constructor-arg>
-            <!--
-                A PasswordComparisonAuthenticator
-            <bean class="org.springframework.security.ldap.authentication.PasswordComparisonAuthenticator">
-                <constructor-arg ref="contextSource"/>
-                <property name="userDnPatterns">
-                    <list><value>${ldap.base.dn.pattern}</value></list>
-                </property>
-                <property name="passwordAttributeName" value="userPassword"/>
-                <property name="passwordEncoder">
-                   <!- - <bean class="org.springframework.security.authentication.encoding.PlaintextPasswordEncoder"/>- ->
-                    <bean class="org.springframework.security.authentication.encoding.LdapShaPasswordEncoder"/>
-                </property>
-            </bean>
-        -->
-        <bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
-                <constructor-arg ref="contextSource"/>
-                <property name="userDnPatterns">
-                    <list><value>${ldap.base.dn.pattern}</value></list>
-                </property>
-        </bean>
+          <!--
+              A PasswordComparisonAuthenticator
+              -->
+          <bean class="org.springframework.security.ldap.authentication.PasswordComparisonAuthenticator">
+              <constructor-arg ref="contextSource"/>
+              <!--<property name="userDnPatterns">
+                  <list><value>${ldap.base.dn.pattern}</value></list>
+              </property>-->
+              <property name="userSearch" ref="userSearch"/>
+              <property name="passwordAttributeName" value="userPassword"/>
+              <property name="passwordEncoder">
+                  <bean class="org.springframework.security.authentication.encoding.PlaintextPasswordEncoder"/>
+                  <!--<bean class="org.springframework.security.authentication.encoding.LdapShaPasswordEncoder"/>-->
+              </property>
+          </bean>
+
+          <!--<bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
+                  <constructor-arg ref="contextSource"/>
+                  <property name="userDnPatterns">
+                      <list><value>${ldap.base.dn.pattern}</value></list>
+                  </property>
+          </bean>-->
         </constructor-arg>
         <property name="userDetailsContextMapper" ref="ldapUserContextMapper" />
     </bean>
