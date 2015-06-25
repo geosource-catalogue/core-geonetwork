@@ -39,5 +39,12 @@ INSERT INTO Settings (name, value, datatype, position, internal) VALUES
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES
   ('map/isSaveMapInCatalogAllowed', 'true', 2, 9594, 'n');
 
+
+SELECT setval('HIBERNATE_SEQUENCE', 
+	GREATEST((SELECT max(id) as NB FROM Params), 
+	(SELECT max(id) as NB FROM Metadata))
+	);
+
+
 UPDATE Settings SET value='3.0.1' WHERE name='system/platform/version';
 UPDATE Settings SET value='SNAPSHOT' WHERE name='system/platform/subVersion';
