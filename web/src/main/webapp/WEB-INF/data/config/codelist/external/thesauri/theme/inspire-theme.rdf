@@ -14,6 +14,7 @@
 <dcterms:modified>2008-06-01</dcterms:modified>
 </skos:ConceptScheme>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/1">
+<skos:altLabel>rs</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Referenskoordinatsystem</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">System för att entydigt lägesbestämma rumslig information i rummet som en uppsättning koordinater (x, y, z) och/ eller som latitud, longitud och höjd, på grundval av ett geodetiskt horisontellt och vertikalt datum.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Referenčni koordinatni sistemi</skos:prefLabel>
@@ -60,6 +61,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Системи за пространствена информация, предназначена изключително за справочни цели, представена в пространството с координати (x, y, z) и/или ширина, дължина и височина, на базата на геодезични хоризонтални и вертикални данни.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/10">
+<skos:altLabel>el</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Höjd</skos:prefLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="pt">Altitude</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="ro">Modele digitale de elevaţii ale suprafeţelor terestre, de gheaţă sau oceanice. Include altimetria, batimetria şi linia de coastă.</skos:scopeNote>
@@ -106,6 +108,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="cs">Digitální výškový model pevniny, povrchu ledovců a oceánů. Zahrnuje nadmořské výšky pevnin, vodní hloubky a pobřežní čáru.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/11">
+<skos:altLabel>lc</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Landtäcke</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Fysiskt och biologiskt landtäcke på jordytan, inbegripet artificiella ytor, jordbruksmark, skogar, (delvis) naturliga områden, våtmarker, vattenförekomster.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Pokrovnost tal</skos:prefLabel>
@@ -152,6 +155,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="cs">Fyzický a biologický pokryv zemského povrchu, včetně uměle vytvořených ploch, zemědělských oblastí, lesů, přirozených a částečně přirozených oblastí, mokřadů, vodních těles.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/12">
+<skos:altLabel>oi</skos:altLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Geolocirani slikovni podatki zemeljske površine iz satelita ali senzorjev v zraku.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Ortofoto</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="ro">Imagini georeferenţiate ale suprafeţei terestre, înregistrate cu senzori plasaţi pe sateliţi sau aeropurtaţi.</skos:scopeNote>
@@ -198,6 +202,7 @@
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Ортоизображение</skos:prefLabel>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/13">
+<skos:altLabel>ge</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="pl">Geologia</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="pt">Geologia caracterizada de acordo com a composição e a estrutura. Inclui a base rochosa, os aquíferos e a geomorfologia.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="pt">Geologia</skos:prefLabel>
@@ -244,6 +249,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="da">Geologi karakteriseret ved sammensætning og struktur. Omfatter grundfjeld, grundvandsmagasiner og geomorfologi.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/14">
+<skos:altLabel>su</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="pt">Unidades estatísticas</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="ro">Unităţi de difuzare sau de utilizare a informaţiilor statistice.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="ro">Unităţi statistice</skos:prefLabel>
@@ -290,6 +296,7 @@
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Статистически единици</skos:prefLabel>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/15">
+<skos:altLabel>bu</skos:altLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Prostorska lega stavb.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Stavbe</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Geografiskt läge för byggnader.</skos:scopeNote>
@@ -336,6 +343,7 @@
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="de">Gebäude</skos:prefLabel>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/16">
+<skos:altLabel>so</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Tla</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Jordmåner och jordarter klassificerade efter djup, textur, struktur och innehåll av partiklar och organiskt material, stenighet, erosion, vid behov genomsnittlig lutning och beräknad vattenhållande förmåga.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Mark</skos:prefLabel>
@@ -382,6 +390,7 @@
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Почва</skos:prefLabel>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/17">
+<skos:altLabel>lu</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Markanvändning</skos:prefLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Namenska raba tal</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Territorium indelat efter nuvarande och framtida planerade funktion eller socioekonomisk användning (t.ex. bostadsmark, industrimark, handel, jordbruk, skogsbruk, friluftsliv).</skos:scopeNote>
@@ -428,6 +437,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="el">Χαρακτηρισμός περιοχών ανάλογα με τη σημερινή και τη μελλοντική σχεδιαζόμενη λειτουργία τους ή τον κοινωνικοοικονομικό σκοπό τους (π.χ. αμιγώς οικιστική, βιομηχανική, εμπορική, γεωργική, δασική, αναψυχής).</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/18">
+<skos:altLabel>hh</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Människors hälsa och säkerhet</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sk">Geografická distribúcia najčastejších ochorení (alergie, nádorové ochorenia, ochorenia dýchacích ciest atď.), informácie o vplyve na zdravie (biologické ukazovatele, pokles plodnosti, epidémie) alebo telesný či duševný stav ľudí (únava, stres atď.), ktoré priamo (znečistenie ovzdušia, chemikálie, oslabenie ozónovej vrstvy, hluk atď.) alebo nepriamo (strava, geneticky upravené organizmy atď.) súvisia s kvalitou životného prostredia.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Zdravje in varnost prebivalstva</skos:prefLabel>
@@ -474,6 +484,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Географско разпределение на преобладаващите патологии (алергии, рак, болести на дихателните пътища и др.), информация за въздействието върху човешкото здраве (биомаркери, намаляване на раждаемостта, епидемии) или за физическото състояние на човека (умора, стрес и други), пряко свързани (замърсяване на въздуха, химикали, изтъняване на озоновия слой, шум и др.) или непряко свързани (храна, генетично модифицирани организми и други) с качеството на околната среда.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/19">
+<skos:altLabel>us</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Allmännyttiga och offentliga tjänster</skos:prefLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Komunalne in javne storitve</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Inbegriper anläggningar för allmännyttiga tjänster, exempelvis för hantering av avloppsvatten, avfallshantering, energiförsörjning och vattenförsörjning, administrativa och sociala offentliga tjänster såsom offentliga förvaltningar, räddningstjänstens anläggningar, skolor och sjukhus.</skos:scopeNote>
@@ -520,6 +531,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="cs">Zahrnují zařízení, jako například kanalizace, nakládání s odpady, zásobování energií a zásobování vodou, správní a sociální státní služby, jako například veřejnou správu, zařízení civilní ochrany, školy a nemocnice.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/2">
+<skos:altLabel>gg</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Geografska koordinatna mreža</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Harmoniserade rutnät med flera upplösningar, gemensam utgångspunkt och standardiserad placering och storlek på rutorna.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Geografiska rutnätssystem</skos:prefLabel>
@@ -566,6 +578,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Хармонизирана сложна координатна система с обща начална точка и стандартизирано разположение и размер на квадрантите на координатната система.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/20">
+<skos:altLabel>ef</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Anläggningar för miljöövervakning</skos:prefLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Naprave in objekti za monitoring okolja</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Placering och användning av anläggningar för miljöövervakning inbegriper iakttagelse och mätning av utsläpp, av situationen när det gäller miljömedier och av andra parametrar för ekosystemet (biologisk mångfald, ekologiska villkor för växtligheten etc.) som genomförs av offentliga myndigheter eller för deras räkning.</skos:scopeNote>
@@ -612,6 +625,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="cs">Rozmístění a provoz zařízení pro sledování životního prostředí zahrnuje pozorování a měření emisí, stavu složek životního prostředí a dalších ukazatelů ekosystému (druhové rozmanitosti, ekologických podmínek rostlinstva atd.) orgány veřejné správy nebo jejich jménem.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/21">
+<skos:altLabel>pf</skos:altLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Industriella produktionsställen, inbegripet anläggningar som omfattas av rådets direktiv 96/61/EG av den 24 september 1996 om samordnande åtgärder för att förebygga och begränsa föroreningar (1) samt vattenverk, gruvor och upplagsplatser.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Produktions- och industrianläggningar</skos:prefLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="ro">Instalaţii de producţie şi industriale</skos:prefLabel>
@@ -658,6 +672,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Промишлени обекти, включително инсталации, обхванати от Директива 96/61/ЕО на Съвета от 24 септември 1996 г. за комплексно предотвратяване и контрол на замърсяването (1), и съоръжения за водочерпене, минни съоръжения, складови обекти.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/22">
+<skos:altLabel>af</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Jordbruks- och vattenbruksanläggningar</skos:prefLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Objekti in naprave za kmetijstvo in ribogojstvo</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Jordbruksutrustning och produktionsanläggningar (inbegripet bevattningssystem, växthus och djurstallar).</skos:scopeNote>
@@ -704,6 +719,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="de">Landwirtschaftliche Anlagen und Produktionsstätten (einschließlich Bewässerungssystemen, Gewächshäusern und Ställen).</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/23">
+<skos:altLabel>pd</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Befolkningsfördelning – demografi</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Geografska porazdelitev ljudi, vključno z značilnostmi populacije in ravnmi aktivnosti, razvrščenih po koordinatah, regiji, upravni enoti ali drugi analitični enoti.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Porazdelitev prebivalstva – demografski podatki</skos:prefLabel>
@@ -750,6 +766,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="cs">Zeměpisné rozložení osob, včetně charakteristik obyvatelstva a druhů činnosti, seskupených podle souřadnicové sítě, regionu, správní jednotky nebo jiné analytické jednotky.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/24">
+<skos:altLabel>am</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sk">Spravované/obmedzené/regulované zóny a jednotky podávajúce správy</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Območja, ki se upravljajo, urejajo ali uporabljajo za poročanje na mednarodni, evropski, nacionalni, regionalni in lokalni ravni. Vključujejo odlagališča odpadkov, zaprta območja okrog virov pitne vode, cone, občutljive na nitrate, urejene plovne poti po morju ali velikih celinskih vodah, območja za odlaganje odpadkov, cone z omejitvijo hrupa, območja, kjer je potrebno dovoljenje za iskanje rud in rudarjenje, predele povodij, ustrezne poročevalske enote in območja upravljanja obalnih con.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Områden med särskild förvaltning/begränsningar/reglering samt enheter för rapportering</skos:prefLabel>
@@ -796,6 +813,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Зони, управлявани, регулирани или използвани за докладване на международно, европейско, национално, регионално и местно равнище. Включва складови обекти, ограничени райони около източници на питейна вода, уязвими от замърсяване с нитрати зони, контролирани морски проходи или големи вътрешни водни пътища, райони за складиране на отпадъци, зони с наложени ограничения върху шума, проучвателни и минни райони, райони на речни басейни, съответни отчетни единици и зони за управление на брегови райони. 25.4.2007 г. BG Официален вестник на Европейския съюз L 108/13</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/25">
+<skos:altLabel>nz</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Območja nevarnosti naravnih nesreč</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Sårbara områden klassificerade efter naturliga risker (alla atmosfäriska, hydrologiska, seismiska och vulkaniska fenomen samt bränder som på grund av läge, omfattning och frekvens har potential att allvarligt påverka samhället), exempelvis översvämningar, jordskred och sättningar, laviner, skogsbränder, jordbävningar, vulkanutbrott.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Naturliga riskområden</skos:prefLabel>
@@ -842,6 +860,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Уязвими райони, определени в зависимост от вида природен риск (всички атмосферни, хидрологични, сеизмични, вулканични и огнени явления, които поради местонахождението, силата и честотата на проявление могат да засегнат сериозно обществото), например наводнения, свличане и пропадане на земни маси, лавини, горски пожари, земетресения, изригвания на вулкани.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/26">
+<skos:altLabel>ac</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Ozračje</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Fysikaliska förhållanden i atmosfären. Inbegriper rumsliga data baserade på mätningar, modeller eller en kombination av dessa, samt mätpunkternas läge.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Atmosfäriska förhållanden</skos:prefLabel>
@@ -888,6 +907,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Физически атмосферни условия. Включва пространствени данни, основаващи се на измервания, на модели или на комбинация от двете, както и местата, където са направени измерванията.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/27">
+<skos:altLabel>mf</skos:altLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Vremenske razmere in njihova merjenja; padavine, temperatura, izhlapevanje, hitrost in smer vetra.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Meteorološke značilnosti</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Väderförhållanden och mätningar av dessa; nederbörd, temperatur, evapotranspiration, vindhastighet och vindriktning.</skos:scopeNote>
@@ -934,6 +954,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="da">Vejrforhold og målinger heraf; nedbør, temperatur, evapotranspiration, vindhastighed og -retning.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/28">
+<skos:altLabel>of</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Geografiska oceanografiska förhållanden</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Fysikaliska förhållanden i oceanerna (strömmar, salthalt, våghöjd osv.).</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Oceanogeografske značilnosti</skos:prefLabel>
@@ -980,6 +1001,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Физическо състояние на океаните (течения, соленост, височина на вълните и други).</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/29">
+<skos:altLabel>sr</skos:altLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Fysikaliska förhållanden i hav och saltsjöar indelade i områden och delområden med likartade egenskaper.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Havsområden</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Fizikalne razmere morij in slanih vodnih teles, razdeljenih v regije in podregije s skupnimi značilnostmi.</skos:scopeNote>
@@ -1026,6 +1048,7 @@
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Морски региони</skos:prefLabel>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/3">
+<skos:altLabel>gn</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Zemljepisna imena</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Namn på områden, regioner, platser, städer, förorter, tätorter och annan bebyggelse, samt andra geografiska och topografiska företeelser av allmänt eller historiskt intresse.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Geografiska namn</skos:prefLabel>
@@ -1072,6 +1095,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Наименования на области, региони, местности, големи градове, предградия, малки градове или населени места, или географска или топографска характеристика от обществен или исторически интерес.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/30">
+<skos:altLabel>br</skos:altLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Områden som har relativt homogena ekologiska förhållanden med likartade egenskaper.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Biogeografiska regioner</skos:prefLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Biogeografske regije</skos:prefLabel>
@@ -1118,6 +1142,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Райони с относително еднородни екологични условия с общи характеристики.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/31">
+<skos:altLabel>hb</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Naturtyper och biotoper</skos:prefLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Habitati in biotopi</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Geografiska områden som kännetecknas av särskilda ekologiska förhållanden, processer, strukturer och (livsstödjande) funktioner och som är fysiska livsmiljöer för organismer som lever där. Inbegriper land- och vattenområden med särskilda geografiska, abiotiska och biotiska egenskaper, oavsett om de är naturliga eller delvis naturliga.</skos:scopeNote>
@@ -1164,6 +1189,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Географски райони, характеризиращи се със специфични екологични условия, процеси, структура и (животоподпо- магащи) функции, подпомагащи физически организмите, които ги обитават. Включват земни или водни райони, отличаващи се с напълно естествени или полуестествени географски, абиотични и биотични характеристики.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/32">
+<skos:altLabel>sd</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Arters utbredning</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Geografisk fördelning av djur- och växtarters förekomst i rutnät, regioner, administrativa enheter eller andra analytiska enheter.</skos:scopeNote>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Geografska porazdelitev pojavljanja živalskih in rastlinskih vrst, razvrščenih po koordinatah, regiji, upravni enoti ali drugi analitični enoti.</skos:scopeNote>
@@ -1210,6 +1236,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Географско разпределение на животинските и растителните видове, представено обобщено по координати, регион, административна единица или друга аналитична единица.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/33">
+<skos:altLabel>er</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sk">Zdroje energie</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Energetski viri, vključno z ogljikovodiki, vodno energijo, bioenergijo, soncem, vetrom itd., kjer je to ustrezno vključno s podatki o globini/višini glede velikosti vira.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Energetski viri</skos:prefLabel>
@@ -1256,6 +1283,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Енергийни източници, включително въглеводород, водна енергия, биоенергия, слънчева енергия, енергия от вятър и други; по целесъобразност се включва информация за дълбочина/височина на района на източника.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/34">
+<skos:altLabel>mr</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Mineralni viri</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Mineralfyndigheter, bland annat malm, industrimineraler osv., i tillämpliga fall med djup-/höjdinformation om resursens omfattning.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Mineralfyndigheter</skos:prefLabel>
@@ -1302,6 +1330,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Минерални ресурси, включително метални руди, промишлени минерали и други; по целесъобразност се включва информация за дълбочина/височина на находището на ресурса.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/4">
+<skos:altLabel>au</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Upravne enote</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Administrativa enheters, som delar upp områden där medlemsstater har och/eller utövar jurisdiktion, på lokal, regional och nationell nivå, åtskilda av administrativa gränser.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Administrativa enheter</skos:prefLabel>
@@ -1348,6 +1377,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="cs">Správní jednotky rozdělující území, ve kterém členské státy mají nebo vykonávají svrchovaná práva, pro účely místní, regionální a státní správy, oddělené správními hranicemi.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/5">
+<skos:altLabel>ad</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="ro">Adrese</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sk">Poloha nehnuteľností založená na identifikátoroch obsiahnutých v adrese, obyčajne podľa názvu ulice, čísla domu, poštového smerovacieho čísla.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sk">Adresy</skos:prefLabel>
@@ -1394,6 +1424,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="cs">Poloha nemovitostí podle adresních identifikátorů, obvykle pomocí názvu ulice, čísla domu, poštovního směrovacího čísla.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/6">
+<skos:altLabel>cp</skos:altLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Områden definierade av fastighetsregister eller motsvarande.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Fastighetsområden</skos:prefLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Katastrske parcele</skos:prefLabel>
@@ -1440,6 +1471,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Райони, посочени в кадастрални регистри или други равностойни документи.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/7">
+<skos:altLabel>tn</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Transportnät</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="ro">Reţele de transport rutier, feroviar, aerian şi pe apă şi infrastructura asociată. Cuprinde, de asemenea, legături între diferite reţele. Mai cuprinde şi reţeaua transeuropeană de transport, astfel cum este definită în Decizia nr. 1692/96/CE a Parlamentului European şi a Consiliului din 23 iulie 1996 privind orientările comunitare pentru dezvoltarea reţelei transeuropene de transport (1) şi modificările ulterioare.</skos:scopeNote>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Väg-, järnvägs-, luft- och sjötransportnät och tillhörande infrastruktur. Innefattar länkar mellan olika nät. Innefattar också det transeuropeiska transportnät som definieras i Europaparlamentets och rådets beslut nr 1692/96/EG av den 23 juli 1996 om gemenskapens riktlinjer för utbyggnad av det transeuropeiska transportnätet (1) samt framtida ändringar av det beslutet.</skos:scopeNote>
@@ -1486,6 +1518,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Автомобилни, железопътни, въздушни и водни транспортни мрежи и прилежаща инфраструктура. Включват връзки между различните мрежи. Включват също така и Трансевропейската транспортна мрежа, определена в Решение № 1692/96/ЕО на Европейския парламент и на Съвета от 23 юли 1996 г. относно общностните насоки за развитие на Трансевропейската транспортна мрежа (1) и бъдещо преразглеждане на това решение.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/8">
+<skos:altLabel>hy</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Hidrografija</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Hydrografiska element, inbegripet havsområden och alla andra vattenförekomster och därtill hörande inslag, inbegripet avrinningsområden och delavrinningsområden. I förekommande fall i enlighet med definitionerna i Europaparlamentets och rådets direktiv 2000/60/EG av den 23 oktober 2000 om upprättande av en ram för gemenskapens åtgärder på vattenpolitikens område (2) och i form av nät.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Hydrografi</skos:prefLabel>
@@ -1532,6 +1565,7 @@
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="bg">Хидрографски елементи, включително морски райони и други водни маси и свързани с тях елементи, включително речни басейни и подбасейни. По целесъобразност съгласно определенията, посочени в Директива 2000/60/ЕО на Европейския парламент и на Съвета от 23 октомври 2000 г. за установяване на рамка за действията на Общността в областта на политиката за водите (2) и под формата на мрежи.</skos:scopeNote>
 </skos:Concept>
 <skos:Concept rdf:about="http://rdfdata.eionet.europa.eu/inspirethemes/themes/9">
+<skos:altLabel>ps</skos:altLabel>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sl">Zavarovana območja</skos:prefLabel>
 <skos:scopeNote xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Områden som är utsedda eller förvaltas inom ramen för internationell lagstiftning, gemenskapslagstiftning och medlemsstaternas lagstiftning för att uppnå specifika miljövårdsmål.</skos:scopeNote>
 <skos:prefLabel xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:ns4="http://rdfdata.eionet.europa.eu/inspirethemes/themes/" xml:lang="sv">Skyddade områden</skos:prefLabel>
