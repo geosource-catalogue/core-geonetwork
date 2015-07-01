@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+	<skos:ConceptScheme rdf:about="http://data.eaufrance.fr/etalab/">
+		<dc:title>Domaine Etalab</dc:title>
+		<dc:description />
+		<dcterms:issued>2012-08-28</dcterms:issued>
+		<dcterms:modified>2012-08-28</dcterms:modified>
+	</skos:ConceptScheme>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/aménagement hydraulique">
+		<skos:prefLabel xml:lang="fr">Aménagement hydraulique</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/assainissement">
+		<skos:prefLabel xml:lang="fr">Assainissement</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Commune">
+		<skos:prefLabel xml:lang="fr">Commune</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Consommation alimentaire">
+		<skos:prefLabel xml:lang="fr">Consommation alimentaire</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/consommation d'eau">
+		<skos:prefLabel xml:lang="fr">Consommation d'eau</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/cours d'eau">
+		<skos:prefLabel xml:lang="fr">Cours d'eau</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Distribution de l'eau">
+		<skos:prefLabel xml:lang="fr">Distribution de l'eau</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Eau">
+		<skos:prefLabel xml:lang="fr">Eau</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Eau de baignade">
+		<skos:prefLabel xml:lang="fr">Eau de baignade</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Eau potable">
+		<skos:prefLabel xml:lang="fr">Eau potable</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Eau souterraine">
+		<skos:prefLabel xml:lang="fr">Eau souterraine</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Eau superficielle">
+		<skos:prefLabel xml:lang="fr">Eau superficielle</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Eaux intérieures">
+		<skos:prefLabel xml:lang="fr">Eaux intérieures</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Energie hydraulique">
+		<skos:prefLabel xml:lang="fr">Energie hydraulique</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Engrais chimique">
+		<skos:prefLabel xml:lang="fr">Engrais chimique</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Espèce marine">
+		<skos:prefLabel xml:lang="fr">Espèce marine</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Eutrophisation">
+		<skos:prefLabel xml:lang="fr">Eutrophisation</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Gestion de l'eau">
+		<skos:prefLabel xml:lang="fr">Gestion de l'eau</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Groupement de collectivités">
+		<skos:prefLabel xml:lang="fr">Groupement de collectivités</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Hydrogéologie">
+		<skos:prefLabel xml:lang="fr">Hydrogéologie</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Hydrologie">
+		<skos:prefLabel xml:lang="fr">Hydrologie</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Impact sur l'environnement">
+		<skos:prefLabel xml:lang="fr">Impact sur l'environnement</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Inondation">
+		<skos:prefLabel xml:lang="fr">Inondation</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Instrument économique pour l'environnement">
+		<skos:prefLabel xml:lang="fr">Instrument économique pour l'environnement</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Irrigation">
+		<skos:prefLabel xml:lang="fr">Irrigation</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Milieu aquatique">
+		<skos:prefLabel xml:lang="fr">Milieu aquatique</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Milieu marin">
+		<skos:prefLabel xml:lang="fr">Milieu marin</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Pêche en eau douce">
+		<skos:prefLabel xml:lang="fr">Pêche en eau douce</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Pesticide">
+		<skos:prefLabel xml:lang="fr">Pesticide</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Politique communautaire de l'environnement">
+		<skos:prefLabel xml:lang="fr">Politique communautaire de l'environnement</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Polluant de l'eau">
+		<skos:prefLabel xml:lang="fr">Polluant de l'eau</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Pollution de l'eau">
+		<skos:prefLabel xml:lang="fr">Pollution de l'eau</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Pollution des cours d'eau">
+		<skos:prefLabel xml:lang="fr">Pollution des cours d'eau</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>	
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Pollution d'origine tellurique">
+		<skos:prefLabel xml:lang="fr">Pollution d'origine tellurique</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Pollution marine">
+		<skos:prefLabel xml:lang="fr">Pollution marine</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Pollution par l'agriculture">
+		<skos:prefLabel xml:lang="fr">Pollution par l'agriculture</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Protection de l'environnement">
+		<skos:prefLabel xml:lang="fr">Protection de l'environnement</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Protection des eaux">
+		<skos:prefLabel xml:lang="fr">Protection des eaux</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Qualité de l'environnement">
+		<skos:prefLabel xml:lang="fr">Qualité de l'environnement</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Redevance environnementale">
+		<skos:prefLabel xml:lang="fr">Redevance environnementale</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Ressource en eau">
+		<skos:prefLabel xml:lang="fr">Ressource en eau</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Risque naturel">
+		<skos:prefLabel xml:lang="fr">Risque en eau</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Substance dangereuse">
+		<skos:prefLabel xml:lang="fr">Substance dangereuse</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>  
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Substance toxique">
+		<skos:prefLabel xml:lang="fr">Substance toxique</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Syndicat de communes">
+		<skos:prefLabel xml:lang="fr">Syndicat de communes</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Utilisation de l'eau">
+		<skos:prefLabel xml:lang="fr">Utilisation de l'eau</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+	<skos:Concept rdf:about="http://data.eaufrance.fr/etalab/Zone protégée">
+		<skos:prefLabel xml:lang="fr">Zone protégée</skos:prefLabel>
+		<skos:definition xml:lang="fr" />
+	</skos:Concept>
+</rdf:RDF>
+

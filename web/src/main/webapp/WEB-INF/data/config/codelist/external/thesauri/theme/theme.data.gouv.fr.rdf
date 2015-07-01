@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:dcterms="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <skos:ConceptScheme rdf:about="http://data.eaufrance.fr/typologie/jeuxdedonnees#">
+        <dc:title>Thèmes data.gouv.fr</dc:title>
+        <dc:description/>
+        <dcterms:issued>2012-10-06</dcterms:issued>
+        <dcterms:modified>2012-10-06</dcterms:modified>
+    </skos:ConceptScheme>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#1">
+        <skos:prefLabel xml:lang="fr">aménagement hydraulique </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#2">
+        <skos:prefLabel xml:lang="fr">assainissement</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#3">
+        <skos:prefLabel xml:lang="fr">commune </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#4">
+        <skos:prefLabel xml:lang="fr">consommation alimentaire </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#5">
+        <skos:prefLabel xml:lang="fr">consommation d'eau</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#6">
+        <skos:prefLabel xml:lang="fr">cours d'eau</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#7">
+        <skos:prefLabel xml:lang="fr">distribution de l'eau </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#8">
+        <skos:prefLabel xml:lang="fr">eau</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#9">
+        <skos:prefLabel xml:lang="fr">eau de baignade</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#10">
+        <skos:prefLabel xml:lang="fr">eau potable </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#11">
+        <skos:prefLabel xml:lang="fr">eau souterraine</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#12">
+        <skos:prefLabel xml:lang="fr">eau superficielle</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#13">
+        <skos:prefLabel xml:lang="fr">eaux intérieures </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#14">
+        <skos:prefLabel xml:lang="fr">énergie hydraulique </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#15">
+        <skos:prefLabel xml:lang="fr">engrais chimique</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#16">
+        <skos:prefLabel xml:lang="fr">espèce marine</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#17">
+        <skos:prefLabel xml:lang="fr">eutrophisation</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#18">
+        <skos:prefLabel xml:lang="fr">gestion de l'eau </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#19">
+        <skos:prefLabel xml:lang="fr">groupement de collectivités </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#20">
+        <skos:prefLabel xml:lang="fr">hydrogéologie</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#21">
+        <skos:prefLabel xml:lang="fr">hydrologie</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#22">
+        <skos:prefLabel xml:lang="fr">impact sur l'environnement</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#23">
+        <skos:prefLabel xml:lang="fr">inondation</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#24">
+        <skos:prefLabel xml:lang="fr">instrument économique pour l'environnement</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#25">
+        <skos:prefLabel xml:lang="fr">irrigation</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#26">
+        <skos:prefLabel xml:lang="fr">milieu aquatique</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#27">
+        <skos:prefLabel xml:lang="fr">milieu marin</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#28">
+        <skos:prefLabel xml:lang="fr">pêche en eau douce</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#29">
+        <skos:prefLabel xml:lang="fr">pesticide</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#30">
+        <skos:prefLabel xml:lang="fr">politique communautaire de l'environnement</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#31">
+        <skos:prefLabel xml:lang="fr">polluant de l'eau</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#32">
+        <skos:prefLabel xml:lang="fr">pollution de l'eau</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#33">
+        <skos:prefLabel xml:lang="fr">pollution des cours d'eau</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#34">
+        <skos:prefLabel xml:lang="fr">pollution d'origine tellurique </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#35">
+        <skos:prefLabel xml:lang="fr">pollution marine</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#36">
+        <skos:prefLabel xml:lang="fr">pollution par l'agriculture</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#37">
+        <skos:prefLabel xml:lang="fr">protection de l'environnement</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#38">
+        <skos:prefLabel xml:lang="fr">protection des eaux</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#39">
+        <skos:prefLabel xml:lang="fr">qualité de l'environnement</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#40">
+        <skos:prefLabel xml:lang="fr">redevance environnementale</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#41">
+        <skos:prefLabel xml:lang="fr">ressource en eau</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#42">
+        <skos:prefLabel xml:lang="fr">risque naturel</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#43">
+        <skos:prefLabel xml:lang="fr">substance dangereuse</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#44">
+        <skos:prefLabel xml:lang="fr">substance toxique</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#45">
+        <skos:prefLabel xml:lang="fr">syndicat de communes</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#46">
+        <skos:prefLabel xml:lang="fr">utilisation de l'eau </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/theme.data.gouv.fr#47">
+        <skos:prefLabel xml:lang="fr">zone protégée</skos:prefLabel>
+    </skos:Concept>
+
+</rdf:RDF>

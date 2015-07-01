@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:dcterms="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <skos:ConceptScheme rdf:about="http://data.eaufrance.fr/typologie/nature#">
+        <dc:title>Types par nature</dc:title>
+        <dc:description/>
+        <dcterms:issued>2012-08-28</dcterms:issued>
+        <dcterms:modified>2012-08-28</dcterms:modified>
+    </skos:ConceptScheme>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/typologie/nature#milieux-remarquables">
+        <skos:prefLabel xml:lang="fr">Milieux remarquables biodiversité</skos:prefLabel>
+        <skos:definition xml:lang="fr"/>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/typologie/nature#ouvrages">
+        <skos:prefLabel xml:lang="fr">Ouvrages (dont obstacles à l'écoulement)</skos:prefLabel>
+        <skos:definition xml:lang="fr"/>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/typologie/nature#risques-lies-a-l-eau">
+        <skos:prefLabel xml:lang="fr">Risques liés à l'eau (naturels sanitaires et technologiques)</skos:prefLabel>
+        <skos:definition xml:lang="fr"/>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/typologie/nature#usages-et-pressions">
+        <skos:prefLabel xml:lang="fr">Usages et pressions (prélèvements rejets activités liées à l'eau)</skos:prefLabel>
+        <skos:definition xml:lang="fr"/>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/typologie/nature#etat-du-milieu">
+        <skos:prefLabel xml:lang="fr">Etat du milieu (qualité quantité)</skos:prefLabel>
+        <skos:definition xml:lang="fr"/>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/typologie/nature#reponse">
+        <skos:prefLabel xml:lang="fr">Réponse (zonage réglementaire mais aussi redevance.)</skos:prefLabel>
+        <skos:definition xml:lang="fr"/>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/typologie/nature#donnees-listes-de-references">
+        <skos:prefLabel xml:lang="fr">Données/liste de références (référentiels)</skos:prefLabel>
+        <skos:definition xml:lang="fr"/>
+    </skos:Concept>
+</rdf:RDF>

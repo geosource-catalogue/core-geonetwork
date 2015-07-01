@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:dcterms="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <skos:ConceptScheme rdf:about="http://data.eaufrance.fr/typologie/jeuxdedonnees#">
+        <dc:title>Thèmes SIE</dc:title>
+        <dc:description/>
+        <dcterms:issued>2012-10-06</dcterms:issued>
+        <dcterms:modified>2012-10-06</dcterms:modified>
+    </skos:ConceptScheme>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#1">
+        <skos:prefLabel xml:lang="fr">Eaux intérieures de surface (rivières et
+            lacs)</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#2">
+        <skos:prefLabel xml:lang="fr">Eaux souterraines </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#3">
+        <skos:prefLabel xml:lang="fr">Eaux côtières </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#4">
+        <skos:prefLabel xml:lang="fr">Eaux de transition </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#5">
+        <skos:prefLabel xml:lang="fr">Gouvernance de l'eau (Politique publique, gestion intégrée)
+        </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#6">
+        <skos:prefLabel xml:lang="fr">Qualité de l'eau (Programmes de surveillance, Réseaux de
+            mesure) </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#7">
+        <skos:prefLabel xml:lang="fr">Rapportage (données issues de rapportages)</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#8">
+        <skos:prefLabel xml:lang="fr">Zonage technique ou réglementaire </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#9">
+        <skos:prefLabel xml:lang="fr">Donnée réglementaire (données issues des déclarations
+            obligatoires, hors zonage) </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#10">
+        <skos:prefLabel xml:lang="fr">Milieux remarquables - biodiversité </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#11">
+        <skos:prefLabel xml:lang="fr">Ouvrage (dont obstacles à l'écoulement) </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#12">
+        <skos:prefLabel xml:lang="fr">Donnée/liste de référence (référentiels) </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#13">
+        <skos:prefLabel xml:lang="fr">Risque lié à l'eau (naturel, sanitaire ou technologique)
+        </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#14">
+        <skos:prefLabel xml:lang="fr">Usage et pression (Prélèvement, rejet, activité ayant un
+            impact sur l'eau) </skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#15">
+        <skos:prefLabel xml:lang="fr">Etat du milieu (qualité quantité, …)</skos:prefLabel>
+    </skos:Concept>
+    <skos:Concept rdf:about="http://data.eaufrance.fr/themsie#16">
+        <skos:prefLabel xml:lang="fr">Réponse (zonage réglementaire, mais aussi redevance, action
+            volontaire….)</skos:prefLabel>
+    </skos:Concept>
+</rdf:RDF>
