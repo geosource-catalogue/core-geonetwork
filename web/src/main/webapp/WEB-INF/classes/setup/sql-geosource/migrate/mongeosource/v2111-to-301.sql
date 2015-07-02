@@ -30,7 +30,13 @@ INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES ('system/ui/defaultView', 'default', 0, 10100, 'n');
 
 UPDATE Settings SET value = '{"viewerMap": "../../map/config-viewer.xml", "listOfServices": {"wms": [], "wmts": []}, "useOSM":true,"context":"","layer":{"url":"http://www2.demis.nl/mapserver/wms.asp?","layers":"Countries","version":"1.1.1"},"projection":"EPSG:3857","projectionList":[{"code":"EPSG:4326","label":"WGS84 (EPSG:4326)"},{"code":"EPSG:3857","label":"Google mercator (EPSG:3857)"}]}' WHERE name = 'map/config';
+
 UPDATE Settings SET value = 'false' WHERE name = 'system/searchStats/enable';
+UPDATE Settings SET value = 'false' WHERE name = 'system/autodetect/enable';
+UPDATE Settings SET value = 'false' WHERE name = 'system/requestedLanguage/preferUiLanguage';
+UPDATE Settings SET value = 'off' WHERE name = 'system/requestedLanguage/only';
+
+
 UPDATE Settings SET value = '[{"code":"EPSG:2154","value":"+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"}]' WHERE name = 'map/proj4js';
 
 INSERT INTO Settings (name, value, datatype, position, internal) VALUES
@@ -43,6 +49,8 @@ SELECT setval('HIBERNATE_SEQUENCE',
 	GREATEST((SELECT max(id) + 1 as NB FROM Params), 
 	(SELECT max(id) + 1 as NB FROM Metadata))
 	);
+
+UPDATE HarvestHistory SET elapsedTime = 0 WHERE elapsedTime IS NULL;
 
 
 UPDATE Settings SET value='3.0.1' WHERE name='system/platform/version';
