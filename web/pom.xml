@@ -769,6 +769,18 @@
       </properties>
     </profile>
     <profile>
+      <id>env-titellus</id>
+      <activation>
+        <property>
+          <name>env</name>
+          <value>titellus</value>
+        </property>
+      </activation>
+      <properties>
+        <env>titellus</env>
+      </properties>
+    </profile>
+    <profile>
       <id>env-cap</id>
       <activation>
         <property>
@@ -834,7 +846,6 @@
     <geonetwork.webapp.css.dir>${geonetwork.webapp.dir}</geonetwork.webapp.css.dir>
     <minify.verbose>false</minify.verbose>
     <build.webapp.resources>${project.build.directory}/webapp</build.webapp.resources>
-    <web.xml.main.config.overrides>/WEB-INF/config-overrides-${env}.xml</web.xml.main.config.overrides>
     <web.xml.widget.config.overrides></web.xml.widget.config.overrides>
     <system.specific.overrides></system.specific.overrides>
     <rootProjectDir>${basedir}/..</rootProjectDir>

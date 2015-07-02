@@ -111,7 +111,7 @@
         -->
         <init-param>
             <param-name>jeeves.configuration.overrides.file</param-name>
-            <param-value>${system.specific.overrides},${web.xml.main.config.overrides}${web.xml.widget.config.overrides}</param-value>
+            <param-value>${system.specific.overrides},${web.xml.widget.config.overrides}</param-value>
         </init-param>
     </filter>
     <filter>
@@ -269,7 +269,7 @@
         -->
         <init-param>
             <param-name>jeeves.configuration.overrides.file</param-name>
-            <param-value>${system.specific.overrides},${web.xml.main.config.overrides}</param-value>
+            <param-value>${system.specific.overrides}</param-value>
         </init-param>
 
         <!-- Specified what geonetwork data directory to use. -->
@@ -361,6 +361,12 @@
         <servlet-name>spring</servlet-name>
         <url-pattern>/srv/*</url-pattern>
     </servlet-mapping>
+
+
+  <servlet-mapping>
+    <servlet-name>spring</servlet-name>
+    <url-pattern>/1048/*</url-pattern>
+  </servlet-mapping>
 
 
     <servlet-mapping>
