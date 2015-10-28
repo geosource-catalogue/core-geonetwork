@@ -301,7 +301,7 @@ public abstract class CatalogRequest {
 
     	//---------------------------------------------------------------------------
 
-	protected void setAttribComma(Element el, String name, Iterable<?> iter, String prefix)
+	protected void setAttribSpaceSeparated(Element el, String name, Iterable<?> iter, String prefix)
 	{
 		Iterator<?> i = iter.iterator();
 
@@ -318,7 +318,7 @@ public abstract class CatalogRequest {
             sb.append(value.toString());
 
 			if (i.hasNext())
-				sb.append(',');
+				sb.append(" ");
 		}
 
 		el.setAttribute(name, sb.toString());

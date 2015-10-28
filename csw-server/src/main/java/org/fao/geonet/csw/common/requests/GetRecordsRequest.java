@@ -194,8 +194,13 @@ public class GetRecordsRequest extends CatalogRequest
 		addParam("startPosition",  startPosition);
 		addParam("maxRecords",     maxRecords);
 		addParam("elementSetName", elemSetName);
-		addParam("constraint",     constraint);
 
+        // Optional Default action is to execute an unconstrained query.
+        if (constraint != null) {
+            addParam("constraint", constraint);
+            addParam("constraintLanguage",          constrLang);
+            addParam("constraint_language_version", constrLangVersion);
+        }
 		if (distribSearch) {
 			addParam("distributedSearch", "TRUE");
 
@@ -203,9 +208,6 @@ public class GetRecordsRequest extends CatalogRequest
                 addParam("hopCount",       hopCount);
             }
 		}
-
-		addParam("constraintLanguage",          constrLang);
-		addParam("constraint_language_version", constrLangVersion);
 
 		// FIXME : default typeNames to return results
 		// TODO : Check in Capabilities that typename exist
@@ -224,6 +226,7 @@ public class GetRecordsRequest extends CatalogRequest
 		Element params  = new Element(getRequestName(), Csw.NAMESPACE_CSW);
         // Add queryable namespaces to POST query
         params.addNamespaceDeclaration(Csw.NAMESPACE_DC);
+        params.addNamespaceDeclaration(Csw.NAMESPACE_GMD);
 
 		//--- 'service' and 'version' are common mandatory attributes
 		setAttrib(params, "service", Csw.SERVICE);
@@ -265,7 +268,7 @@ public class GetRecordsRequest extends CatalogRequest
 		if (hsTypeNames.size()==0)
 			setAttrib(query, "typeNames", "csw:Record");
 		else
-			setAttribComma(query, "typeNames", hsTypeNames, "");
+			setAttribSpaceSeparated(query, "typeNames", hsTypeNames, "");
 			
 		addParam (query, "ElementSetName", elemSetName);
 
