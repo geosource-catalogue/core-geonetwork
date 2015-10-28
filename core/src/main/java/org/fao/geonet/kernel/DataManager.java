@@ -517,11 +517,12 @@ public class DataManager {
                 List<Attribute> xlinks = Processor.getXLinks(md);
                 if (xlinks.size() > 0) {
                     moreFields.add(SearchManager.makeField("_hasxlinks", "1", true, true));
-                    StringBuilder sb = new StringBuilder();
-                    for (Attribute xlink : xlinks) {
-                        sb.append(xlink.getValue()); sb.append(" ");
-                    }
-                    moreFields.add(SearchManager.makeField("_xlink", sb.toString(), true, true));
+//                    Turn it off to avoid Lucene immense term errors
+//                    StringBuilder sb = new StringBuilder();
+//                    for (Attribute xlink : xlinks) {
+//                        sb.append(xlink.getValue()); sb.append(" ");
+//                    }
+//                    moreFields.add(SearchManager.makeField("_xlink", sb.toString(), true, true));
                     Processor.detachXLink(md, servContext);
                 } else {
                     moreFields.add(SearchManager.makeField("_hasxlinks", "0", true, true));
