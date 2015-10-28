@@ -25,6 +25,14 @@
       </label>
     </div>
 
+    <label class="control-label"
+           data-translate="">print_legend</label>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" ng-model="enableLegends"> {{'print_legend_field'|translate}}
+      </label>
+    </div>
+
     <div class="" ng-hide="auto">
       <select class="form-control"
               data-ng-model="config.scale"
@@ -39,9 +47,12 @@
       <textarea class="form-control" data-ng-model="mapComment"></textarea>
     </div>
   </div>
-  <button class="btn btn-default btn-block"
+  <button class="btn btn-default btn-block" ng-class="{'disabled': printing}"
           data-ng-click="submit()">
-    <i class="fa fa-print"></i>&nbsp;
-    {{'Print'|translate}}
+      <i class="fa fa-print" ng-if="!printing"></i>
+      <i class="fa fa-spinner fa-spin" ng-if="printing"></i>
+      &nbsp;
+      <span ng-if="!printing">{{'Print'|translate}}</span>
+      <span ng-if="printing">{{'Printing'|translate}}</span>
   </button>
 </form>

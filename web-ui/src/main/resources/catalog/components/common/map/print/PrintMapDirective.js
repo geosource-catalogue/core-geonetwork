@@ -11,9 +11,10 @@
 
     var options = {
       printConfigUrl: '../../pdf/info.json?url=..%2F..%2Fpdf',
-      legend: false,
       graticule: false
     };
+
+    $scope.enableLegends = true;
 
     /**
      * Return print configuration from Mapfishprint service
@@ -160,10 +161,13 @@
       }
     };
 
+    $scope.printing = false;
+
     $scope.submit = function() {
       if (!$scope.printActive) {
         return;
       }
+      $scope.printing = true;
       // http://mapfish.org/doc/print/protocol.html#print-pdf
       var view = $scope.map.getView();
       var proj = view.getProjection();
@@ -179,7 +183,7 @@
       var layers = $scope.map.getLayers();
       pdfLegendsToDownload = [];
 
-      angular.forEach(layers, function(layer) {
+      angular.forEach(layers.getArray(), function(layer) {
         if (layer.getVisible()) {
           var attribution = layer.attribution;
           if (attribution !== undefined &&
@@ -215,7 +219,7 @@
         dpi: $scope.config.dpi.value,
         layers: encLayers,
         legends: encLegends,
-        enableLegends: (encLegends && encLegends.length > 0),
+        enableLegends: $scope.enableLegends,
         pages: [
           angular.extend({
             center: gnPrint.getPrintRectangleCenterCoord(
@@ -230,6 +234,7 @@
       var http = $http.post($scope.config.createURL + '?url=' +
           encodeURIComponent('../../pdf'), spec);
       http.success(function(data) {
+        $scope.printing = false;
         $scope.downloadUrl(data.getURL);
         //After standard print, download the pdf Legends
         //if there are any
@@ -238,6 +243,7 @@
         }
       });
       http.error(function() {
+        $scope.printing = false;
       });
     };
 
@@ -290,20 +296,12 @@
         }
       }
 
-      if (options.legend && layerConfig.hasLegend) {
-        encLegend = gnPrint.encoders.legends['ga_urllegend'].call(this,
-            layer, layerConfig);
+      encLegend = gnPrint.encoders.legends['base'].call(
+          this, layer, layerConfig
+          );
 
-        if (encLegend.classes &&
-            encLegend.classes[0] &&
-            encLegend.classes[0].icon) {
-          var legStr = encLegend.classes[0].icon;
-          if (legStr.indexOf(pdfLegendString,
-              legStr.length - pdfLegendString.length) !== -1) {
-            pdfLegendsToDownload.push(legStr);
-            encLegend = undefined;
-          }
-        }
+      if (encLegend && encLegend.classes[0] && !encLegend.classes[0].icon) {
+        encLegend = undefined;
       }
       return {layer: encLayer, legend: encLegend};
     };
