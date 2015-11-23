@@ -1094,7 +1094,6 @@
     <module>jeeves</module>
     <module>sde</module>
     <module>web-ui</module>
-    <module>web-ui-docs</module>
     <module>domain</module>
     <module>oaipmh</module>
     <module>core</module>
