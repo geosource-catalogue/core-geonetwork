@@ -212,10 +212,10 @@ public class GetRecordsRequest extends CatalogRequest
 		// FIXME : default typeNames to return results
 		// TODO : Check in Capabilities that typename exist
 		// TODO : Check that local node support typename used
-		if (hsTypeNames.size()==0)
+//		if (hsTypeNames.size()==0)
 			addParam("typeNames", "csw:Record");
-		else
-			fill("typeNames", hsTypeNames);
+//		else
+//			fill("typeNames", hsTypeNames);
 		fill("sortBy",    alSortBy);
 	}
 
