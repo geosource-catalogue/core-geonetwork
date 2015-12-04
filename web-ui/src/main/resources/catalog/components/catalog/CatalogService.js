@@ -64,10 +64,10 @@
          */
         validate: function(id) {
           var url = gnUrlUtils.append('md.validate@json',
-            gnUrlUtils.toKeyValue({
-              id: id
-            })
-          );
+              gnUrlUtils.toKeyValue({
+                id: id
+              })
+              );
           return $http.get(url);
         },
 
@@ -690,7 +690,8 @@
        * @return {{metadata: Array, resource: Array}}
        */
       getAllContacts: function() {
-        if (angular.isUndefined(this.allContacts)) {
+        if (angular.isUndefined(this.allContacts) &&
+            angular.isDefined(this.responsibleParty)) {
           this.allContacts = {metadata: [], resource: []};
           for (var i = 0; i < this.responsibleParty.length; i++) {
             var s = this.responsibleParty[i].split('|');
