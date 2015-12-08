@@ -601,27 +601,34 @@
               var layer = getCapLayer;
 
               var isLayerAvailableInMapProjection = false;
-              // OL3 only parse CRS from WMS 1.3 (and not SRS in WMS 1.1.x)
-              // so a WMS 1.1.x will always failed on this
-              // https://github.com/openlayers/ol3/blob/master/src/
-              // ol/format/wmscapabilitiesformat.js
-              //              if (layer.CRS) {
-              //                var mapProjection = map.getView().
-              //                             getProjection().getCode();
-              //                for (var i = 0; i < layer.CRS.length; i++) {
-              //                  if (layer.CRS[i] === mapProjection) {
-              //                    isLayerAvailableInMapProjection = true;
-              //                    break;
-              //                  }
-              //                }
-              //              } else {
-              //                errors.push($translate('layerCRSNotFound'));
-              //                console.warn($translate('layerCRSNotFound'));
-              //              }
-              //              if (!isLayerAvailableInMapProjection) {
-              //                errors.push($translate('layerNotAvailableInMapProj'));
-              //                console.warn($translate('layerNotAvailableInMapProj'));
-              //              }
+
+              if (layer.CRS) {
+                var mapProjection = map.getView().
+                    getProjection().getCode();
+                for (var i = 0; i < layer.CRS.length; i++) {
+                  if (layer.CRS[i] === mapProjection) {
+                    isLayerAvailableInMapProjection = true;
+                    break;
+                  }
+                }
+              } else if (layer.otherSRS) {
+                var mapProjection = map.getView().
+                    getProjection().getCode();
+                for (var i = 0; i < layer.otherSRS.length; i++) {
+                  if (layer.otherSRS[i] === mapProjection) {
+                    isLayerAvailableInMapProjection = true;
+                    break;
+                  }
+                }
+              } else {
+                errors.push($translate('layerCRSNotFound'));
+                console.warn($translate('layerCRSNotFound'));
+              }
+
+              if (!isLayerAvailableInMapProjection) {
+                errors.push($translate('layerNotAvailableInMapProj'));
+                console.warn($translate('layerNotAvailableInMapProj'));
+              }
 
               // TODO: parse better legend & attribution
               if (angular.isArray(layer.Style) && layer.Style.length > 0) {
@@ -651,8 +658,7 @@
                 }
               }
 
-              var vectorFormat = new ol.format.GML(
-                  {srsName_: getCapLayer.defaultSRS});
+              var vectorFormat = new ol.format.WFS();
 
               if (getCapLayer.outputFormats) {
                 $.each(getCapLayer.outputFormats.format,
@@ -665,7 +671,9 @@
                     });
               }
 
-              var vectorSource = new ol.source.ServerVector({
+              //TODO different strategy depending on the format
+
+              var vectorSource = new ol.source.Vector({
                 format: vectorFormat,
                 loader: function(extent, resolution, projection) {
                   if (this.loadingLayer) {
@@ -682,7 +690,8 @@
                         service: 'WFS',
                         request: 'GetFeature',
                         version: '1.1.0',
-                        //maxFeatures: 10,
+                        srsName: map.getView().getProjection().getCode(),
+                        bbox: extent.join(','),
                         typename: getCapLayer.name.prefix + ':' +
                                    getCapLayer.name.localPart})));
 
@@ -690,34 +699,54 @@
                     url: proxyUrl
                   })
                     .done(function(response) {
-                        vectorSource.addFeatures(vectorSource.
-                            readFeatures(response.firstElementChild));
+                        // TODO: Check WFS exception
+                        vectorSource.addFeatures(vectorFormat.
+                            readFeatures(response));
 
                         var extent = ol.extent.createEmpty();
                         var features = vectorSource.getFeatures();
                         for (var i = 0; i < features.length; ++i) {
-                            var feature = features[i];
-                            var geometry = feature.getGeometry();
-                            if (!goog.isNull(geometry)) {
-                                  ol.extent.extend(extent, geometry.getExtent());
-                            }
+                          var feature = features[i];
+                          var geometry = feature.getGeometry();
+                          if (!goog.isNull(geometry)) {
+                            ol.extent.extend(extent, geometry.getExtent());
+                          }
                         }
-                        
-                        map.getView().fitExtent(extent, map.getSize());
+
+                        map.getView().fit(extent, map.getSize());
 
                       })
                     .then(function() {
                         this.loadingLayer = false;
                       });
                 },
-                strategy: ol.loadingstrategy.createTile(new ol.tilegrid.XYZ({
-                  maxZoom: 19
-                })),
-                projection: 'EPSG:3857'
+                strategy: ol.loadingstrategy.bbox,
+                projection: map.getView().getProjection().getCode()
               });
 
+              var extent = null;
+
+              //Add spatial extent
+              if (layer.wgs84BoundingBox && layer.wgs84BoundingBox[0] &&
+                  layer.wgs84BoundingBox[0].lowerCorner &&
+                  layer.wgs84BoundingBox[0].upperCorner) {
+                extent = ol.extent.boundingExtent(
+                    [layer.wgs84BoundingBox[0].lowerCorner,
+                     layer.wgs84BoundingBox[0].upperCorner]);
+
+                extent = ol.proj.transformExtent(
+                    extent,
+                    'EPSG:4326',
+                    map.getView().getProjection().getCode());
+              }
+
+              if (extent) {
+                map.getView().fit(extent, map.getSize());
+              }
+
               var layer = new ol.layer.Vector({
-                source: vectorSource
+                source: vectorSource,
+                extent: extent
               });
               layer.set('errors', errors);
               ngeoDecorateLayer(layer);
@@ -1194,7 +1223,7 @@
            */
           zoomLayerToExtent: function(layer, map) {
             if (layer.get('cextent')) {
-              map.getView().fitExtent(layer.get('cextent'), map.getSize());
+              map.getView().fit(layer.get('cextent'), map.getSize());
             }
           },
 

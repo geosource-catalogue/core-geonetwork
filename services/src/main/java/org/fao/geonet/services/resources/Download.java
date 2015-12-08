@@ -99,6 +99,10 @@ public class Download {
 		// Build the response
 		Path dir = Lib.resource.getDir(context, access, id);
 		Path file= dir.resolve(fname);
+		
+		if(fname.startsWith("/") || fname.startsWith("://", 1)) {
+		    throw new SecurityException("Wrong filename");
+		}
 
 		context.info("File is : " +file);
 
@@ -140,11 +144,13 @@ public class Download {
                 List<OperationAllowed> opsAllowed = opAllowedRepo.findByMetadataId(id);
                 
 				for (OperationAllowed opAllowed : opsAllowed) {
+					if (opAllowed.getId().getOperationId() != ReservedOperation.notify.getId())
+						continue;
                     Group group = groupRepository.findOne(opAllowed.getId().getGroupId());
 					String  name  = group.getName();
 					String  email = group.getEmail();
 
-					if (email.trim().length() != 0)
+					if (email != null && email.trim().length() != 0)
 					{
 					    // TODO i18n
 						String subject = "File " + fname + " has been downloaded";

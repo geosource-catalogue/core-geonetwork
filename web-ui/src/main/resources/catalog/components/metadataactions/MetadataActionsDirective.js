@@ -6,7 +6,8 @@
   var module = angular.module('gn_mdactions_directive', []);
 
   module.directive('gnMetadataStatusUpdater', ['$translate', '$http',
-    function($translate, $http) {
+    'gnMetadataManager',
+    function($translate, $http, gnMetadataManager) {
 
       return {
         restrict: 'A',
@@ -14,15 +15,17 @@
         templateUrl: '../../catalog/components/metadataactions/partials/' +
             'statusupdater.html',
         scope: {
-          metadataId: '=gnMetadataStatusUpdater'
+          md: '=gnMetadataStatusUpdater'
         },
         link: function(scope) {
           scope.lang = scope.$parent.lang;
+          var user = scope.$parent.user;
           scope.newStatus = {value: '0'};
 
+          var metadataId = scope.md.getId();
           function init() {
             return $http.get('md.status.list?' +
-                '_content_type=json&id=' + scope.metadataId).
+                '_content_type=json&id=' + metadataId).
                 success(function(data) {
                   scope.status =
                      data !== 'null' ? data.statusvalue : null;
@@ -38,10 +41,11 @@
 
           scope.updateStatus = function() {
             return $http.get('md.status.update?' +
-                '_content_type=json&id=' + scope.metadataId +
+                '_content_type=json&id=' + metadataId +
                 '&changeMessage=' + scope.changeMessage +
                 '&status=' + scope.newStatus.value).then(
                 function(data) {
+                  gnMetadataManager.updateMdObj(scope.md);
                   scope.$emit('metadataStatusUpdated', true);
                   scope.$emit('StatusUpdated', {
                     msg: $translate('metadataStatusUpdatedWithNoErrors'),
@@ -55,6 +59,11 @@
                     timeout: 0,
                     type: 'danger'});
                 });
+          };
+
+          scope.cantStatus = function(status) {
+            return ((status == 5 || status == 2 || status == 3) &&
+                !user.isReviewerOrMore());
           };
 
           init();
@@ -83,12 +92,33 @@
             'metadatacategoryupdater.html',
         scope: {
           currentCategories: '=gnMetadataCategoryUpdater',
-          metadataId: '='
+          metadataId: '=',
+          groupOwner: '=gnGroupOwner'
         },
         link: function(scope) {
           scope.lang = scope.$parent.lang;
           scope.categories = null;
           scope.ids = [];
+
+          scope.updateCategoriesAllowed = function() {
+            if (angular.isDefined(scope.groupOwner)) {
+              $http.get('admin.group.get?id=' + scope.groupOwner + '&' +
+                  '_content_type=json', {cache: true}).
+                  success(function(data) {
+                    scope.enableallowedcategories =
+                        (data[0].enableallowedcategories == 'true');
+                    scope.allowedcategories = [];
+                    angular.forEach(data[0].allowedcategories, function(c) {
+                      scope.allowedcategories.push(c.id);
+                    });
+                  });
+            }
+          };
+          scope.updateCategoriesAllowed();
+
+          scope.$watch('groupOwner', function(newvalue, oldvalue) {
+            scope.updateCategoriesAllowed();
+          });
 
           var init = function() {
             return $http.get('info?type=categories&' +

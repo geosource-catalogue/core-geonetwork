@@ -66,6 +66,7 @@
       // Indicate if an update is going on
       $scope.userOperation = 'editinfo';
       $scope.userIsAdmin = null;
+      $scope.userIsEnabled = null;
       // On going changes for user ...
       $scope.userUpdated = false;
       $scope.passwordCheck = '';
@@ -73,6 +74,10 @@
       $scope.isLoadingUsers = false;
       $scope.isLoadingGroups = false;
 
+      $http.get('info?type=categories&_content_type=json').
+          success(function(data) {
+            $scope.categories = data.metadatacategory;
+          });
 
 
       function loadGroups() {
@@ -80,6 +85,21 @@
         $http.get('admin.group.list?_content_type=json').
             success(function(data) {
               $scope.groups = data !== 'null' ? data : null;
+              //Fixing true not equal to "true" and
+              //Simplifying the allowed categories list
+              angular.forEach($scope.groups, function(u) {
+                if (u.enableallowedcategories == 'true') {
+                  u.enableallowedcategories = true;
+                  u.allowedcategoriessimp = [];
+                  angular.forEach(u.allowedcategories, function(c) {
+                    if (c.id) {
+                      u.allowedcategoriessimp.push(c.id);
+                    }
+                  });
+                } else {
+                  u.enableallowedcategories = false;
+                }
+              });
               $scope.isLoadingGroups = false;
             }).error(function(data) {
               // TODO
@@ -145,10 +165,12 @@
           country: '',
           email: '',
           organisation: '',
-          groups: []
+          groups: [],
+          enabled: true
         };
         $scope.userGroups = null;
         $scope.userIsAdmin = false;
+        $scope.userIsEnabled = true;
         $timeout(function() {
           $scope.setUserProfile();
           $('#username').focus();
@@ -174,14 +196,17 @@
       $scope.selectUser = function(u) {
         $scope.userOperation = 'editinfo';
         $scope.userIsAdmin = false;
+        $scope.userIsEnabled = true;
         $scope.userSelected = null;
         $scope.userGroups = null;
 
         $http.get('admin.user?_content_type=json&id=' + u.value.id)
-          .success(function(data) {
+            .success(function(data) {
               $scope.userSelected = data;
               $scope.userIsAdmin =
                   (data.profile === 'Administrator');
+
+              $scope.userIsEnabled = (data.enabled === 'true');
 
               // Load user group and then select user
               $http.get('admin.usergroups.list?_content_type=json&id=' +
@@ -228,7 +253,7 @@
         };
 
         $http.post('admin.user.resetpassword', null, {params: params})
-              .success(function(data) {
+            .success(function(data) {
               $scope.resetPassword1 = null;
               $scope.resetPassword2 = null;
               $('#passwordResetModal').modal('hide');
@@ -275,12 +300,6 @@
         }
         $scope.userUpdated = true;
         if ($scope.userIsAdmin) {
-          // Unselect all groups option
-          for (var i = 0; i < $scope.profiles.length; i++) {
-            if ($scope.profiles[i] !== 'Administrator') {
-              $('#groups_' + $scope.profiles[i])[0].selectedIndex = -1;
-            }
-          }
           $scope.userSelected.profile = 'Administrator';
         } else {
           // Define the highest profile for user
@@ -319,8 +338,9 @@
        * Save a user.
        */
       $scope.saveUser = function(formId) {
-        $http.get('admin.user.update?' + $(formId).serialize())
-        .success(function(data) {
+        $http.get('admin.user.update?' + $(formId).serialize() +
+                '&enabled=' + $scope.userIsEnabled)
+            .success(function(data) {
               $scope.unselectUser();
               loadUsers();
               $rootScope.$broadcast('StatusUpdated', {
@@ -328,7 +348,7 @@
                 timeout: 2,
                 type: 'success'});
             })
-        .error(function(data) {
+            .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
                 title: $translate('userUpdateError'),
                 error: data,
@@ -343,11 +363,11 @@
       $scope.deleteUser = function(formId) {
         $http.get('admin.user.remove?id=' +
                 $scope.userSelected.id)
-        .success(function(data) {
+            .success(function(data) {
               $scope.unselectUser();
               loadUsers();
             })
-        .error(function(data) {
+            .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
                 title: $translate('userDeleteError'),
                 error: data,
@@ -411,25 +431,29 @@
 
       $scope.saveGroup = function(formId, logoUploadDivId) {
         var uploadScope = angular.element(logoUploadDivId).scope();
-        if (uploadScope.queue.length > 0) {
+        if (uploadScope && uploadScope.queue.length > 0) {
           uploadScope.submit();
         } else {
-          var deleteLogo = $scope.groupSelected.logo === null ?
+          var deleteLogo = $scope.groupSelected.logo === null &&
+              !$scope.groupSelected.logoFromHarvest ?
               '&deleteLogo=true' : '';
-          $http.get('admin.group.update?' + $(formId).serialize() + deleteLogo)
-          .success(uploadImportMdDone)
-          .error(uploadImportMdError);
+          var addLogo = $scope.groupSelected.logoFromHarvest ?
+              '&copyLogo=' + $scope.groupSelected.logoFromHarvest : '';
+          $http.get('admin.group.update?' + $(formId).serialize() +
+              deleteLogo + addLogo)
+              .success(uploadImportMdDone)
+              .error(uploadImportMdError);
         }
       };
 
       $scope.deleteGroup = function(formId) {
         $http.get('admin.group.remove?id=' +
                 $scope.groupSelected.id)
-        .success(function(data) {
+            .success(function(data) {
               $scope.unselectGroup();
               loadGroups();
             })
-        .error(function(data) {
+            .error(function(data) {
               $rootScope.$broadcast('StatusUpdated', {
                 title: $translate('groupDeleteError'),
                 error: data,

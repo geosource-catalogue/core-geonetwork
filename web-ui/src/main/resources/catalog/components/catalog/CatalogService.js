@@ -26,7 +26,8 @@
     '$location',
     '$timeout',
     'gnUrlUtils',
-    function($http, $location, $timeout, gnUrlUtils) {
+    'Metadata',
+    function($http, $location, $timeout, gnUrlUtils, Metadata) {
       return {
         //TODO: rewrite calls with gnHttp
 
@@ -51,6 +52,26 @@
         },
 
         /**
+         * @ngdoc method
+         * @name gnMetadataManager#validate
+         * @methodOf gnMetadataManager
+         *
+         * @description
+         * Validate a metadata from catalog
+         *
+         * @param {string} id Internal id of the metadata
+         * @return {HttpPromise} Future object
+         */
+        validate: function(id) {
+          var url = gnUrlUtils.append('md.validate@json',
+              gnUrlUtils.toKeyValue({
+                id: id
+              })
+              );
+          return $http.get(url);
+        },
+
+        /**
            * @ngdoc method
            * @name gnMetadataManager#copy
            * @methodOf gnMetadataManager
@@ -65,10 +86,12 @@
            * @param {boolean} withFullPrivileges privileges to assign.
            * @param {boolean} isTemplate type of the metadata
            * @param {boolean} isChild is child of a parent metadata
+           * @param {string} metadataUuid, the uuid of the metadata to create
+           *                 (when metadata uuid is set to manual)
            * @return {HttpPromise} Future object
            */
         copy: function(id, groupId, withFullPrivileges, 
-            isTemplate, isChild) {
+            isTemplate, isChild, metadataUuid) {
           var url = gnUrlUtils.append('md.create',
               gnUrlUtils.toKeyValue({
                 _content_type: 'json',
@@ -76,7 +99,8 @@
                 id: id,
                 template: isTemplate ? (isTemplate === 's' ? 's' : 'y') : 'n',
                 child: isChild ? 'y' : 'n',
-                fullPrivileges: withFullPrivileges ? 'true' : 'false'
+                fullPrivileges: withFullPrivileges ? 'true' : 'false',
+                metadataUuid: metadataUuid
               })
               );
           return $http.get(url);
@@ -169,12 +193,16 @@
            * @param {boolean} withFullPrivileges privileges to assign.
            * @param {boolean} isTemplate type of the metadata
            * @param {boolean} isChild is child of a parent metadata
+           * @param {string} tab is the metadata editor tab to open
+           * @param {string} metadataUuid, the uuid of the metadata to create
+           *                 (when metadata uuid is set to manual)
            * @return {HttpPromise} Future object
            */
         create: function(id, groupId, withFullPrivileges, 
-            isTemplate, isChild, tab) {
+            isTemplate, isChild, tab, metadataUuid) {
+
           return this.copy(id, groupId, withFullPrivileges,
-              isTemplate, isChild).success(function(data) {
+              isTemplate, isChild, metadataUuid).success(function(data) {
             var path = '/metadata/' + data.id;
             if (tab) {
               path += '/tab/' + tab;
@@ -182,6 +210,45 @@
             $location.path(path);
           });
           // TODO : handle creation error
+        },
+
+        /**
+         * @ngdoc method
+         * @name gnMetadataManager#getMdObjByUuid
+         * @methodOf gnMetadataManager
+         *
+         * @description
+         * Get the metadata js object from catalog. Trigger a search and
+         * return a promise.
+         * @param {string} uuid of the metadata
+         * @return {HttpPromise} of the $http get
+         */
+        getMdObjByUuid: function(uuid) {
+          return $http.get('q?_uuid=' + uuid + '' +
+              '&fast=index&_content_type=json&buildSummary=false').
+              then(function(resp) {
+                return new Metadata(resp.data.metadata);
+              });
+        },
+
+        /**
+         * @ngdoc method
+         * @name gnMetadataManager#updateMdObj
+         * @methodOf gnMetadataManager
+         *
+         * @description
+         * Update the metadata object
+         *
+         * @param {object } md to reload
+         * @return {HttpPromise} of the $http get
+         */
+        updateMdObj: function(md) {
+          return this.getMdObjByUuid(md.getUuid()).then(
+              function(md_) {
+                angular.extend(md, md_);
+                return md;
+              }
+          );
         }
       };
     }
@@ -271,6 +338,7 @@
 
     mdPrivileges: 'md.privileges.update@json',
     mdPrivilegesBatch: 'md.privileges.batch.update@json',
+    mdValidateBatch: 'md.validation',
     publish: 'md.publish',
     unpublish: 'md.unpublish',
 
@@ -297,7 +365,8 @@
     removeOnlinesrc: 'resource.del.and.detach', // TODO: CHANGE
     geoserverNodes: 'geoserver.publisher?_content_type=json&',
     suggest: 'suggest',
-    facetConfig: 'search/facet/config'
+    facetConfig: 'search/facet/config',
+    selectionLayers: 'selection.layers'
   });
 
   /**
@@ -503,11 +572,11 @@
   module.factory('Metadata', function() {
     function Metadata(k) {
       $.extend(true, this, k);
-      var listOfArrayFields = ['topicCat', 'category',
+      var listOfArrayFields = ['topicCat', 'category', 'keyword',
         'securityConstraints', 'resourceConstraints', 'legalConstraints',
         'denominator', 'resolution', 'geoDesc', 'geoBox', 'inspirethemewithac',
-        'status', 'status_text',
-        'mdLanguage', 'datasetLang', 'type'];
+        'status', 'status_text', 'crs', 'identifier', 'responsibleParty',
+        'mdLanguage', 'datasetLang', 'type', 'link'];
       var record = this;
       this.linksCache = [];
       $.each(listOfArrayFields, function(idx) {
@@ -550,6 +619,9 @@
       getOwnerId: function() {
         return this['geonet:info'].ownerId;
       },
+      getSchema: function() {
+        return this['geonet:info'].schema;
+      },
       publish: function() {
         this['geonet:info'].isPublishedToAll = this.isPublished() ?
             'false' : 'true';
@@ -571,7 +643,7 @@
           groupId = types[0];
           types.splice(0, 1);
         }
-        if (this.linksCache[key]) {
+        if (this.linksCache[key] && !groupId) {
           return this.linksCache[key];
         }
         angular.forEach(this.link, function(link) {
@@ -611,9 +683,43 @@
         }
         return images;
       },
+      /**
+       * Return an object containing metadata contacts
+       * as an array and resource contacts as array
+       *
+       * @return {{metadata: Array, resource: Array}}
+       */
+      getAllContacts: function() {
+        if (angular.isUndefined(this.allContacts) &&
+            angular.isDefined(this.responsibleParty)) {
+          this.allContacts = {metadata: [], resource: []};
+          for (var i = 0; i < this.responsibleParty.length; i++) {
+            var s = this.responsibleParty[i].split('|');
+            var contact = {
+              role: s[0] || '',
+              org: s[2] || '',
+              logo: s[3] || '',
+              email: s[4] || '',
+              name: s[5] || '',
+              position: s[6] || '',
+              address: s[7] || '',
+              phone: s[8] || ''
+            };
+            if (s[1] === 'resource') {
+              this.allContacts.resource.push(contact);
+            } else if (s[1] === 'metadata') {
+              this.allContacts.metadata.push(contact);
+            }
+          }
+        }
+        return this.allContacts;
+      },
+      /**
+       * Deprecated. Use getAllContacts instead
+       */
       getContacts: function() {
+        var ret = {};
         if (angular.isArray(this.responsibleParty)) {
-          var ret = {};
           for (var i = 0; i < this.responsibleParty.length; i++) {
             var s = this.responsibleParty[i].split('|');
             if (s[1] === 'resource') {
@@ -660,6 +766,22 @@
         } else {
           return '';
         }
+      },
+      isWorkflowEnabled: function() {
+        var st = this.mdStatus;
+        var res = st &&
+            //Status is unknown
+            (!isNaN(st) && st != '0');
+
+        //What if it is an array: gmd:MD_ProgressCode
+        if (!res && Array.isArray(st)) {
+          angular.forEach(st, function(s) {
+            if (!isNaN(s) && s != '0') {
+              res = true;
+            }
+          });
+        }
+        return res;
       }
     };
     return Metadata;

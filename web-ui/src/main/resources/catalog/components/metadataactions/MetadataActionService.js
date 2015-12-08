@@ -129,6 +129,20 @@
       this.exportCSV = function() {
         window.open(gnHttp.getService('csv'), windowName, windowOption);
       };
+      this.validateMd = function(md, searchParams) {
+        if (md) {
+          return gnMetadataManager.validate(md.getId()).then(function() {
+            $rootScope.$broadcast('mdSelectNone');
+            $rootScope.$broadcast('resetSearch', searchParams);
+          });
+        }
+        else {
+          return callBatch('mdValidateBatch').then(function() {
+            $rootScope.$broadcast('mdSelectNone');
+            $rootScope.$broadcast('resetSearch', searchParams);
+          });
+        }
+      };
 
       this.deleteMd = function(md, searchParams) {
         if (md) {
@@ -153,11 +167,10 @@
         }, scope, 'PrivilegesUpdated');
       };
 
-      this.openUpdateStatusPanel = function(md, scope) {
+      this.openUpdateStatusPanel = function(scope) {
         openModal({
           title: 'updateStatus',
-          content: '<div data-gn-metadata-status-updater="' +
-              md.getId() + '"></div>'
+          content: '<div data-gn-metadata-status-updater="md"></div>'
         }, scope, 'metadataStatusUpdated');
       };
 
@@ -167,6 +180,7 @@
             '&changeMessage=Enable workflow' +
             '&status=1').then(
             function(data) {
+              gnMetadataManager.updateMdObj(md);
               scope.$emit('metadataStatusUpdated', true);
               scope.$emit('StatusUpdated', {
                 msg: $translate('metadataStatusUpdatedWithNoErrors'),

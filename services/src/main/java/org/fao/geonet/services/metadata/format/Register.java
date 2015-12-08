@@ -23,18 +23,27 @@
 
 package org.fao.geonet.services.metadata.format;
 
-import jeeves.interfaces.Service;
-
+import com.google.common.io.ByteStreams;
 import com.vividsolutions.jts.util.Assert;
-import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import jeeves.server.context.ServiceContext;
+import jeeves.server.dispatchers.ServiceManager;
+import jeeves.services.ReadWriteController;
+import net.sf.json.JSONObject;
+import org.fao.geonet.ApplicationContextHolder;
 import org.fao.geonet.Constants;
-import org.fao.geonet.Util;
 import org.fao.geonet.ZipUtil;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
+import org.fao.geonet.kernel.GeonetworkDataDirectory;
 import org.fao.geonet.utils.IO;
-import org.jdom.Element;
+import org.fao.oaipmh.exceptions.BadArgumentException;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -43,6 +52,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Iterator;
+import javax.servlet.http.HttpServletRequest;
 
 import static org.fao.geonet.services.metadata.format.FormatterConstants.VIEW_XSL_FILENAME;
 
@@ -50,18 +60,29 @@ import static org.fao.geonet.services.metadata.format.FormatterConstants.VIEW_XS
  * Upload a formatter bundle.  Uploaded file can be a single xsl or a zip file containing
  * resources as well as the xsl file.  If a zip the zip must contain view.xsl which is the 
  * root xsl file.
- * 
+ *
  * The  zip file can be flat or contain a single directory.
- *  
+ *
  * @author jeichar
  */
-public class Register extends AbstractFormatService implements Service {
+@Controller
+@ReadWriteController
+public class Register extends AbstractFormatService {
 
-    public Element exec(Element params, ServiceContext context) throws Exception {
-        String fileName = Util.getParam(params, Params.FNAME);
-        String xslid = Util.getParam(params, Params.ID, null);
+
+    @RequestMapping(value = {"/{lang}/md.formatter.register"}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public JSONObject serviceSpecificExec(HttpServletRequest request,
+                                    @PathVariable String lang,
+                                    @RequestParam(value = Params.ID, required = false) String xslid,
+                                    @RequestParam(Params.FNAME) MultipartFile file
+    ) throws Exception {
+
+        ServiceManager serviceManager = ApplicationContextHolder.get().getBean(ServiceManager.class);
+        ServiceContext context = serviceManager.createServiceContext("md.formatter.register", lang, request);
+
         if (xslid == null) {
-            xslid = fileName;
+            xslid = file.getOriginalFilename();
             int extentionIdx = xslid.lastIndexOf('.');
             if (extentionIdx != -1) {
                 xslid = xslid.substring(0, extentionIdx);
@@ -71,22 +92,36 @@ public class Register extends AbstractFormatService implements Service {
         checkLegalId(Params.ID, xslid);
         Path userXslDir = context.getBean(GeonetworkDataDirectory.class).getFormatterDir();
         Path newBundle = userXslDir.resolve(xslid);
-        
-        Path uploadedFile = context.getUploadDir().resolve(fileName);
 
-        Files.createDirectories(newBundle);
+        Path uploadedFile = context.getUploadDir().resolve(file.getOriginalFilename());
+        byte[] data = ByteStreams.toByteArray(file.getInputStream());
+        Files.write(uploadedFile, data);
 
         try {
+            Files.createDirectories(newBundle);
 
             try (FileSystem zipFs = ZipUtil.openZipFs(uploadedFile)){
                 Path viewFile = findViewFile(zipFs);
                 if (viewFile == null) {
-                    throw new IllegalArgumentException(
+                    throw new BadArgumentException(
                             "A formatter zip file must contain a " + VIEW_XSL_FILENAME + " file as one of its root files");
-        }
-                ZipUtil.extract(zipFs, newBundle);
+                }
 
-            } catch (IOException e) {
+                Path viewXslContainerDir = null;
+                for (Path root : zipFs.getRootDirectories()) {
+                    viewXslContainerDir = findViewXslContainerDir(root);
+                    if (viewXslContainerDir != null) {
+                        break;
+                    }
+                }
+
+                if (viewXslContainerDir == null) {
+                    throw new IllegalArgumentException(uploadedFile + " does not have a view.xsl file within it");
+                }
+
+                IO.copyDirectoryOrFile(viewXslContainerDir, newBundle, false);
+
+            } catch (IllegalArgumentException | UnsupportedOperationException e) {
                 handleRawXsl(uploadedFile, newBundle);
             } catch (Exception e){
                 IO.deleteFileOrDirectory(newBundle);
@@ -94,16 +129,31 @@ public class Register extends AbstractFormatService implements Service {
             }
 
             addOptionalFiles(newBundle);
-            
-            Element response = new Element("result");
-            Element idElem = new Element("id");
-            idElem.setAttribute("id", xslid);
-            response.addContent(idElem);
+
+            JSONObject response = new JSONObject();
+            response.put("success", true);
+            response.put("id", xslid);
 
             return response;
         } finally {
             IO.deleteFile(uploadedFile, false, Geonet.FORMATTER);
         }
+    }
+
+    private Path findViewXslContainerDir(Path dir) throws IOException {
+        if (Files.exists(dir.resolve(FormatterConstants.VIEW_XSL_FILENAME))) {
+            return dir;
+        }
+
+        try (DirectoryStream<Path> paths = Files.newDirectoryStream(dir, IO.DIRECTORIES_FILTER)) {
+            for (Path childDir: paths) {
+                Path container = findViewXslContainerDir(childDir);
+                if (container != null) {
+                    return container;
+                }
+            }
+        }
+        return null;
     }
 
     private Path findViewFile(FileSystem zipFs) throws IOException {
@@ -123,7 +173,7 @@ public class Register extends AbstractFormatService implements Service {
                 Path next = dirIter.next();
                 Assert.isTrue(!dirIter.hasNext(),
                         "The formatter/view zip file must either have a single root directory which contains the view file or " +
-                        "it must have all formatter resources at the root of the directory");
+                                "it must have all formatter resources at the root of the directory");
                 rootView = next.resolve(VIEW_XSL_FILENAME);
                 if (Files.exists(rootView)) {
                     return rootView;
@@ -138,7 +188,7 @@ public class Register extends AbstractFormatService implements Service {
     }
 
     private void addOptionalFiles(Path file) throws IOException {
-    	ConfigFile.generateDefault(file);
+        ConfigFile.generateDefault(file);
 
         final Path locDir = file.resolve("loc");
         if (!Files.exists(locDir)) {
@@ -162,4 +212,7 @@ public class Register extends AbstractFormatService implements Service {
         Files.createDirectories(dir);
         IO.moveDirectoryOrFile(uploadedFile, dir.resolve(VIEW_XSL_FILENAME), false);
     }
+
 }
+
+

@@ -199,7 +199,7 @@
 						</keyword>
 					</xsl:for-each>
 					<type>
-						<MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="theme"/>
+						<MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="theme"/>
 					</type>
 					<thesaurusName>
 						<CI_Citation>
@@ -215,7 +215,7 @@
 										<gco:Date>2010-04-22</gco:Date>
 									</date>
 									<dateType>
-										<CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication"/>
+										<CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication"/>
 									</dateType>
 								</CI_Date>
 							</date>
@@ -240,13 +240,13 @@
 							or . = 'restricted'
 							">
 							<accessConstraints>
-								<MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_RestrictionCode" 
+								<MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_RestrictionCode"
 									codeListValue="{.}"/>
 							</accessConstraints>
 						</xsl:when>
 						<xsl:when test="lower-case(.) = 'none'">
 							<accessConstraints>
-								<MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_RestrictionCode" 
+								<MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_RestrictionCode"
 									codeListValue="otherRestrictions"/>
 							</accessConstraints>
 							<otherConstraints>
@@ -255,7 +255,7 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<accessConstraints>
-								<MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_RestrictionCode" 
+								<MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_RestrictionCode"
 									codeListValue="otherRestrictions"/>
 							</accessConstraints>
 							<otherConstraints>
@@ -635,32 +635,64 @@
 
 
 
-		
-		<xsl:for-each-group select="//wms:Layer[wms:Name=$Name]/wms:KeywordList/wms:Keyword|wms:Service/wms:KeywordList/wms:Keyword" 
-			group-by="@vocabulary">
-			<descriptiveKeywords>
-				<MD_Keywords>
-					<xsl:for-each select="../wms:Keyword[@vocabulary = current-grouping-key()]">
-						<keyword>
-							<gco:CharacterString><xsl:value-of select="."/></gco:CharacterString>
-						</keyword>
-					</xsl:for-each>
-					
-					<xsl:if test="current-grouping-key() != ''">
-						<thesaurusName>
-							<CI_Citation>
-								<title>
-									<gco:CharacterString><xsl:value-of select="current-grouping-key()"/></gco:CharacterString>
-								</title>
-							</CI_Citation>
-						</thesaurusName>
-					</xsl:if>
-					<type>
-						<MD_KeywordTypeCode codeList="./resources/codeList.xml#MD_KeywordTypeCode" codeListValue="theme" />
-					</type>
-				</MD_Keywords>
-			</descriptiveKeywords>
-		</xsl:for-each-group>
+
+    <!-- If layer does not provide any keywords, put service keywords. -->
+    <xsl:choose>
+      <xsl:when test="count(//wms:Layer[wms:Name=$Name]/wms:KeywordList/wms:Keyword) > 0">
+        <xsl:for-each-group select="//wms:Layer[wms:Name=$Name]/wms:KeywordList/wms:Keyword"
+                            group-by="@vocabulary">
+          <descriptiveKeywords>
+            <MD_Keywords>
+              <xsl:for-each select="../wms:Keyword[@vocabulary = current-grouping-key()]">
+                <keyword>
+                  <gco:CharacterString><xsl:value-of select="."/></gco:CharacterString>
+                </keyword>
+              </xsl:for-each>
+
+              <xsl:if test="current-grouping-key() != ''">
+                <thesaurusName>
+                  <CI_Citation>
+                    <title>
+                      <gco:CharacterString><xsl:value-of select="current-grouping-key()"/></gco:CharacterString>
+                    </title>
+                  </CI_Citation>
+                </thesaurusName>
+              </xsl:if>
+              <type>
+                <MD_KeywordTypeCode codeList="./resources/codeList.xml#MD_KeywordTypeCode" codeListValue="theme" />
+              </type>
+            </MD_Keywords>
+          </descriptiveKeywords>
+        </xsl:for-each-group>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:for-each-group select="wms:Service/wms:KeywordList/wms:Keyword"
+                            group-by="@vocabulary">
+          <descriptiveKeywords>
+            <MD_Keywords>
+              <xsl:for-each select="../wms:Keyword[@vocabulary = current-grouping-key()]">
+                <keyword>
+                  <gco:CharacterString><xsl:value-of select="."/></gco:CharacterString>
+                </keyword>
+              </xsl:for-each>
+
+              <xsl:if test="current-grouping-key() != ''">
+                <thesaurusName>
+                  <CI_Citation>
+                    <title>
+                      <gco:CharacterString><xsl:value-of select="current-grouping-key()"/></gco:CharacterString>
+                    </title>
+                  </CI_Citation>
+                </thesaurusName>
+              </xsl:if>
+              <type>
+                <MD_KeywordTypeCode codeList="./resources/codeList.xml#MD_KeywordTypeCode" codeListValue="theme" />
+              </type>
+            </MD_Keywords>
+          </descriptiveKeywords>
+        </xsl:for-each-group>
+      </xsl:otherwise>
+    </xsl:choose>
 		
 		<xsl:for-each select="//wfs:FeatureType[wfs:Name=$Name]">
 			<descriptiveKeywords>

@@ -23,27 +23,32 @@
 
 package org.fao.geonet.services.group;
 
-import jeeves.constants.Jeeves;
-import jeeves.server.ServiceConfig;
-import jeeves.server.context.ServiceContext;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.UUID;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FilenameUtils;
 import org.fao.geonet.Util;
 import org.fao.geonet.constants.Params;
 import org.fao.geonet.domain.Group;
 import org.fao.geonet.domain.Language;
+import org.fao.geonet.domain.MetadataCategory;
 import org.fao.geonet.repository.GroupRepository;
 import org.fao.geonet.repository.LanguageRepository;
+import org.fao.geonet.repository.MetadataCategoryRepository;
 import org.fao.geonet.repository.Updater;
 import org.fao.geonet.resources.Resources;
 import org.fao.geonet.services.NotInReadOnlyModeService;
 import org.fao.geonet.utils.IO;
 import org.jdom.Element;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.UUID;
-import javax.imageio.ImageIO;
+import jeeves.constants.Jeeves;
+import jeeves.server.ServiceConfig;
+import jeeves.server.context.ServiceContext;
 
 
 /**
@@ -64,7 +69,13 @@ public class Update extends NotInReadOnlyModeService {
         final String name = Util.getParam(params, Params.NAME);
         final String description = Util.getParam(params, Params.DESCRIPTION, "");
         final boolean deleteLogo = Util.getParam(params, "deleteLogo", false);
+        final String copyLogo = Util.getParam(params, "copyLogo", null);
         final String email = params.getChildText(Params.EMAIL);
+        final String category = Util.getParam(params, Params.CATEGORY, "-1");
+        
+        final java.util.List<Integer> allowedCategories = Util.getParamsAsInt(params, "allowedCategories");
+        final Boolean enableAllowedCategories = Util.getParam(params, "enableAllowedCategories", false);
+        
         String website = params.getChildText("website");
         if (website != null && website.length() > 0 && !website.startsWith("http://")) {
             website = "http://" + website;
@@ -73,9 +84,25 @@ public class Update extends NotInReadOnlyModeService {
         // Logo management ported/adapted from GeoNovum GeoNetwork app.
         // Original devs: Heikki Doeleman and Thijs Brentjens
         String logoFile = params.getChildText("logofile");
-        final String logoUUID = copyLogoFromRequest(context, logoFile);
-        final GroupRepository groupRepository = context.getBean(GroupRepository.class);
+        final String logoUUID = copyLogo == null ? copyLogoFromRequest(context, logoFile) :
+                copyLogoFromHarvesters(context, copyLogo);
 
+        final GroupRepository groupRepository = context.getBean(GroupRepository.class);
+        
+
+        final MetadataCategoryRepository catRepository = 
+                context.getBean(MetadataCategoryRepository.class);
+        
+        MetadataCategory tmpcat = null;
+        
+        try{
+            tmpcat = catRepository.findOne(Integer.valueOf(category));
+        }catch(Throwable t) {
+            //Not a valid category id
+        }
+        
+        final MetadataCategory cat = tmpcat;
+        
         final Element elRes = new Element(Jeeves.Elem.RESPONSE);
 
         if (id == null || "".equals(id)) {
@@ -85,7 +112,13 @@ public class Update extends NotInReadOnlyModeService {
                     .setDescription(description)
                     .setEmail(email)
                     .setLogo(logoUUID)
-                    .setWebsite(website);
+                    .setWebsite(website)
+                    .setDefaultCategory(cat)
+                    .setEnableAllowedCategories(enableAllowedCategories);
+            
+            setUpAllowedCategories(allowedCategories, enableAllowedCategories,
+                    catRepository, group);
+            
 
             final LanguageRepository langRepository = context.getBean(LanguageRepository.class);
             java.util.List<Language> allLanguages = langRepository.findAll();
@@ -104,7 +137,13 @@ public class Update extends NotInReadOnlyModeService {
                     entity.setEmail(email)
                             .setName(name)
                             .setDescription(description)
-                            .setWebsite(finalWebsite);
+                            .setWebsite(finalWebsite)
+                            .setDefaultCategory(cat)
+                            .setEnableAllowedCategories(enableAllowedCategories);
+                    
+                    setUpAllowedCategories(allowedCategories, enableAllowedCategories,
+                            catRepository, entity);
+                    
                     if (!deleteLogo && logoUUID != null) {
                         entity.setLogo(logoUUID);
                     }
@@ -118,6 +157,27 @@ public class Update extends NotInReadOnlyModeService {
         }
 
         return elRes;
+    }
+
+    private void setUpAllowedCategories(
+            final java.util.List<Integer> allowedCategories,
+            final Boolean enableAllowedCategories,
+            final MetadataCategoryRepository catRepository, Group group) {
+        
+        if(enableAllowedCategories) {
+            if (group.getAllowedCategories() != null) {
+                group.getAllowedCategories().clear();
+            }
+            
+            for(Integer i : allowedCategories) {
+                try{
+                    MetadataCategory c = catRepository.findOne(i);
+                    group.getAllowedCategories().add(c);
+                }catch(Throwable t) {
+                    //Not a valid category
+                }
+            }
+        }
     }
 
     private String copyLogoFromRequest(ServiceContext context, String logoFile) throws IOException {
@@ -138,6 +198,22 @@ public class Update extends NotInReadOnlyModeService {
             Files.copy(input, output);
         }
 
+        return logoUUID;
+    }
+
+    private String copyLogoFromHarvesters(ServiceContext context, String logoFile) throws IOException {
+        String logoUUID = null;
+
+        Path harvestLogo = Resources.locateHarvesterLogosDir(context).resolve(logoFile);
+        String extension = FilenameUtils.getExtension(harvestLogo.getFileName().toString());
+        logoUUID = UUID.randomUUID().toString();
+
+        Path newLogo = Resources.locateLogosDir(context).resolve(logoUUID + "." +  extension);
+
+        try (InputStream in = IO.newInputStream(harvestLogo)) {
+            ImageIO.read(in); // check it parses
+        }
+        Files.copy(harvestLogo, newLogo);
         return logoUUID;
     }
 

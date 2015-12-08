@@ -27,12 +27,12 @@ import jeeves.constants.Jeeves;
 import jeeves.server.ServiceConfig;
 import jeeves.server.UserSession;
 import jeeves.server.context.ServiceContext;
+import org.apache.commons.lang.StringUtils;
 import org.fao.geonet.GeonetContext;
 import org.fao.geonet.Util;
 import org.fao.geonet.constants.Geonet;
 import org.fao.geonet.constants.Params;
-import org.fao.geonet.domain.Profile;
-import org.fao.geonet.domain.UserGroup;
+import org.fao.geonet.domain.*;
 import org.fao.geonet.exceptions.BadInputEx;
 import org.fao.geonet.exceptions.ServiceNotAllowedEx;
 import org.fao.geonet.kernel.DataManager;
@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.data.jpa.domain.Specifications.where;
 
@@ -80,6 +81,9 @@ public class Create extends NotInReadOnlyModeService {
 		String uuid;
 		boolean haveAllRights = Boolean.valueOf(Util.getParam(params, Params.FULL_PRIVILEGES, "false"));
 		
+        SettingManager sm = gc.getBean(SettingManager.class);
+        boolean generateUuid = sm.getValueAsBool("system/metadatacreate/generateUuid");
+
 		// does the request contain a UUID ?
 		try {
 			uuid = Util.getParam(params, Params.UUID);
@@ -98,6 +102,25 @@ public class Create extends NotInReadOnlyModeService {
 			}		
 		}
 		
+
+        // User assigned uuid: check if already exists
+        String metadataUuid;
+        if (!generateUuid) {
+            metadataUuid = Util.getParam(params, "metadataUuid", "");
+            if (StringUtils.isEmpty(metadataUuid)) {
+                // Create a random UUID
+                metadataUuid = UUID.randomUUID().toString();
+            } else {
+                // Check if the UUID exists
+                if (StringUtils.isNotEmpty(dm.getMetadataId(metadataUuid))) {
+                    throw new Exception("The metadata UUID already exists. Choose another one");
+                }
+            }
+        } else {
+            metadataUuid = UUID.randomUUID().toString();
+        }
+
+
 		String groupOwner= Util.getParam(params, Params.GROUP);
 		
 		// TODO : Check user can create a metadata in that group
@@ -115,10 +138,14 @@ public class Create extends NotInReadOnlyModeService {
 		}
 		
 		//--- query the data manager
-
+        SettingManager settingManager = gc.getBean(SettingManager.class);
         String newId = dm.createMetadata(context, id, groupOwner,
-                gc.getBean(SettingManager.class).getSiteId(), context.getUserSession().getUserIdAsInt(),
-												  (child.equals("n")?null:uuid), isTemplate, haveAllRights);
+                settingManager.getSiteId(), context.getUserSession().getUserIdAsInt(),
+                (child.equals("n") ? null : uuid), isTemplate, haveAllRights, metadataUuid);
+
+
+        dm.activateWorkflowIfConfigured(context, newId, groupOwner);
+
 
         try {
           copyDataDir(context, id, newId, Params.Access.PUBLIC);

@@ -214,8 +214,9 @@ Mapping between :
                                     <protocol>
                                         <gco:CharacterString>
                                         	<xsl:choose>
-                                        		<xsl:when test="name(.)='WMT_MS_Capabilities' or name(.)='WMS_Capabilities'">application/vnd.ogc.wms_xml</xsl:when>
-                                        		<xsl:otherwise>WWW:LINK-1.0-http--link</xsl:otherwise>
+                                        		<xsl:when test="local-name(.)='WMT_MS_Capabilities' or local-name(.)='WMS_Capabilities'">application/vnd.ogc.wms_xml</xsl:when>
+                                            <xsl:when test="local-name(.)='WFS_MS_Capabilities' or local-name(.)='WFS_Capabilities'">application/vnd.ogc.wfs_xml</xsl:when>
+                                            <xsl:otherwise>WWW:LINK-1.0-http--link</xsl:otherwise>
                                         	</xsl:choose>
                                         </gco:CharacterString>
                                     </protocol>
@@ -289,7 +290,7 @@ Mapping between :
 														<gco:Date><xsl:value-of select="inspire_common:Specification/inspire_common:DateOfLastRevision"/></gco:Date>
 													</date>
 													<dateType>
-														<CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision"/>
+														<CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision"/>
 													</dateType>
 												</CI_Date>
 											</date>

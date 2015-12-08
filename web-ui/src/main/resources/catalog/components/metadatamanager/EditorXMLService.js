@@ -29,43 +29,35 @@
           '</gmd:referenceSystemInfo>',
       'iso19115-3':
           '  <mrs:referenceSystemIdentifier ' +
-          "xmlns:mrs='http://standards.iso.org/19115/-3/mrs/1.0' " +
-          "xmlns:mcc='http://standards.iso.org/19115/-3/mcc/1.0' " +
-          "xmlns:mdb='http://standards.iso.org/19115/-3/mdb/1.0' " +
-          "xmlns:cit='http://standards.iso.org/19115/-3/cit/1.0' " +
-          "xmlns:gco='http://standards.iso.org/19115/-3/gco/1.0'>" +
+          "xmlns:mrs='http://standards.iso.org/iso/19115/-3/mrs/1.0' " +
+          "xmlns:mcc='http://standards.iso.org/iso/19115/-3/mcc/1.0' " +
+          "xmlns:mdb='http://standards.iso.org/iso/19115/-3/mdb/1.0' " +
+          "xmlns:cit='http://standards.iso.org/iso/19115/-3/cit/1.0' " +
+          "xmlns:gco='http://standards.iso.org/iso/19115/-3/gco/1.0'>" +
           '    <mcc:MD_Identifier>' +
-          '      <mcc:authority>' +
-          '       <cit:CI_Citation>' +
-          '         <cit:title>' +
-          '  <gco:CharacterString>{{authority}}</gco:CharacterString>' +
-          '         </cit:title>' +
-          '       </cit:CI_Citation>' +
-          '     </mcc:authority>' +
           '     <mcc:code>' +
-          '       <gco:CharacterString>{{code}}</gco:CharacterString>' +
+          '       <gco:CharacterString>' +
+          'http://www.opengis.net/def/crs/EPSG/0/{{code}}' +
+          '</gco:CharacterString>' +
           '     </mcc:code>' +
-          '     <mcc:codeSpace>' +
-          '  <gco:CharacterString>{{description}}</gco:CharacterString>' +
-          '     </mcc:codeSpace>' +
-          '     <mcc:version>' +
-          '       <gco:CharacterString>{{version}}</gco:CharacterString>' +
-          '     </mcc:version>' +
+          '     <mcc:description>' +
+          '       <gco:CharacterString>{{description}}</gco:CharacterString>' +
+          '     </mcc:description>' +
           '   </mcc:MD_Identifier>' +
           ' </mrs:referenceSystemIdentifier>'
     }});
 
   module.factory('gnEditorXMLService',
-      ['gnNamespaces',
+      ['gnSchemaManagerService',
        'gnXmlTemplates',
        function(
-       gnNamespaces, gnXmlTemplates) {
-         var getNamespacesForElement = function(elementName) {
-           var ns = elementName.split(':');
+       gnSchemaManagerService, gnXmlTemplates) {
+         var getNamespacesForElement = function(schema, elementName) {
            var nsDeclaration = [];
+           var ns = elementName.split(':');
            if (ns.length === 2) {
              nsDeclaration = ['xmlns:', ns[0], "='",
-               gnNamespaces[ns[0]], "'"];
+               gnSchemaManagerService.findNamespaceUri(ns[0], schema), "'"];
            }
            return nsDeclaration.join('');
          };
@@ -91,16 +83,16 @@
            * snippet provided.
            *
            * The element namespace should be defined
-           * in the list of gnNamespaces.
+           * in the list of namespaces returned by getNamespacesForElement.
            */
-           buildXML: function(elementName, snippet) {
+           buildXML: function(schema, elementName, snippet) {
              if (snippet.match(/^<\?xml/g)) {
                var xmlDeclaration =
                '<?xml version="1.0" encoding="UTF-8"?>';
                snippet = snippet.replace(xmlDeclaration, '');
              }
 
-             var nsDeclaration = getNamespacesForElement(elementName);
+             var nsDeclaration = getNamespacesForElement(schema, elementName);
 
              var tokens = [
                '<', elementName,
@@ -115,8 +107,9 @@
             * extraAttributeMap is other attributes to add to the element.
             * For example xlink:title
            */
-           buildXMLForXlink: function(elementName, xlink, extraAttributeMap) {
-             var nsDeclaration = getNamespacesForElement(elementName);
+           buildXMLForXlink: function(schema, elementName,
+                                      xlink, extraAttributeMap) {
+             var nsDeclaration = getNamespacesForElement(schema, elementName);
 
              // Escape & in XLink url
              xlink = xlink.replace(/&/g, '&amp;');
@@ -124,7 +117,8 @@
              var tokens = [
                '<', elementName,
                ' ', nsDeclaration,
-               ' xmlns:xlink="', gnNamespaces.xlink, '"',
+               ' xmlns:xlink="',
+               gnSchemaManagerService.findNamespaceUri('xlink'), '"',
                ' xlink:href="',
                xlink, '"'];
 

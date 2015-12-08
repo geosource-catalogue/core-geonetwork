@@ -46,6 +46,17 @@
     }
   ]);
 
+  module.directive('gnLinksBtn', [ 'gnTplResultlistLinksbtn',
+    function(gnTplResultlistLinksbtn) {
+      return {
+        restrict: 'E',
+        replace: true,
+        scope: true,
+        templateUrl: gnTplResultlistLinksbtn
+      };
+    }
+  ]);
+
   module.directive('gnMdActionsMenu', ['gnMetadataActions',
     function(gnMetadataActions) {
       return {
@@ -60,23 +71,10 @@
           scope.$watch(attrs.gnMdActionsMenu, function(a) {
             scope.md = a;
           });
-          
-          scope.isWorkflowEnabled = function(md) {
-            var st = md.mdStatus;
-            var res = st && 
-                  //Status is unknown
-                  (!isNaN(st) && st != '0');
-            
-            //What if it is an array: gmd:MD_ProgressCode
-            if(!res && Array.isArray(st)) {
-              angular.forEach(st, function(s) {
-                if(!isNaN(s) && s != '0') {
-                  res = true;
-                }
-              });
-            }
-            return res;
-          };
+
+          scope.getScope = function() {
+            return scope;
+          }
         }
       };
     }

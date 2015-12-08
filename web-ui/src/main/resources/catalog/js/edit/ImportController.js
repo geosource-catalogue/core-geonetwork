@@ -2,12 +2,14 @@
   goog.provide('gn_import_controller');
 
   goog.require('gn_category');
+  goog.require('gn_formfields_directive');
   goog.require('gn_importxsl');
 
   var module = angular.module('gn_import_controller', [
     'gn_importxsl',
     'gn_category',
-    'blueimp.fileupload'
+    'blueimp.fileupload',
+    'gn_formfields_directive'
   ]);
 
   /**
@@ -24,13 +26,6 @@
       $scope.file_type = 'single';
       $scope.uuidAction = 'nothing';
       $scope.importing = false;
-      $scope.recordTypes = [
-        {key: 'METADATA', value: 'n'},
-        {key: 'TEMPLATE', value: 'y'},
-        {key: 'SUB_TEMPLATE', value: 's'}
-      ];
-
-      $scope.template = $scope.recordTypes[0].value;
 
       /** Upload management */
       $scope.action = 'xml.mef.import.ui';
@@ -38,6 +33,7 @@
         $scope.importing = false;
         var report = {
           id: data.jqXHR.responseJSON.id,
+          uuid: data.jqXHR.responseJSON.uuid,
           success: data.jqXHR.responseJSON.success,
           message: data.jqXHR.responseJSON.msg
         };
@@ -47,8 +43,9 @@
         $scope.importing = false;
         var response = new DOMParser().parseFromString(
             data.jqXHR.responseText, 'text/xml');
+        var msgEl = response.getElementsByTagName('message')[0];
         var report = {
-          message: response.getElementsByTagName('message')[0].innerHTML
+          message: msgEl.innerHTML ? msgEl.innerHTML : msgEl.textContent
         };
         $scope.reports.push(report);
       };
@@ -57,7 +54,8 @@
       $scope.mdImportUploadOptions = {
         autoUpload: false,
         done: uploadImportMdDone,
-        fail: uploadImportMdError
+        fail: uploadImportMdError,
+        singleUpload: true
       };
       /** --- */
 

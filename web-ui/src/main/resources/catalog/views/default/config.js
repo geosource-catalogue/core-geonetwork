@@ -4,6 +4,9 @@
 
   var module = angular.module('gn_search_default_config', []);
 
+  module.value('gnTplResultlistLinksbtn',
+      '../../catalog/views/default/directives/partials/linksbtn.html');
+
   module
       .run([
         'gnSearchSettings',
@@ -81,7 +84,7 @@
 
 
           /** Facets configuration */
-          searchSettings.facetsSummaryType = 'hits';
+          searchSettings.facetsSummaryType = 'details';
 
           /*
              * Hits per page combo values configuration. The first one is the
@@ -152,7 +155,20 @@
             //}, {
               label: 'full',
               url: 'md.format.xml?xsl=full_view&uuid='
+              /*
+              // You can use a function to choose formatter
+              url : function(md) {
+                return 'md.format.xml?xsl=full_view&uuid=' + md.getUuid();
+              }*/
             }]
+          };
+
+          // Mapping for md links in search result list.
+          searchSettings.linkTypes = {
+            links: ['LINK'],
+            downloads: ['DOWNLOAD'],
+            layers:['OGC', 'kml'],
+            maps: ['ows']
           };
 
           // Set the default template to use

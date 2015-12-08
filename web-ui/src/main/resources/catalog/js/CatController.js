@@ -2,9 +2,10 @@
   goog.provide('gn_cat_controller');
 
   goog.require('gn_search_manager');
+  goog.require('gn_session_service');
 
   var module = angular.module('gn_cat_controller',
-      ['gn_search_manager']);
+      ['gn_search_manager', 'gn_session_service']);
 
 
   module.constant('gnGlobalSettings', {
@@ -28,18 +29,19 @@
    *
    * A body-level scope makes sense for example:
    *
-   *     <body ng-controller="GnCatController">
+   *  <body ng-controller="GnCatController">
    */
   module.controller('GnCatController', [
     '$scope', '$http', '$q', '$rootScope', '$translate',
     'gnSearchManagerService', 'gnConfigService', 'gnConfig',
-    'gnGlobalSettings', '$location', 'gnUtilityService',
+    'gnGlobalSettings', '$location', 'gnUtilityService', 'gnSessionService',
     function($scope, $http, $q, $rootScope, $translate,
             gnSearchManagerService, gnConfigService, gnConfig,
-            gnGlobalSettings, $location, gnUtilityService) {
+            gnGlobalSettings, $location, gnUtilityService, gnSessionService) {
       $scope.version = '0.0.1';
       // TODO : add language
       var tokens = location.href.split('/');
+      $scope.service = tokens[6].split('?')[0];
       $scope.lang = tokens[5];
       $scope.nodeId = tokens[4];
       // TODO : get list from server side
@@ -48,7 +50,8 @@
       //  'ger': 'ge', 'kor': 'ko', 'spa': 'es'};
       // Lang names to be displayed in language selector
       $scope.langLabels = {'eng': 'English', 'dut': 'Nederlands',
-        'fre': 'Français', 'ger': 'Deutsch', 'kor': '한국의', 'spa': 'Español'};
+        'fre': 'Français', 'ger': 'Deutsch', 'kor': '한국의',
+        'spa': 'Español', 'cze': 'Czech'};
       $scope.url = '';
       $scope.base = '../../catalog/';
       $scope.proxyUrl = gnGlobalSettings.proxyUrl;
@@ -90,8 +93,11 @@
 
       gnConfigService.load().then(function(c) {
         // Config loaded
-        //gnMap.importProj4js();
-        // TODO: make map proj load in mapService.config instead of here
+        if (proj4 && angular.isArray(gnConfig['map.proj4js'])) {
+          angular.forEach(gnConfig['map.proj4js'], function(item) {
+            proj4.defs(item.code, item.value);
+          });
+        }
       });
 
       /**
@@ -124,7 +130,7 @@
                 // That could be useful to append to catalog image URL
                 // in order to trigger a reload of the logo when info are
                 // reloaded.
-                $scope.info.site.lastUpdate = new Date();
+                $scope.info.site.lastUpdate = new Date().getTime();
                 $scope.initialized = true;
               }).
               error(function(data, status, headers, config) {
@@ -190,7 +196,7 @@
           var url = $scope.url + 'info?_content_type=json&type=me';
           return $http.get(url).
               success(function(data, status) {
-                $scope.user = data.me;
+                angular.extend($scope.user, data.me);
                 angular.extend($scope.user, userFn);
 
                 $scope.authenticated = data.me['@authenticated'] !== 'false';
@@ -236,11 +242,10 @@
         }
       });
 
-
+      gnSessionService.scheduleCheck($scope.user);
+      $scope.session = gnSessionService.getSession();
 
       $scope.loadCatalogInfo();
-
-
     }]);
 
 })();

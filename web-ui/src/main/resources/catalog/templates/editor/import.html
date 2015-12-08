@@ -67,8 +67,7 @@
                 <span class="btn btn-success btn-block fileinput-button">
                   <i class="fa fa-plus fa-white"/>
                   <span data-translate="">chooseOnlinesrc</span>
-                  <input type="file" id="md-import-file" name="mefFile" multiple="false"
-                         />
+                  <input type="file" id="md-import-file" name="mefFile"/>
                 </span>
 
                 <ul>
@@ -124,12 +123,8 @@
                  class="col-sm-5 control-label"
                  data-translate="">typeOfRecord</label>
           <div class="col-sm-7">
-            <select
-                    class="form-control"
-                    id="gn-typeOfRecord"
-                    required=""
-                    data-ng-model="template"
-                    data-ng-options="t.value as (t.key | translate) for t in recordTypes"></select>
+            <div id="gn-typeOfRecord" gn-recordtypes-combo="template"></div>
+
             <input type="text" class="hidden" name="template" data-ng-model="template">
           </div>
         </div>

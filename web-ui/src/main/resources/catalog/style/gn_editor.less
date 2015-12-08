@@ -9,6 +9,10 @@ body {
   
 }
 
+.gn-line-height {
+       line-height: 1.8 !important;
+ }
+
 input[type=text], input[type=number], select {
   .form-control;
 }
@@ -67,6 +71,20 @@ input[type=text], input[type=number], select {
   margin-top: 45px;
 }
 
+.gn-editor-board {
+  .table.gn-results-editor td {
+    padding: 2px;
+
+    :nth-of-type(1) {
+      font-size: 120%;
+      padding-top: 8px;
+    }
+
+    .gn-record-details {
+      padding-left: 38px;
+    }
+  }
+}
 
 form.gn-editor {
   /* Move each sub fieldset to the left */
@@ -81,6 +99,15 @@ form.gn-editor {
   
   div.well {
     margin-bottom: 0px;
+  }
+
+  div[data-gn-toggle] {
+    position: absolute;
+    left: -4px;
+    top: 2px;
+    button {
+      padding: 2px;
+    }
   }
 
   /**
@@ -104,6 +131,10 @@ form.gn-editor {
   div.gn-extra-field > label {
     visibility: hidden;
     white-space: nowrap;
+  }
+
+  .gn-associated-resource-btn {
+    .button-variant(@btn-default-color; @btn-default-bg; @btn-default-border);
   }
 
   fieldset fieldset {
@@ -382,5 +413,11 @@ form.gn-tab-inspire {
   }
   .no-data a {
     color: @gray-light;
+  }
+}
+
+form.gn-tab-xml {
+  div[data-gn-toggle] {
+    display:none;
   }
 }

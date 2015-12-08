@@ -96,7 +96,10 @@
     this.triggerSearchFn = function(keepPagination) {
 
       $scope.searching++;
-      angular.extend($scope.searchObj.params, defaultParams);
+      $scope.searchObj.params = angular.extend({},
+          $scope.searchObj.defaultParams || defaultParams,
+          $scope.searchObj.params,
+          defaultParams);
 
       // Set default pagination if not set
       if ((!keepPagination &&
@@ -130,6 +133,7 @@
             }
             $scope.searchResults.count = data.count;
             $scope.searchResults.facet = data.facet;
+            $scope.searchResults.dimension = data.dimension;
 
             // compute page number for pagination
             if ($scope.searchResults.records.length > 0 &&
@@ -153,6 +157,55 @@
                   paging.hitsPerPage, 0
                   );
               paging.from = (paging.currentPage - 1) * paging.hitsPerPage + 1;
+            }
+          });
+    };
+
+
+    /**
+     * triggerWildSubtemplateSearch
+     *
+     * Run a search with the actual $scope.params
+     * merged with the params from facets state.
+     * Update the paginationInfo object with the total
+     * count of metadata found. Note that this search
+     * is for subtemplates with _root element provided as function
+     * param and wildcard char appended
+     */
+    this.triggerWildSubtemplateSearch = function(element) {
+
+      angular.extend($scope.params, defaultParams);
+
+      // Don't add facet extra params to $scope.params but
+      // compute them each time on a search.
+      var params = angular.copy($scope.params);
+      if ($scope.currentFacets.length > 0) {
+        angular.extend(params,
+            gnFacetService.getParamsFromFacets($scope.currentFacets));
+      }
+
+      // Add wildcard char to search, limit to subtemplates and the _root
+      // element of the subtemplate we want
+      if (params.any) params.any = params.any + '*';
+      else params.any = '*';
+
+      params._isTemplate = 's';
+      params._root = element;
+      params.from = '1';
+      params.to = '20';
+
+      gnSearchManagerService.gnSearch(params).then(
+          function(data) {
+            $scope.searchResults.records = data.metadata;
+            $scope.searchResults.count = data.count;
+            $scope.searchResults.facet = data.facet;
+
+            // compute page number for pagination
+            if ($scope.searchResults.records.length > 0 &&
+                $scope.hasPagination) {
+              $scope.paginationInfo.pages = Math.ceil(
+                  $scope.searchResults.count /
+                      $scope.paginationInfo.hitsPerPage, 0);
             }
           });
     };
@@ -246,6 +299,7 @@
     });
 
     $scope.triggerSearch = this.triggerSearch;
+    $scope.triggerWildSubtemplateSearch = this.triggerWildSubtemplateSearch;
   };
 
   searchFormController['$inject'] = [

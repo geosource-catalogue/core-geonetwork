@@ -31,7 +31,7 @@ fi
 # When running from the app
 GNLIB=../lib/
 WEB_FILE=../web.xml
-WEB_FILE_OUT=../web.xml
+WEB_FILE_OUT=../web-temp.xml
 
 function showUsage 
 {
@@ -85,6 +85,8 @@ java -classpath $GNLIB/xalan-2.7.1.jar:$GNLIB/serializer-2.7.1.jar org.apache.xa
         -PARAM poolSize $gnpoolsize \
         -IN $WEB_FILE.bak -XSL register-node.xsl \
         -OUT $WEB_FILE_OUT
+mv $WEB_FILE $WEB_FILE.bak
+mv $WEB_FILE_OUT $WEB_FILE
 
 echo "Setting db connection and SPRING configuration ..."
 java -classpath $GNLIB/xalan-2.7.1.jar:$GNLIB/serializer-2.7.1.jar org.apache.xalan.xslt.Process \
