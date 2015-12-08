@@ -9,6 +9,10 @@ body {
   
 }
 
+.gn-line-height {
+       line-height: 1.8 !important;
+ }
+
 input[type=text], input[type=number], select {
   .form-control;
 }
@@ -95,6 +99,15 @@ form.gn-editor {
   
   div.well {
     margin-bottom: 0px;
+  }
+
+  div[data-gn-toggle] {
+    position: absolute;
+    left: -4px;
+    top: 2px;
+    button {
+      padding: 2px;
+    }
   }
 
   /**
@@ -400,5 +413,11 @@ form.gn-tab-inspire {
   }
   .no-data a {
     color: @gray-light;
+  }
+}
+
+form.gn-tab-xml {
+  div[data-gn-toggle] {
+    display:none;
   }
 }
