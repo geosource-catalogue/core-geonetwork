@@ -93,11 +93,11 @@
         <facet name="region" label="regions"
                indexKey="keyword"
                classifier="regionKeywordClassifier"/>
+             -->
+
         <facet name="gemetKeyword" label="gemetKeywords"
                indexKey="keyword"
                classifier="gemetKeywordClassifier"/>
-             -->
-
         <facet name="maintenanceAndUpdateFrequency" indexKey="cl_maintenanceAndUpdateFrequency"
                label="maintenanceAndUpdateFrequencies"/>
       </facets>
@@ -109,7 +109,9 @@
           <!--<item facet="inspireThemeURI" sortBy="value" sortOrder="asc" max="35" translator="term:http://geonetwork-opensource.org/inspire-theme"/>-->
           <item facet="inspireTheme" sortBy="value" sortOrder="asc" max="35"/>
           <!--<item facet="inspireThemeWithAc" sortBy="value" sortOrder="asc" max="35"/>-->
-          <item facet="keyword" max="15"/>
+          <item facet="gemetKeyword"
+                translator="term:http://geonetwork-opensource.org/gemet"/>
+          <!--<item facet="keyword" max="15"/>-->
           <item facet="orgName" max="25"/>
           <item facet="sourceCatalog" translator="db:org.fao.geonet.repository.SourceRepository:findOneByUuid"/>
           <item facet="createDateYear" sortBy="value" sortOrder="desc" max="40"/>
@@ -122,10 +124,7 @@
           <item facet="resolution" sortBy="numValue" sortOrder="desc"/>
           <!--
           <item facet="region"
-                translator="term:http://geonetwork-opensource.org/thesaurus/naturalearth-and-seavox"/>
-          <item facet="gemetKeyword"
-                translator="term:http://geonetwork-opensource.org/gemet"/>
-          -->
+                translator="term:http://geonetwork-opensource.org/thesaurus/naturalearth-and-seavox"/>-->
       </summaryType>
 
       <summaryType name="manager" format="DIMENSION">
