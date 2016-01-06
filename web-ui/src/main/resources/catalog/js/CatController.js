@@ -153,7 +153,7 @@
             return !this.isAnonymous();
           },
           canEditRecord: function(md) {
-            if (!md) {
+            if (!md || this['@authenticated'] == 'false') {
               return false;
             }
 
