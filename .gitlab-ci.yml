@@ -1,0 +1,11 @@
+image: jhipster/jhipster:v5.4.2
+
+stages:
+    - build
+    - test
+    - analyze
+    - package
+    - release
+    - deploy
+
+
